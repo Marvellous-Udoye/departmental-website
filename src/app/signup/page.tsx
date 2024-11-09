@@ -1,7 +1,82 @@
+"use client"
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useState } from "react";
 
-export default function SignIn() {
+interface SignUpProps {
+  firstName: string;
+  lastName: string;
+  matricNo: string;
+  email: string;
+  password: string;
+  userType: string;
+  phoneNumber: string;
+}
+
+export default function SignUp() {
+  const router = useRouter();
+  const [state, setState] = useState<SignUpProps>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    matricNo: '',
+    userType: '',
+    phoneNumber: '',
+    password: '',
+  });
+
+  const [errors, setErrors] = useState<Partial<SignUpProps>>({});
+
+  const validate = () => {
+    const newErrors: Partial<SignUpProps> = {};
+
+    if (!state.firstName) newErrors.firstName = "First name is required";
+    if (!state.lastName) newErrors.lastName = "Last name is required";
+    if (state.userType === "student" && !state.matricNo) newErrors.matricNo = "Matriculation number is required";
+    if (!state.email || !/\S+@\S+\.\S+/.test(state.email)) newErrors.email = "Valid email is required";
+    if (!state.password || state.password.length < 8) newErrors.password = "Password must be at least 6 characters";
+    if (!state.userType) newErrors.userType = "User type is required";
+    if (!state.phoneNumber || !/^\d+$/.test(state.phoneNumber)) newErrors.phoneNumber = "Valid phone number is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleUserTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      userType: value,
+      matricNo: value === "staff" ? "" : prevState.matricNo,
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      matricNo: "",
+    }));
+  };
+
+  const handleSignUp = () => {
+    router.push('/dashboard');
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (validate()) {
+      handleSignUp();
+    }
+  };
+
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -18,20 +93,78 @@ export default function SignIn() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6">
+        <form onSubmit={handleSubmit} action="#" method="POST" className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-              Email address
+            <label htmlFor="firstName" className="block text-sm/6 font-medium text-gray-900">
+              First Name
             </label>
             <div className="mt-2">
               <input
-                id="email"
-                name="email"
-                type="email"
+                id="firstName"
+                name="firstName"
+                type="text"
                 required
-                autoComplete="email"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                value={state.firstName}
+                onChange={handleChange}
+                placeholder="Enter first name"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
               />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="lastName" className="block text-sm/6 font-medium text-gray-900">
+              Last Name
+            </label>
+            <div className="mt-2">
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                required
+                value={state.lastName}
+                onChange={handleChange}
+                placeholder="Enter last name"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-5">
+            <div className="w-full">
+              <label htmlFor="phoneNumber" className="block text-sm/6 font-medium text-gray-900">
+                Phone Number
+              </label>
+              <div className="mt-2">
+                <input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="number"
+                  required
+                  value={state.phoneNumber}
+                  onChange={handleChange}
+                  placeholder="Phone number"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
+                />
+              </div>
+            </div>
+
+            <div className="w-full">
+              <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+                Email address
+              </label>
+              <div className="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={state.email}
+                  onChange={handleChange}
+                  placeholder="Enter email address"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
+                />
+              </div>
             </div>
           </div>
 
@@ -47,27 +180,66 @@ export default function SignIn() {
                 name="password"
                 type="password"
                 required
+                value={state.password}
                 autoComplete="current-password"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                onChange={handleChange}
+                placeholder="Enter password"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
               />
             </div>
           </div>
 
-          <div>
-            <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
-                Confirm Password
+          {state.userType === "student" && (
+            <div>
+              <label htmlFor="matricNo" className="block text-sm/6 font-medium text-gray-900">
+                Matric Number
+              </label>
+              <div className="mt-2">
+                <input
+                  id="matricNo"
+                  name="matricNo"
+                  type="text"
+                  required={state.userType === "student"}
+                  value={state.matricNo}
+                  onChange={handleChange}
+                  placeholder="Enter matric number"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
+                />
+              </div>
+            </div>
+          )}
+
+
+          <div className="flex gap-4 items-center justify-center">
+            <div className="flex items-center w-full">
+              <input
+                id="student"
+                name="userType"
+                type="radio"
+                value="student"
+                required
+                checked={state.userType === 'student'}
+                onChange={handleUserTypeChange}
+                className="cursor-pointer rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
+              />
+              <label htmlFor="student" className="ml-2 text-sm font-medium text-gray-900">
+                Student
               </label>
             </div>
-            <div className="mt-2">
+            <div className="flex items-center w-full">
               <input
-                id="password"
-                name="password"
-                type="password"
+                id="staff"
+                name="userType"
+                type="radio"
+                value="staff"
                 required
-                autoComplete="current-password"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                checked={state.userType === 'staff'}
+                onChange={handleUserTypeChange}
+                className="cursor-pointer rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
               />
+              <label htmlFor="staff" className="ml-2 text-sm font-medium text-gray-900">
+                Staff
+              </label>
             </div>
           </div>
 
@@ -87,7 +259,7 @@ export default function SignIn() {
             Sign in
           </Link>
         </p>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 }
