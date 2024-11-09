@@ -1,6 +1,6 @@
 "use client"
 
-import { AcademicCapIcon, BellIcon, BookOpenIcon, BuildingLibraryIcon, ClipboardDocumentListIcon, DocumentIcon, HomeIcon, InboxIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { BellIcon, ClipboardDocumentListIcon, DocumentIcon, HomeIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
