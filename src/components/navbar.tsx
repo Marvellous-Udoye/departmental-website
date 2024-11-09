@@ -16,7 +16,7 @@ function classNames(...classes: (string | undefined | boolean)[]) {
 
 export default function Navbar() {
   return (
-    <Disclosure as="nav" className="fixed z-10 bg-gray-100 w-full border border-1">
+    <Disclosure as="nav">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -39,7 +39,7 @@ export default function Navbar() {
                 height={100}
               />
             </div>
-            <div className="hidden sm:ml-6 sm:block">
+            {/* <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
                   <Link
@@ -55,7 +55,7 @@ export default function Navbar() {
                   </Link>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
