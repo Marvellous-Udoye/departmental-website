@@ -85,7 +85,7 @@ export default function Navbar() {
             </DisclosureButton>
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div className="hidden md:flex flex-shrink-0 items-center">
+            <div className="hidden md:flex flex-shrink-0 items-center animate-pulse">
               <Image
                 alt=""
                 src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
