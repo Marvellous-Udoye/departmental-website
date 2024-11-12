@@ -47,7 +47,7 @@ export default function Sidebar() {
   return (
     <nav className='fixed hidden lg:flex left-0 top-0 z-10 h-full border border-r-[4px] w-1/6'>
       <div className="flex flex-col w-full">
-        <h1 className="font-bold tracking-[1px] text-2xl text-[#4f46e5] pl-10 py-10">BellsDept.</h1>
+        <h1 className="font-bold tracking-[1px] text-2xl text-[#4f46e5] pl-10 py-10 ">BellsDept.</h1>
         <ul className="flex flex-col w-full">
           {menus.map((menu, index) => {
             const isActive = pathName === menu.href 
