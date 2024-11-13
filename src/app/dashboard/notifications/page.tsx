@@ -1,8 +1,7 @@
 "use client";
 
 import Drawer from "@/components/drawer";
-import { ArrowRightCircleIcon, InboxStackIcon } from "@heroicons/react/24/outline";
-import { MusicalNoteIcon } from "@heroicons/react/24/solid";
+import { InboxStackIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 interface NotificationsProps {
