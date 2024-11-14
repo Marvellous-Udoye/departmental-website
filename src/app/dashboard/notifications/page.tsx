@@ -109,9 +109,9 @@ export default function Notifications() {
       {isDrawerOpen && selectedNotification && (
         <Drawer
           onClose={() => setIsDrawerOpen(false)}
-          notificationBody={selectedNotification.subject}
+          notificationBody={selectedNotification.body}
           notificationDate={selectedNotification.date}
-          notificationSubject={selectedNotification.body}
+          notificationSubject={selectedNotification.subject}
 
         />
       )}
