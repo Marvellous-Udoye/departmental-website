@@ -179,7 +179,7 @@ export default function Navbar() {
             </DisclosureButton>
           ))}
         </div> */}
-        <ul className="flex flex-col w-full border-b-[2px] border-t-[2px]">
+        <ul className="flex flex-col w-full border-t-[2px]">
           {menus.map((menu, index) => {
             const isActive = pathName === menu.href
             return (

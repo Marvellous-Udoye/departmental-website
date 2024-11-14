@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <Sidebar />
       <main className="absolute lg:left-[225px] max-w-[1124px] w-full">
 
-        <div className="bg-gray-100 p-4">
+        <div className="bg-gray-100 p-2 +md:p-4">
           <Navbar />
           <Banner />
           {children}
