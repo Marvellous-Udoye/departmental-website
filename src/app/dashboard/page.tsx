@@ -22,6 +22,13 @@ const upcomingEvents = [
   { id: 3, title: 'Thesis Defense', date: 'Nov 20', time: '13:30', type: 'academic' }
 ];
 
+const quickActions = [
+  { label: 'Download Documents', icon: <DocumentTextIcon className="w-4 h-4" /> },
+  { label: 'Download Academic Calender', icon: <CalendarIcon className="w-4 h-4" /> },
+  { label: 'View Course Materials', icon: <BookOpenIcon className="w-4 h-4" /> },
+  { label: 'Visit Student Portal', icon: <ChartBarIcon className="w-4 h-4" /> }
+]
+
 const quickAccessItems = [
   {
     title: 'Recent Documents',
@@ -36,22 +43,10 @@ const quickAccessItems = [
     color: 'green'
   },
   {
-    title: 'Pending Tasks',
-    description: 'Check your pending tasks and reminders here.',
-    actionLabel: 'View Tasks',
-    color: 'yellow'
-  },
-  {
     title: 'Profile Completion Status',
     description: 'Complete your profile to enhance your experience.',
     actionLabel: 'Complete Profile',
     color: 'purple'
-  },
-  {
-    title: 'Quick Links',
-    description: 'Navigate quickly to important pages and contact support.',
-    actionLabel: 'Explore Links',
-    color: 'red'
   }
 ];
 
@@ -102,7 +97,7 @@ const teamMembers: TeamMemberProps[] = [
 ];
 
 const QuickAccessCard = ({ title, description, actionLabel, color = 'blue' }: ResourceProps) => (
-  <div className="p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-xl relative overflow-hidden">
+  <div className="p-4 md:p-6 rounded-lg shadow-lg transition-transform transform lg:hover:scale-105 hover:shadow-xl relative overflow-hidden">
     <div className={`absolute -top-8 -right-8 bg-${color}-100 p-4 rounded-full`}></div>
     <h4 className="font-bold text-lg mb-2 text-gray-900">{title}</h4>
     <p className="text-sm text-gray-500 mb-3">{description}</p>
@@ -113,7 +108,7 @@ const QuickAccessCard = ({ title, description, actionLabel, color = 'blue' }: Re
 );
 
 const ResourceCard = ({ title, description, icon }: ResourceProps) => (
-  <div className="group bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700">
+  <div className="group bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-md lg:hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700">
     <div className="flex items-start space-x-4">
       <div className="p-3 bg-indigo-500 rounded-lg group-hover:bg-indigo-800 transition-colors">
         <div className="w-6 h-6 text-white">
@@ -124,7 +119,7 @@ const ResourceCard = ({ title, description, icon }: ResourceProps) => (
         <h4 className="font-bold text-lg mb-2 text-gray-900 dark:text-gray-100">
           {title}
         </h4>
-        <p className="text-gray-600 dark:text-gray-400 text-sm">
+        <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 md:line-clamp-none">
           {description}
         </p>
         <button className="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
@@ -141,7 +136,7 @@ const TeamMember = ({ name, position, imageUrl }: TeamMemberProps) => (
       <img
         src={imageUrl}
         alt={name}
-        className="max-w-30 w-full max-h-30 mx-auto object-cover transform group-hover:scale-105 transition ease duration-300ms"
+        className="max-w-30 w-full max-h-25 md:max-h-30 mx-auto object-cover transform group-hover:scale-105 transition ease duration-300ms"
       />
     </div>
     <div className='py-3'>
@@ -153,7 +148,7 @@ const TeamMember = ({ name, position, imageUrl }: TeamMemberProps) => (
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen rounded-xl p-6 bg-white">
+    <div className="min-h-screen rounded-xl p-2 md:p-6 bg-white">
       {/* Quick Access Section */}
       <section className="">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -185,7 +180,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="space-y-4">
               {upcomingEvents.map((event) => (
-                <div key={event.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={event.id} className="flex justify-between flex-col md:flex-row md:items-center p-3 bg-gray-50 rounded-lg ">
                   <div className='flex items-center flex-1'>
                     <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                       <ClockIcon className="w-6 h-6 text-blue-600" />
@@ -195,8 +190,8 @@ export default function Dashboard() {
                       <p className="text-sm text-gray-500">{event.date} at {event.time}</p>
                     </div>
                   </div>
-                  <div className='flex justify-center items-center max-w-[80px] w-full'>
-                    <span className={`px-1.5 py-1 text-[13px] leading-4 rounded-[4px] text-center font-normal
+                  <div className='flex justify-end md:justify-center items-center'>
+                    <span className={`px-1.5 py-1 text-[13px] leading-4 rounded-[4px] text-center font-normal w-[70px]
                      ${event.type === 'meeting' ? 'bg-[#FFF3DE] text-[#FF9600]' :
                         event.type === 'event' ? 'bg-[#FFEAED] text-[#EF6E68]' :
                           'bg-[#E3F2FD] text-[#2196F3]'
@@ -206,6 +201,9 @@ export default function Dashboard() {
                   </div>
                 </div>
               ))}
+              <div className='flex items-center justify-end'>
+                <p className='flex items-center text-gray-600 gap-1.5 font-normal text-sm pr-3 active:text-gray-900 cursor-pointer'>See more <CalendarIcon className='w-4 h-4' /></p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -220,17 +218,12 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {[
-                { label: 'Download Documents', icon: <DocumentTextIcon className="w-4 h-4" /> },
-                { label: 'Download Academic Calender', icon: <CalendarIcon className="w-4 h-4" /> },
-                { label: 'View Course Materials', icon: <BookOpenIcon className="w-4 h-4" /> },
-                { label: 'Visit Student Portal', icon: <ChartBarIcon className="w-4 h-4" /> }
-              ].map((action, index) => (
+              {quickActions.map((action, index) => (
                 <button
                   key={index}
                   className="w-full flex items-center space-x-3 p-3 text-left rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  <div className="p-2 rounded-lg bg-indigo-100">
+                  <div className="p-2 rounded-lg bg-blue-100">
                     {action.icon}
                   </div>
                   <span className="text-[14px] font-medium text-gray-700 tracking-[1px]">{action.label}</span>

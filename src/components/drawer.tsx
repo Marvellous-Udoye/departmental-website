@@ -4,14 +4,20 @@ import { useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
-export default function Drawer() {
+interface DrawerProps {
+  onClose?: () => void,
+  notificationDate: string,
+  notificationSubject: string,
+  notificationBody: string,
+}
+export default function Drawer({ notificationDate, notificationSubject, notificationBody, onClose }: DrawerProps) {
   const [open, setOpen] = useState(true)
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
         transition
-        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
+        className="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
       />
 
       <div className="fixed inset-0 overflow-hidden">
@@ -36,9 +42,15 @@ export default function Drawer() {
               </TransitionChild>
               <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                 <div className="px-4 sm:px-6">
-                  <DialogTitle className="text-base font-semibold text-gray-900">Panel title</DialogTitle>
+                  <DialogTitle className="text-base font-semibold text-gray-900">From the Course Advisor</DialogTitle>
                 </div>
-                <div className="relative mt-6 flex-1 px-4 sm:px-6">{/* Your content */}</div>
+                <div className="relative mt-6 flex-1 px-4 sm:px-6 border border-2">
+                  <div className="p-4">
+                    <h2 className="text-lg font-bold">{notificationSubject}</h2>
+                    <p className="text-gray-500">{notificationDate}</p>
+                    <p className="mt-2">{notificationBody}</p>
+                  </div>
+                </div>
               </div>
             </DialogPanel>
           </div>
