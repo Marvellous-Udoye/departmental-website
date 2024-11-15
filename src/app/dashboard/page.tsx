@@ -191,7 +191,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className='flex justify-end md:justify-center items-center'>
-                    <span className={`px-1.5 py-1 text-[13px] leading-4 rounded-[4px] text-center font-normal w-[70px]
+                    <span className={`px-1.5 py-1 text-[13px] leading-4 rounded-[4px] text-center font-semibold w-[70px]
                      ${event.type === 'meeting' ? 'bg-[#FFF3DE] text-[#FF9600]' :
                         event.type === 'event' ? 'bg-[#FFEAED] text-[#EF6E68]' :
                           'bg-[#E3F2FD] text-[#2196F3]'
