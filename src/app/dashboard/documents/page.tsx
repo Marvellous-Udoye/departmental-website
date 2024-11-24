@@ -2,7 +2,11 @@
 
 import Pagination from "@/components/pagination";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { FolderIcon, FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  FolderIcon,
+  FunnelIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 interface DocumentsProps {
@@ -69,15 +73,16 @@ export default function Documents() {
   const [showAll, setShowAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredDocuments = documents.filter((doc) => doc.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredDocuments = documents.filter(
+    (doc) => doc.name.toLowerCase().includes(searchTerm.toLowerCase())
     // doc.name.toLowerCase().includes(searchTerm.toLowerCase()) || doc.date.includes(searchTerm) || doc.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const filterOptions = ['Incomplete', 'Pending', 'Complete', 'Approved']
-  const visibleDocuments = showAll ? filteredDocuments : filteredDocuments.slice(0, 5);
+  const filterOptions = ["Incomplete", "Pending", "Complete", "Approved"];
+  const visibleDocuments = showAll
+    ? filteredDocuments
+    : filteredDocuments.slice(0, 5);
 
-  const onSelect = (option: string) => {
-
-  }
+  const onSelect = (option: string) => {};
 
   const getStatusClass = (status: string) => {
     switch (status) {
@@ -92,7 +97,7 @@ export default function Documents() {
       default:
         return "";
     }
-  }
+  };
 
   return (
     <div className="p-4 bg-white rounded-xl">
@@ -104,11 +109,12 @@ export default function Documents() {
             <MagnifyingGlassIcon className="absolute w-5 h-5 text-gray-500 top-1/2 left-4 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search documents..."
+              placeholder="Search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border w-full border-gray-400 focus:shadow-lg pl-12 py-2 rounded-full text-sm"
+              className="w-full sm:w-[300px] border border-gray-400 focus:ring-2 focus:ring-blue-400 focus:outline-none pl-12 py-2 rounded-full text-sm placeholder:text-xs sm:placeholder:text-sm"
             />
+
             <MenuButton>
               <FunnelIcon className="absolute w-5 h-5 text-gray-500 top-1/2 right-4 -translate-y-1/2 cursor-pointer" />
             </MenuButton>
@@ -133,37 +139,73 @@ export default function Documents() {
         </Menu>
       </div>
 
-      <table className="text-left w-full" style={{ borderSpacing: "0 10px" }}>
-        <thead>
-          <tr>
-            <th className="py-4">Document Title</th>
-            <th className="py-4">Category</th>
-            <th className="py-4">Deadline</th>
-            <th className="py-4 text-center">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {visibleDocuments.map((document, index) => (
-            <tr
-              key={index}
-              className="border-t border-solid border-gray-150 rounded-lg border-collapse"
-            >
-              <td className="py-4 flex gap-2 items-center text-sm">
-                {document.icon} {document.name}
-              </td>
-              <td className="py-4 text-gray-600 text-sm">{document.category}</td>
-              <td className="py-4 text-gray-500 text-sm">{document.date}</td>
-              <td className="w-[80px]">
-                <span className={`inline-block px-1.5 py-1 text-[13px] text-center rounded-[4px] leading-4 font-semibold w-[80px]
-                  ${getStatusClass(document.status)}`}
-                >
-                  {document.status}
-                </span>
-              </td>
+      <div
+        className="hidden md:table text-left w-full"
+        style={{ borderSpacing: "0 10px" }}
+      >
+        <table className="text-left w-full" style={{ borderSpacing: "0 10px" }}>
+          <thead>
+            <tr>
+              <th className="py-4">Document Title</th>
+              <th className="py-4">Category</th>
+              <th className="py-4">Deadline</th>
+              <th className="py-4 text-center">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {visibleDocuments.map((document, index) => (
+              <tr
+                key={index}
+                className="border-t border-solid border-gray-150 rounded-lg border-collapse"
+              >
+                <td className="py-4 flex gap-2 items-center text-sm">
+                  {document.icon} {document.name}
+                </td>
+                <td className="py-4 text-gray-600 text-sm">
+                  {document.category}
+                </td>
+                <td className="py-4 text-gray-500 text-sm">{document.date}</td>
+                <td className="w-[80px]">
+                  <span
+                    className={`inline-block px-1.5 py-1 text-[13px] text-center rounded-[4px] leading-4 font-semibold w-[80px]
+                    ${getStatusClass(document.status)}`}
+                  >
+                    {document.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Responsiveness for Mobile Screens 325px */}
+      <div className="block md:hidden">
+        {visibleDocuments.map((document, index) => (
+          <div
+            key={index}
+            className="border border-gray-200 rounded-lg p-4 mb-4 shadow-sm"
+          >
+            <div className="flex justify-between items-center mb-2">
+              <div className="flex items-center gap-2">
+                {document.icon}
+                <h2 className="text-sm font-semibold">{document.name}</h2>
+              </div>
+              <span
+                className={`text-[13px] px-2 py-1 rounded leading-4 font-semibold ${getStatusClass(
+                  document.status
+                )}`}
+              >
+                {document.status}
+              </span>
+            </div>
+            <div className="text-sm text-gray-500">
+              <p>Category: {document.category}</p>
+              <p>Deadline: {document.date}</p>
+            </div>
+          </div>
+        ))}
+      </div>
 
       <div className="mt-6">
         <Pagination />
