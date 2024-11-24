@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const people = [
   {
     name: 'Leslie Alexander',
@@ -59,7 +61,12 @@ export default function List() {
       {people.map((person) => (
         <li key={person.email} className="flex justify-between gap-x-6 py-5">
           <div className="flex min-w-0 gap-x-4">
-            <img alt="" src={person.imageUrl} className="h-12 w-12 flex-none rounded-full bg-gray-50" />
+            <Image
+              width={48}
+              height={48}
+              alt=""
+              src={person.imageUrl}
+              className="h-12 w-12 flex-none rounded-full bg-gray-50" />
             <div className="min-w-0 flex-auto">
               <p className="text-sm/6 font-semibold text-gray-900">{person.name}</p>
               <p className="mt-1 truncate text-xs/5 text-gray-500">{person.email}</p>

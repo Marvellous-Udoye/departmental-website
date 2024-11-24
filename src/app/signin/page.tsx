@@ -1,24 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface SignInProps {
   matricNo: string;
-  email: string;
   password: string;
-  userType: string;
 }
 
 export default function SignIn() {
   const router = useRouter();
   const [state, setState] = useState<SignInProps>({
     matricNo: "",
-    email: "",
     password: "",
-    userType: "",
   });
 
   const [errors, setErrors] = useState<Partial<SignInProps>>({});
@@ -26,10 +21,8 @@ export default function SignIn() {
   const validate = () => {
     const newErrors: Partial<SignInProps> = {};
 
-    if (state.userType === "Student" && !state.matricNo) newErrors.matricNo = "Matriculation number is required";
-    if (!state.email || !/\S+@\S+\.\S+/.test(state.email)) newErrors.email = "Valid email is required";
+    if (!state.matricNo) newErrors.matricNo = "Matriculation number is required";
     if (!state.password || state.password.length < 6) newErrors.password = "Password must be at least 6 characters";
-    if (!state.userType) newErrors.userType = "User type is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -43,144 +36,106 @@ export default function SignIn() {
     }));
   };
 
-  const handleUserType = (userType: "Staff" | "Student") => {
-    setState((prevState) => ({
-      ...prevState,
-      userType,
-      matricNo: userType === "Staff" ? "" : prevState.matricNo,
-      password: ""
-    }));
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      matricNo: "",
-      password: ""
-    }));
-  };
-
-  const handleSignUp = () => {
+  const handleSignIn = () => {
     router.push('/dashboard');
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validate()) {
-      handleSignUp();
+      handleSignIn();
     }
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Image
-          alt=""
-          src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-          className="mx-auto h-10 w-auto"
-          width={100}
-          height={100}
-        />
-        <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
-          Sign in to your account
-        </h2>
-      </div>
-
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {state.userType === "Staff" ? (
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900">
-                Email Address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={state.email}
-                  onChange={handleChange}
-                  placeholder="Enter email address"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
-                />
-              </div>
-            </div>
-          ) : (
-            <div>
-              <label htmlFor="matricNo" className="block text-sm font-medium text-gray-900">
-                Matric Number
-              </label>
-              <div className="mt-2">
-                <input
-                  id="matricNo"
-                  name="matricNo"
-                  type="text"
-                  required
-                  value={state.matricNo}
-                  onChange={handleChange}
-                  placeholder="Enter matric number"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
-                />
-              </div>
-            </div>
-          )}
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-900">
-                Password
-              </label>
-              <div className="text-sm">
-                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                  Forgot password?
-                </a>
-              </div>
-            </div>
-            <div className="mt-2">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                value={state.password}
-                onChange={handleChange}
-                placeholder="Enter password"
-                autoComplete="current-password"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[12px]"
-              />
-            </div>
+    <div className="bg-gray-50 h-[100vh] grid place-items-center px-4">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto">
+        <div className="p-4 sm:p-7">
+          <div className="text-center">
+            <h1 className="block text-2xl font-bold text-gray-800">Sign in</h1>
+            <p className="mt-2 text-sm text-gray-600">
+              Don't have an account yet?{" "}
+              <Link
+                className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
+                href="/signup"
+              >
+                Sign up here
+              </Link>
+            </p>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Sign in
-            </button>
-            <div className="flex flex-col sm:flex-row gap-5">
-              <button
-                type="button"
-                onClick={() => handleUserType("Staff")}
-                className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold text-gray-500 border border-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in as Staff
-              </button>
-              <button
-                type="button"
-                onClick={() => handleUserType("Student")}
-                className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold text-gray-500 border border-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in as Student
-              </button>
-            </div>
-          </div>
-        </form>
+          <div className="mt-5">
+            {/* Form */}
+            <form onSubmit={handleSubmit}>
+              <div className="grid gap-y-4">
+                {/* Matric No Input */}
+                <div className="relative mb-6">
+                  <label htmlFor="matricNo" className="block text-sm mb-2">
+                    Matric. Number <span className="text-[#F24822]">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="matricNo"
+                    name="matricNo"
+                    value={state.matricNo}
+                    onChange={handleChange}
+                    placeholder="Enter matriculation number"
+                    className="py-2 md:py-3 px-2 md:px-4 block w-full border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                  {errors.matricNo && <p className="absolute text-xs text-red-600 mt-1">{errors.matricNo}</p>}
+                </div>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?{" "}
-          <Link href="/signup" className="font-semibold text-indigo-600 hover:text-indigo-500">
-            Sign Up
-          </Link>
-        </p>
+                {/* Password Input */}
+                <div className="relative mb-6">
+                  <div className="flex justify-between items-center">
+                    <label htmlFor="password" className="block text-sm mb-2">
+                      Password <span className="text-[#F24822]">*</span>
+                    </label>
+                    <Link
+                      className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
+                      href="#"
+                    >
+                      Forgot password?
+                    </Link>
+                  </div>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={state.password}
+                    onChange={handleChange}
+                    placeholder="Enter password"
+                    className="py-2 md:py-3 px-2 md:px-4 block w-full border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                  {errors.password && <p className="absolute text-xs text-red-600 mt-1">{errors.password}</p>}
+                </div>
+
+                <div className="flex items-center">
+                  <div className="flex">
+                    <input
+                      id="remember-me"
+                      name="remember-me"
+                      type="checkbox"
+                      className="shrink-0 border-gray-400 rounded text-blue-600 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="ml-2">
+                    <label htmlFor="remember-me" className="text-sm">
+                      Remember me
+                    </label>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
+                >
+                  Sign in
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );

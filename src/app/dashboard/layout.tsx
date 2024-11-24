@@ -1,14 +1,13 @@
-import Banner from "@/components/banner";
-import Navbar from "@/components/navbar";
-import Sidebar from "@/components/sidebar";
+import Banner from "@/components/dashboard/common/banner";
+import Navbar from "@/components/dashboard/common/navbar";
+import Sidebar from "@/components/dashboard/common/sidebar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-screen">
+    <div className=" relative h-screen">
       <Sidebar />
-      <main className="absolute lg:left-[225px] max-w-[1124px] w-full">
-
-        <div className="bg-gray-100 p-2 +md:p-4">
+      <main className="absolute lg:left-[260px]">
+        <div className="bg-gray-100 p-2 md:p-4">
           <Navbar />
           <Banner />
           {children}

@@ -1,12 +1,20 @@
-import Features from "@/components/features";
-import Footer from "@/components/footer";
-import HeroSection from "@/components/heroSection";
+import Carousel from "@/components/index/carousel";
+import FAQ from "@/components/index/FAQ";
+import Features from "@/components/index/features";
+import Footer from "@/components/index/footer";
+import Gallery from "@/components/index/gallery";
+import HeroSection from "@/components/index/heroSection";
+import Team from "@/components/index/team";
 
 export default function Home() {
   return (
     <div>
       <HeroSection />
+      <Carousel />
       <Features />
+      <Gallery />
+      <FAQ />
+      <Team />
       <Footer />
     </div>
   );

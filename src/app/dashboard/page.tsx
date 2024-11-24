@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/card';
-import { BookmarkIcon, BookOpenIcon, CalendarIcon, ChartBarIcon, ClockIcon, DocumentTextIcon, InboxIcon, NewspaperIcon } from '@heroicons/react/24/outline';
+import QuickAccessCard from '@/components/dashboard/home/quickAccessCard';
+import { BookmarkIcon, BookOpenIcon, CalendarIcon, ChartBarIcon, ClipboardDocumentListIcon, ClockIcon, DocumentTextIcon, InboxIcon, NewspaperIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 
 interface ResourceProps {
@@ -8,12 +9,6 @@ interface ResourceProps {
   icon?: React.ReactNode;
   actionLabel?: string;
   color?: string;
-}
-
-interface TeamMemberProps {
-  name: string;
-  position: string;
-  imageUrl: string;
 }
 
 const upcomingEvents = [
@@ -32,7 +27,7 @@ const quickActions = [
 const quickAccessItems = [
   {
     title: 'Recent Documents',
-    description: 'Access your most recent or frequently used documents here.',
+    description: 'Access your most recent or frequent documents here.',
     actionLabel: 'View Documents',
     color: 'blue'
   },
@@ -73,40 +68,6 @@ const resources = [
   }
 ];
 
-const teamMembers: TeamMemberProps[] = [
-  {
-    name: "John Doe",
-    position: "Software Engineer",
-    imageUrl: "https://placehold.co/100x100",
-  },
-  {
-    name: "Jane Smith",
-    position: "Product Manager",
-    imageUrl: "https://placehold.co/100x100",
-  },
-  {
-    name: "Emily Johnson",
-    position: "UX Designer",
-    imageUrl: "https://placehold.co/100x100",
-  },
-  {
-    name: "Michael Brown",
-    position: "Marketing Specialist",
-    imageUrl: "https://placehold.co/100x100",
-  },
-];
-
-const QuickAccessCard = ({ title, description, actionLabel, color = 'blue' }: ResourceProps) => (
-  <div className="p-4 md:p-6 rounded-lg shadow-lg transition-transform transform lg:hover:scale-105 hover:shadow-xl relative overflow-hidden">
-    <div className={`absolute -top-8 -right-8 bg-${color}-100 p-4 rounded-full`}></div>
-    <h4 className="font-bold text-lg mb-2 text-gray-900">{title}</h4>
-    <p className="text-sm text-gray-500 mb-3">{description}</p>
-    <button className={`text-${color}-500 text-sm font-semibold transition cursor-pointer hover:text-${color}-600`}>
-      {actionLabel}
-    </button>
-  </div>
-);
-
 const ResourceCard = ({ title, description, icon }: ResourceProps) => (
   <div className="group bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-md lg:hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700">
     <div className="flex items-start space-x-4">
@@ -130,33 +91,19 @@ const ResourceCard = ({ title, description, icon }: ResourceProps) => (
   </div>
 );
 
-const TeamMember = ({ name, position, imageUrl }: TeamMemberProps) => (
-  <div className="bg-white pb-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group">
-    <div className='rounded-tr-md rounded-tl-md overflow-hidden'>
-      <img
-        src={imageUrl}
-        alt={name}
-        className="max-w-30 w-full max-h-25 md:max-h-30 mx-auto object-cover transform group-hover:scale-105 transition ease duration-300ms"
-      />
-    </div>
-    <div className='py-3'>
-      <h4 className="font-semibold text-gray-900 text-center">{name}</h4>
-      <p className="text-sm text-gray-500 text-center">{position}</p>
-    </div>
-  </div>
-);
-
 export default function Dashboard() {
   return (
     <div className="min-h-screen rounded-xl p-2 md:p-6 bg-white">
-      {/* Quick Access Section */}
-      <section className="">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {quickAccessItems.map((item, index) => (
-            <QuickAccessCard key={index} {...item} />
-          ))}
-        </div>
-      </section>
+      <div className='flex items-center gap-2 mb-5 text-xl font-semibold'>
+        <ClipboardDocumentListIcon className={`shrink-0 w-6`} />
+        <p>Quick Access</p>
+      </div>
+ 
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {quickAccessItems.map((item, index) => (
+          <QuickAccessCard key={index} {...item} />
+        ))}
+      </div>
 
       {/* Resources Section */}
       <section className="py-6">
@@ -233,16 +180,6 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Team Section */}
-      <section className="pt-6">
-        <h2 className="text-xl font-semibold tracking-tight mb-6">Meet Our Team</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {teamMembers.map((member, index) => (
-            <TeamMember key={index} {...member} />
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
