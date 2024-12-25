@@ -1,37 +1,92 @@
-"use client"
+"use client";
 
-import Banner from '@/components/dashboard/common/banner';
-import { Bars3Icon, BellAlertIcon, BellIcon, BriefcaseIcon, CalendarDateRangeIcon, ChevronDownIcon, ChevronUpIcon, HomeIcon, LinkSlashIcon, UserCircleIcon, UsersIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import Banner from "@/components/dashboard/common/banner";
+import {
+  Bars3Icon,
+  BellAlertIcon,
+  BellIcon,
+  BriefcaseIcon,
+  CalendarDateRangeIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  HomeIcon,
+  LinkSlashIcon,
+  UserCircleIcon,
+  UsersIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [, setSelectedMenu] = useState<number | null>(null);
   const pathName = usePathname();
 
   const navItems = [
-    { id: 'home', icon: <HomeIcon className="size-4" />, label: 'Home', href: '/dashboard' },
-    { id: 'documents', icon: <UsersIcon className="size-4" />, label: 'Documents', href: '/dashboard/documents' },
-    { id: 'courses', icon: <UserCircleIcon className="size-4" />, label: 'Courses', href: '/dashboard/courses' },
-    { id: 'projects', icon: <BriefcaseIcon className="size-4" />, label: 'Projects', href: '/dashboard/projects' },
-    { id: 'calendar', icon: <CalendarDateRangeIcon className="size-4" />, label: 'Calendar', href: '/dashboard/calendar' },
-    { id: 'notifications', icon: <BellAlertIcon className="size-4" />, label: 'Notifications', href: '/dashboard/notifications' },
-    { id: 'profile', icon: <BellAlertIcon className="size-4" />, label: 'Profile', href: '/dashboard/profile' },
+    {
+      id: "home",
+      icon: <HomeIcon className="size-4" />,
+      label: "Home",
+      href: "/dashboard",
+    },
+    {
+      id: "documents",
+      icon: <UsersIcon className="size-4" />,
+      label: "Documents",
+      href: "/dashboard/documents",
+    },
+    {
+      id: "courses",
+      icon: <UserCircleIcon className="size-4" />,
+      label: "Courses",
+      href: "/dashboard/courses",
+    },
+    {
+      id: "projects",
+      icon: <BriefcaseIcon className="size-4" />,
+      label: "Projects",
+      href: "/dashboard/projects",
+    },
+    {
+      id: "calendar",
+      icon: <CalendarDateRangeIcon className="size-4" />,
+      label: "Calendar",
+      href: "/dashboard/calendar",
+    },
+    {
+      id: "notifications",
+      icon: <BellAlertIcon className="size-4" />,
+      label: "Notifications",
+      href: "/dashboard/notifications",
+    },
+    {
+      id: "profile",
+      icon: <BellAlertIcon className="size-4" />,
+      label: "Profile",
+      href: "/dashboard/profile",
+    },
   ];
 
   const dropdownItems = [
-    { id: 'first', label: 'First', href: '/dashboard/first' },
-    { id: 'second', label: 'Second', href: '/dashboard/second' },
-    { id: 'third', label: 'Third', href: '/dashboard/third' },
+    { id: "first", label: "First", href: "/dashboard/first" },
+    { id: "second", label: "Second", href: "/dashboard/second" },
+    { id: "third", label: "Third", href: "/dashboard/third" },
   ];
 
   const Logo = () => (
     <div className="px-6 pt-4">
-      <Link href="/dashboard" className="flex justify-between items-center rounded-xl text-xl inline-block font-semibold">
+      <Link
+        href="/dashboard"
+        className="flex justify-between items-center rounded-xl text-xl font-semibold"
+      >
         <div className="hidden sm:flex flex-shrink-0 items-center animate-pulse">
           <Image
             alt=""
@@ -43,7 +98,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
         <XMarkIcon
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className='block sm:hidden size-5 text-white cursor-pointer'
+          className="block sm:hidden size-5 text-white cursor-pointer"
         />
       </Link>
     </div>
@@ -59,7 +114,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         >
           <Bars3Icon className="size-4" />
         </button>
-        <Link href={'/dashboard/notifications'}>
+        <Link href={"/dashboard/notifications"}>
           <button
             type="button"
             className="relative rounded-full p-1 text-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
@@ -74,7 +129,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   );
 
   const Sidebar = () => (
-    <div className={`fixed inset-y-0 start-0 z-[60] w-[260px] bg-white border-e border-gray-200 dark:bg-neutral-800 dark:border-neutral-700 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+    <div
+      className={`fixed inset-y-0 start-0 z-[60] w-[260px] bg-white border-e border-gray-200 dark:bg-neutral-800 dark:border-neutral-700 transition-transform duration-300 ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      } lg:translate-x-0`}
+    >
       <div className="relative flex flex-col h-full">
         <Logo />
         <nav className="p-3 overflow-y-auto flex-1">
@@ -86,9 +145,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <Link
                     href={item.href}
                     className={`p-2 flex items-center gap-x-3.5 text-sm rounded-lg focus:outline-none 
-                      ${isActive
-                        ? 'border-l-4 border-solid border-l-blue-600 text-blue-600 bg-blue-50 dark:bg-neutral-700 dark:text-blue-400'
-                        : 'text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700'}`}
+                      ${
+                        isActive
+                          ? "border-l-4 border-solid border-l-blue-600 text-blue-600 bg-blue-50 dark:bg-neutral-700 dark:text-blue-400"
+                          : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                      }`}
                     onClick={() => setSelectedMenu(index)}
                   >
                     {item.icon}
@@ -119,10 +180,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         <Link
                           href={item.href}
                           className={`flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-none
-                            ${isActive
-                              ? 'border-l-4 border-solid border-l-blue-600 text-blue-600 bg-blue-50 dark:bg-neutral-700 dark:text-blue-400'
-                              : 'text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700'}`}
-                          onClick={() => setSelectedMenu(navItems.length + index)}
+                            ${
+                              isActive
+                                ? "border-l-4 border-solid border-l-blue-600 text-blue-600 bg-blue-50 dark:bg-neutral-700 dark:text-blue-400"
+                                : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                            }`}
+                          onClick={() =>
+                            setSelectedMenu(navItems.length + index)
+                          }
                         >
                           {item.label}
                         </Link>
@@ -151,9 +216,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div>
       <MobileHeader />
       <Sidebar />
-      <MainContent>
-        {children}
-      </MainContent>
+      <MainContent>{children}</MainContent>
     </div>
   );
-};
+}

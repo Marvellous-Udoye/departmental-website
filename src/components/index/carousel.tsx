@@ -1,21 +1,20 @@
-import React from 'react';
-
 export default function Carousel() {
   return (
-    <div className="px-4 lg:px-6 lg:px-8 py-10">
+    <div className="px-4 lg:px-8 py-10">
       <div
-        data-hs-carousel='{"loadingClasses": "opacity-0"}'
+        data-hs-carousel='{
+          "loadingclassNamees": "opacity-0"
+        }'
         className="relative"
       >
         <div className="hs-carousel relative overflow-hidden w-full h-[30rem] md:h-[calc(100vh-106px)] bg-gray-100 rounded-2xl dark:bg-neutral-800">
-          <div className="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
-            {/* Item 1 */}
+          <div className="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700">
             <div className="hs-carousel-slide">
               <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1615615228002-890bb61cac6e?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
                 <div className="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
                   <span className="block text-white">Nike React</span>
                   <span className="block text-white text-xl md:text-3xl">
-                    Rewriting sport's playbook for billions of athletes
+                    Rewriting sport&apos;s playbook for billions of athletes
                   </span>
                   <div className="mt-5">
                     <a
@@ -28,9 +27,7 @@ export default function Carousel() {
                 </div>
               </div>
             </div>
-            {/* End Item 1 */}
 
-            {/* Item 2 */}
             <div className="hs-carousel-slide">
               <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
                 <div className="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
@@ -49,9 +46,7 @@ export default function Carousel() {
                 </div>
               </div>
             </div>
-            {/* End Item 2 */}
 
-            {/* Item 3 */}
             <div className="hs-carousel-slide">
               <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1629666451094-8908989cae90?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
                 <div className="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
@@ -70,11 +65,9 @@ export default function Carousel() {
                 </div>
               </div>
             </div>
-            {/* End Item 3 */}
           </div>
         </div>
 
-        {/* Arrows */}
         <button
           type="button"
           className="hs-carousel-prev hs-carousel-disabled:opacity-50 disabled:pointer-events-none absolute inset-y-0 start-0 inline-flex justify-center items-center w-12 h-full text-black hover:bg-white/20 rounded-s-2xl focus:outline-none focus:bg-white/20"
@@ -118,8 +111,7 @@ export default function Carousel() {
             </svg>
           </span>
         </button>
-        {/* End Arrows */}
       </div>
     </div>
   );
-};
+}
