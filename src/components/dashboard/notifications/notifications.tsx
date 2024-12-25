@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { CalendarIcon, InboxStackIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -15,40 +15,41 @@ const notificationsData: NotificationProps[] = [
   {
     date: "12 NOV",
     subject: "Annual Retreat",
-    body: "The annual retreat is scheduled for December 1st."
+    body: "The annual retreat is scheduled for December 1st.",
   },
   {
     date: "13 OCT",
     subject: "Policy Update",
-    body: "New guidelines for remote work have been released."
+    body: "New guidelines for remote work have been released.",
   },
   {
     date: "27 SEPT",
     subject: "Quarterly Results",
-    body: "The Q3 performance review will be held on September 30th."
+    body: "The Q3 performance review will be held on September 30th.",
   },
   {
     date: "23 SEPT",
     subject: "Maintenance Notification",
-    body: "Office servers will be down for maintenance on September 25th."
+    body: "Office servers will be down for maintenance on September 25th.",
   },
   {
     date: "31 JULY",
     subject: "Team Building Exercise",
-    body: "Join us for a team-building activity at the park on August 5th."
+    body: "Join us for a team-building activity at the park on August 5th.",
   },
   {
     date: "05 MARCH",
     subject: "Health Workshop",
-    body: "A mandatory health and safety training session."
-  }
+    body: "A mandatory health and safety training session.",
+  },
 ];
 
 export default function NotificationsAndDrawer() {
   const [notifications] = useState<NotificationProps[]>(notificationsData);
   const [showAll, setShowAll] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedNotification, setSelectedNotification] = useState<NotificationProps | null>(null);
+  const [selectedNotification, setSelectedNotification] =
+    useState<NotificationProps | null>(null);
 
   const handleNotificationDetails = (notification: NotificationProps) => {
     setIsDrawerOpen(false);
@@ -58,7 +59,9 @@ export default function NotificationsAndDrawer() {
     }, 200);
   };
 
-  const displayedNotifications = showAll ? notifications : notifications.slice(0, 4);
+  const displayedNotifications = showAll
+    ? notifications
+    : notifications.slice(0, 4);
 
   if (notifications.length === 0) {
     return (
@@ -71,7 +74,15 @@ export default function NotificationsAndDrawer() {
         <div className="flex flex-col items-center justify-center text-gray-500 h-full">
           <CalendarIcon className="w-12 h-12 text-gray-500 mx-auto" />
           <p className="text-lg font-medium">You have no notifications</p>
-          <p className="mt-2">Stay tuned for updates. <Link href={'/dashboard'} className="underline cursor-pointer text-indigo-500">Go home</Link></p>
+          <p className="mt-2">
+            Stay tuned for updates.{" "}
+            <Link
+              href={"/dashboard"}
+              className="underline cursor-pointer text-indigo-500"
+            >
+              Go home
+            </Link>
+          </p>
         </div>
       </div>
     );
@@ -103,9 +114,15 @@ export default function NotificationsAndDrawer() {
             <div className="flex gap-3 items-start">
               <CalendarIcon className="w-6 h-6 text-indigo-500" />
               <div>
-                <p className="text-sm text-gray-500 font-medium">{notification.date}</p>
-                <h3 className="font-semibold text-base text-gray-700">{notification.subject}</h3>
-                <p className="text-gray-600 text-sm line-clamp-1 md:line-clamp-2">{notification.body}</p>
+                <p className="text-sm text-gray-500 font-medium">
+                  {notification.date}
+                </p>
+                <h3 className="font-semibold text-base text-gray-700">
+                  {notification.subject}
+                </h3>
+                <p className="text-gray-600 text-sm line-clamp-1 md:line-clamp-2">
+                  {notification.body}
+                </p>
               </div>
             </div>
             <button

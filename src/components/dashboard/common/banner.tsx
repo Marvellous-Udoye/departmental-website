@@ -4,7 +4,7 @@ import { DeviceTabletIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 export default function Banner() {
-  const [department, setDepartment] = useState('Electrical and Electronics Engineering');
+  const [department,] = useState('Electrical and Electronics Engineering');
 
   return (
     <div>
