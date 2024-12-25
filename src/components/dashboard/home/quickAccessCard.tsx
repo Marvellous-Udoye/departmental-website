@@ -25,7 +25,7 @@ export default function QuickAccessCard({
           </div>
         )}
 
-        <h3 className="text-xl font-semibold text-gray-800 group-hover:text-gray-900 transition-colors">
+        <h3 className="text-lg font-semibold text-gray-800 group-hover:text-gray-900 transition-colors">
           {title}
         </h3>
         <p className="mt-2 text-gray-600">{description}</p>

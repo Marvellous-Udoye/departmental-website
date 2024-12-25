@@ -191,46 +191,9 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen rounded-xl p-2 md:p-6 bg-white">
       <div className="space-y-12">
-        {/* Recent Activity */}
-        <section>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Recent Activities
-          </h3>
-          <div className="bg-white rounded-xl border border-gray-300 shadow-sm py-6">
-            <div className="space-y-4 divide-y">
-              {activities.map((activity, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-4 py-3 px-6 hover:bg-gray-50"
-                >
-                  <div
-                    className={`h-10 w-10 rounded-full ${activity.color} flex items-center justify-center`}
-                  >
-                    {activity.icon}
-                  </div>
-                  <div className="flex-grow">
-                    <p className="text-sm font-semibold text-gray-900">
-                      {activity.title}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {activity.description}
-                    </p>
-                  </div>
-                  <span className="text-sm text-gray-500">{activity.time}</span>
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center justify-end mt-4">
-              <p className="flex items-center text-blue-600 gap-1.5 font-normal text-sm pr-6 active:text-gray-900 cursor-pointer">
-                See more <CalendarIcon className="w-4 h-4" />
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* Statistics Section */}
         <section>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Overview</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Overview</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {stats.map((stat) => (
               <div
@@ -254,6 +217,43 @@ export default function Dashboard() {
           </div>
         </section>
       </div>
+
+      {/* Recent Activities */}
+      <section>
+        <h3 className="text-xl font-semibold text-gray-900 my-6">
+          Recent Activities
+        </h3>
+        <div className="bg-white rounded-xl border border-gray-300 shadow-sm pt-3 pb-6">
+          <div className="space-y-4 divide-y">
+            {activities.map((activity, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-4 py-3 px-6 hover:bg-gray-50"
+              >
+                <div
+                  className={`h-10 w-10 rounded-full ${activity.color} flex items-center justify-center`}
+                >
+                  {activity.icon}
+                </div>
+                <div className="flex-grow">
+                  <p className="text-sm font-semibold text-gray-900">
+                    {activity.title}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {activity.description}
+                  </p>
+                </div>
+                <span className="text-sm text-gray-500">{activity.time}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-end mt-4">
+            <p className="flex items-center text-blue-600 gap-1.5 font-normal text-sm pr-6 active:text-gray-900 cursor-pointer">
+              See more <CalendarIcon className="w-4 h-4" />
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Resources Section */}
       <section className="py-6">
@@ -322,7 +322,7 @@ export default function Dashboard() {
         {/* Quick Actions */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
+            <CardTitle className="flex items-center  space-x-2">
               <BookOpenIcon className="w-5 h-5 text-blue-600" />
               <span>Quick Actions</span>
             </CardTitle>

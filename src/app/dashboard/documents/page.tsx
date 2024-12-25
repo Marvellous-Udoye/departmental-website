@@ -1,173 +1,142 @@
 "use client";
 
-import Pagination from "@/components/pagination";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { FolderIcon, FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
-
-interface DocumentsProps {
-  name: string;
-  icon: React.ReactNode;
-  category: string;
-  date: string;
-  status: string;
-}
-
-const documents: DocumentsProps[] = [
-  {
-    name: "Course Registration Form",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Academics",
-    date: "2024-11-20",
-    status: "approved",
-  },
-  {
-    name: "Tuition Fee Receipt",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Finance",
-    date: "2024-12-01",
-    status: "pending",
-  },
-  {
-    name: "Hostel Allocation Letter",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Accommodation",
-    date: "2024-11-25",
-    status: "complete",
-  },
-  {
-    name: "Medical Clearance Form",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Health",
-    date: "2024-11-18",
-    status: "incomplete",
-  },
-  {
-    name: "Library Clearance",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Library",
-    date: "2024-11-22",
-    status: "approved",
-  },
-  {
-    name: "Examination Permit",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Academics",
-    date: "2024-11-30",
-    status: "pending",
-  },
-  {
-    name: "Identity Card Request",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Administration",
-    date: "2024-11-15",
-    status: "complete",
-  },
-];
+import DocumentList from "@/components/dashboard/document/documentList";
+import {
+  ArrowDownTrayIcon,
+  ChartBarIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  MagnifyingGlassIcon,
+  PlusIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
+import Select from "react-select";
 
 export default function Documents() {
-  const [showAll, setShowAll] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const categoryOptions = [
+    { value: "academics", label: "Academics" },
+    { value: "finance", label: "Finance" },
+    { value: "accommodation", label: "Accommodation" },
+    { value: "health", label: "Health" },
+    { value: "library", label: "Library" },
+    { value: "administration", label: "Administration" },
+  ];
 
-  const filteredDocuments = documents.filter((doc) => doc.name.toLowerCase().includes(searchTerm.toLowerCase())
-    // doc.name.toLowerCase().includes(searchTerm.toLowerCase()) || doc.date.includes(searchTerm) || doc.status.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const filterOptions = ['Incomplete', 'Pending', 'Complete', 'Approved']
-  const visibleDocuments = showAll ? filteredDocuments : filteredDocuments.slice(0, 5);
-
-  const onSelect = (option: string) => {
-
-  }
-
-  const getStatusClass = (status: string) => {
-    switch (status) {
-      case "approved":
-        return "bg-green-100 text-green-600";
-      case "complete":
-        return "bg-[#E3F2FD] text-[#2196F3]";
-      case "incomplete":
-        return "bg-[#FFEAED] text-[#EF6E68]";
-      case "pending":
-        return "bg-[#FFF3DE] text-[#FF9600]";
-      default:
-        return "";
-    }
-  }
+  const statusOptions = [
+    { value: "approved", label: "Approved" },
+    { value: "pending", label: "Pending" },
+    { value: "complete", label: "Complete" },
+    { value: "incomplete", label: "Incomplete" },
+  ];
 
   return (
-    <div className="p-4 bg-white rounded-xl">
-      {/* Search Input */}
-      <div className="flex justify-between items-center">
-        <h1 className="font-semibold mb-4">Student Documents</h1>
-        <Menu>
-          <div className="relative mb-4 lg:max-w-[400px] lg:w-full">
-            <MagnifyingGlassIcon className="absolute w-5 h-5 text-gray-500 top-1/2 left-4 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search documents..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border w-full border-gray-400 focus:shadow-lg pl-12 py-2 rounded-full text-sm"
-            />
-            <MenuButton>
-              <FunnelIcon className="absolute w-5 h-5 text-gray-500 top-1/2 right-4 -translate-y-1/2 cursor-pointer" />
-            </MenuButton>
-            <MenuItems
-              transition
-              className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-            >
-              <div className="py-1">
-                {filterOptions.map((option, index) => (
-                  <MenuItem
-                    key={index}
-                    as="button"
-                    onClick={() => onSelect && onSelect(option)}
-                    className="w-full text-left block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </div>
-            </MenuItems>
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-2xl font-bold">Document Management</h1>
+          <p className="text-gray-500 text-sm">
+            Manage and track your departmental documents
+          </p>
+        </div>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
+          <PlusIcon className="w-5 h-5" />
+          New Document
+        </button>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-2 text-blue-600 mb-2">
+            <ChartBarIcon className="w-5 h-5" />
+            <span className="font-medium">Total Documents</span>
           </div>
-        </Menu>
+          <p className="text-2xl font-bold">24</p>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-2 text-yellow-600 mb-2">
+            <ClockIcon className="w-5 h-5" />
+            <span className="font-medium">Pending Review</span>
+          </div>
+          <p className="text-2xl font-bold">8</p>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-2 text-green-600 mb-2">
+            <CheckCircleIcon className="w-5 h-5" />
+            <span className="font-medium">Approved</span>
+          </div>
+          <p className="text-2xl font-bold">12</p>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-2 text-red-600 mb-2">
+            <XCircleIcon className="w-5 h-5" />
+            <span className="font-medium">Incomplete</span>
+          </div>
+          <p className="text-2xl font-bold">4</p>
+        </div>
       </div>
 
-      <table className="text-left w-full" style={{ borderSpacing: "0 10px" }}>
-        <thead>
-          <tr>
-            <th className="py-4">Document Title</th>
-            <th className="py-4">Category</th>
-            <th className="py-4">Deadline</th>
-            <th className="py-4 text-center">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {visibleDocuments.map((document, index) => (
-            <tr
-              key={index}
-              className="border-t border-solid border-gray-150 rounded-lg border-collapse"
-            >
-              <td className="py-4 flex gap-2 items-center text-sm">
-                {document.icon} {document.name}
-              </td>
-              <td className="py-4 text-gray-600 text-sm">{document.category}</td>
-              <td className="py-4 text-gray-500 text-sm">{document.date}</td>
-              <td className="w-[80px]">
-                <span className={`inline-block px-1.5 py-1 text-[13px] text-center rounded-[4px] leading-4 font-semibold w-[80px]
-                  ${getStatusClass(document.status)}`}
-                >
-                  {document.status}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className="mt-6">
-        <Pagination />
+      {/* Search and Filters */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="relative flex-1">
+          <MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search documents..."
+            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4 flex-1">
+          <Select
+            options={categoryOptions}
+            placeholder="All Categories"
+            className="flex-1"
+            styles={{
+              control: (base) => ({
+                ...base,
+                borderRadius: "0.5rem",
+                borderColor: "#d1d5db",
+                boxShadow: "none",
+                "&:hover": {
+                  borderColor: "#2563eb",
+                },
+              }),
+              menu: (base) => ({
+                ...base,
+                zIndex: 10,
+              }),
+            }}
+          />
+          <Select
+            options={statusOptions}
+            placeholder="All Status"
+            className="flex-1"
+            styles={{
+              control: (base) => ({
+                ...base,
+                borderRadius: "0.5rem",
+                borderColor: "#d1d5db",
+                boxShadow: "none",
+                "&:hover": {
+                  borderColor: "#2563eb",
+                },
+              }),
+              menu: (base) => ({
+                ...base,
+                zIndex: 10,
+              }),
+            }}
+          />
+        </div>
+        <button className="px-4 py-2 text-sm border rounded-lg flex items-center gap-2 hover:bg-gray-50">
+          <ArrowDownTrayIcon className="w-5 h-5" />
+          Export
+        </button>
       </div>
+
+      {/* Document List */}
+      <DocumentList />
     </div>
   );
 }
