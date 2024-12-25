@@ -1,121 +1,120 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 
-export default function FAQ() {
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+const faqData: FAQ[] = [
+  {
+    question: "How can I play for my appointment?",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas eaque nobis, fugit odit omnis fugiat deleniti animi ab maxime cum laboriosam recusandae facere dolorum veniam quia pariatur obcaecati illo ducimus?",
+  },
+  {
+    question:
+      "Is the cost of the appointment covered by private health insurance?",
+    answer:
+      "Yes, the cost may be covered depending on your provider. Please check with your insurance provider for more details.",
+  },
+  {
+    question: "Do I need a referral?",
+    answer:
+      "In most cases, you don't need a referral. However, it's always best to check with your healthcare provider beforehand.",
+  },
+  {
+    question: "What are your opening hours?",
+    answer: "We are open Monday to Friday from 9 AM to 5 PM.",
+  },
+  {
+    question: "What can I expect at my first consultation?",
+    answer:
+      "At your first consultation, we will discuss your needs and goals to provide the best care for you.",
+  },
+];
+
+const FAQSection: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const toggleAccordion = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
+  const toggleAnswer = (index: number) => {
+    if (activeIndex === index) {
+      setActiveIndex(null); 
+    } else {
+      setActiveIndex(index); 
+    }
   };
 
-  const faqs = [
-    {
-      question: "Can I cancel at any time?",
-      answer:
-        "Yes, you can cancel anytime no questions are asked while you cancel, but we would highly appreciate if you will give us some feedback.",
-    },
-    {
-      question: "My team has credits. How do we use them?",
-      answer:
-        "Once your team signs up for a subscription plan, this is where we sit down, grab a cup of coffee, and dial in the details.",
-    },
-    {
-      question: "How does Preline's pricing work?",
-      answer:
-        "Our subscriptions are tiered. Understanding the task at hand and ironing out the wrinkles is key.",
-    },
-    {
-      question: "How secure is Preline?",
-      answer:
-        "Protecting the data you trust to Preline is our first priority. This part is really crucial in keeping the project in line to completion.",
-    },
-    {
-      question: "How do I get access to a theme I purchased?",
-      answer:
-        "If you lose the link for a theme you purchased, don't panic! We've got you covered. You can login to your account, tap your avatar in the upper right corner, and tap Purchases. If you didn't create a login or can't remember the information, you can use our handy Redownload page, just remember to use the same email you originally made your purchases with.",
-    },
-    {
-      question: "Upgrade License Type",
-      answer:
-        "If you need to upgrade your license type, you can do so easily in your account settings.",
-    },
-  ];
-
   return (
-    <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-20 lg:py-14 mx-auto">
-      <div className="grid md:grid-cols-5 gap-10">
-        {/* Heading Section */}
-        <div className="md:col-span-2">
-          <div className="max-w-sm">
-            <h2 className="text-3xl font-semibold md:text-4xl md:leading-tight">
-              Frequently asked questions
-            </h2>
-            <p className="mt-1 hidden md:block text-gray-600">
-              Answers to the most frequently asked questions.
-            </p>
-          </div>
+    <section className="bg-white">
+      <div className="container flex justify-between px-6 py-12 mx-auto">
+        <div className="max-w-xl">
+          <h2 className="text-3xl font-semibold text-gray-800 md:text-4xl md:leading-tight">
+            Frequently asked questions
+          </h2>
+          <p className="mt-2 text-gray-600 md:block text-lg">
+            Answers to the most frequently asked questions.
+          </p>
         </div>
-        {/* FAQ Section */}
-        <div className="md:col-span-3">
-          <div className="hs-accordion-group divide-y divide-gray-500">
-            {faqs.map((faq, index) => (
-              <div
-                className={`hs-accordion pt-6 pb-3 ${activeIndex === index ? "active" : ""
-                  }`}
-                key={index}
+        <div className="space-y-8 max-w-2xl w-full">
+          {faqData.map((faq, index) => (
+            <div key={index} className="p-8 bg-gray-100 rounded-lg shadow-sm">
+              <button
+                className="flex items-center justify-between w-full"
+                onClick={() => toggleAnswer(index)}
               >
-                <button
-                  className="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition focus:outline-none focus:text-gray-500"
-                  aria-expanded={activeIndex === index}
-                  onClick={() => toggleAccordion(index)}
-                >
+                <h1 className="font-semibold text-gray-700 max-w-md text-left">
                   {faq.question}
-                  <svg
-                    className={`${activeIndex === index ? "hidden" : "block"
-                      } shrink-0 size-5 text-gray-600 group-hover:text-gray-500`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                  <svg
-                    className={`${activeIndex === index ? "block" : "hidden"
-                      } shrink-0 size-5 text-gray-600 group-hover:text-gray-500`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m18 15-6-6-6 6" />
-                  </svg>
-                </button>
-                <div
-                  className={`hs-accordion-content ${activeIndex === index ? "block" : "hidden"
-                    } w-full overflow-hidden transition-[height] duration-300`}
+                </h1>
+                <span
+                  className={`text-white ${
+                    activeIndex === index ? "bg-blue-200" : "bg-blue-500"
+                  } rounded-full p-1`}
                 >
-                  <p className="text-gray-600">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+                  {activeIndex === index ? (
+                      <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M18 12H6"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 6v12M6 12h12"
+                      />
+                    </svg>
+                  )}
+                </span>
+              </button>
+
+              {activeIndex === index && (
+                <p className="mt-6 text-md text-gray-600">{faq.answer}</p>
+              )}
+            </div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
+export default FAQSection;

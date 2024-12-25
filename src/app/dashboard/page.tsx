@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/dashboard/common/card";
 import QuickAccessCard from "@/components/dashboard/home/quickAccessCard";
 
 import {

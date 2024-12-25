@@ -1,4 +1,5 @@
 import Carousel from "@/components/index/carousel";
+import ContactUs from "@/components/index/contactUs";
 import FAQ from "@/components/index/FAQ";
 import Features from "@/components/index/features";
 import Footer from "@/components/index/footer";
@@ -15,6 +16,7 @@ export default function Home() {
       <Gallery />
       <FAQ />
       <Team />
+      <ContactUs />
       <Footer />
     </div>
   );

@@ -1,4 +1,4 @@
-import NotificationsAndDrawer from "@/components/notifications";
+import NotificationsAndDrawer from "@/components/dashboard/notifications/notifications";
 
 export default function Notifications() {
   return (

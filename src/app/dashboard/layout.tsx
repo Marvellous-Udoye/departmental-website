@@ -50,10 +50,10 @@ export default function DashboardLayout({
       href: "/dashboard/courses",
     },
     {
-      id: "projects",
+      id: "resources",
       icon: <BriefcaseIcon className="size-4" />,
-      label: "Projects",
-      href: "/dashboard/projects",
+      label: "Resources",
+      href: "/dashboard/resources",
     },
     {
       id: "calendar",
