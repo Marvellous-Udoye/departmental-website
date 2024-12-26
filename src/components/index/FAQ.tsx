@@ -9,29 +9,24 @@ interface FAQ {
 
 const faqData: FAQ[] = [
   {
-    question: "How can I play for my appointment?",
+    question: "What resources are available for academic research?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas eaque nobis, fugit odit omnis fugiat deleniti animi ab maxime cum laboriosam recusandae facere dolorum veniam quia pariatur obcaecati illo ducimus?",
+      "The portal provides access to a variety of academic resources, including articles, e-books, and research materials tailored to the Department of Engineering.",
   },
   {
-    question:
-      "Is the cost of the appointment covered by private health insurance?",
+    question: "Can I receive notifications from my course advisor?",
     answer:
-      "Yes, the cost may be covered depending on your provider. Please check with your insurance provider for more details.",
+      "Yes, the portal allows you to receive notifications and updates directly from your course advisor regarding courses, schedules, and other important information.",
   },
   {
-    question: "Do I need a referral?",
+    question: "How can I track the submission of my documents?",
     answer:
-      "In most cases, you don't need a referral. However, it's always best to check with your healthcare provider beforehand.",
+      "You can easily track the submission of your documents through the departmental portal. Log in with your student credentials to view the status of your submissions.",
   },
   {
-    question: "What are your opening hours?",
-    answer: "We are open Monday to Friday from 9 AM to 5 PM.",
-  },
-  {
-    question: "What can I expect at my first consultation?",
+    question: "What are the features of the departmental website?",
     answer:
-      "At your first consultation, we will discuss your needs and goals to provide the best care for you.",
+      "The website is designed to ease activities between students and staff. It allows students to track submissions, access resources, and stay updated with university events and announcements.",
   },
 ];
 
@@ -39,32 +34,32 @@ const FAQSection: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleAnswer = (index: number) => {
-    if (activeIndex === index) {
-      setActiveIndex(null); 
-    } else {
-      setActiveIndex(index); 
-    }
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
     <section className="bg-white">
-      <div className="container flex justify-between px-6 py-12 mx-auto">
+      <div className="container flex max-md:flex-col gap-10 justify-between px-6 py-12 mx-auto">
         <div className="max-w-xl">
           <h2 className="text-3xl font-semibold text-gray-800 md:text-4xl md:leading-tight">
-            Frequently asked questions
+            Frequently Asked Questions
           </h2>
           <p className="mt-2 text-gray-600 md:block text-lg">
-            Answers to the most frequently asked questions.
+            Answers to the most frequently asked questions about the
+            departmental portal.
           </p>
         </div>
         <div className="space-y-8 max-w-2xl w-full">
           {faqData.map((faq, index) => (
-            <div key={index} className="p-8 bg-gray-100 rounded-lg shadow-sm">
+            <div
+              key={index}
+              className="p-4 md:p-8 bg-gray-100 rounded-lg shadow-sm"
+            >
               <button
                 className="flex items-center justify-between w-full"
                 onClick={() => toggleAnswer(index)}
               >
-                <h1 className="font-semibold text-gray-700 max-w-md text-left">
+                <h1 className="font-semibold text-gray-700 max-w-md max-sm:max-w-[230px] text-left">
                   {faq.question}
                 </h1>
                 <span
@@ -73,7 +68,7 @@ const FAQSection: React.FC = () => {
                   } rounded-full p-1`}
                 >
                   {activeIndex === index ? (
-                      <svg
+                    <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-6 h-6"
                       fill="none"
@@ -106,9 +101,15 @@ const FAQSection: React.FC = () => {
                 </span>
               </button>
 
-              {activeIndex === index && (
+              <div
+                style={{
+                  maxHeight: activeIndex === index ? "200px" : "0",
+                  overflow: "hidden",
+                  transition: "max-height 0.3s ease-in-out",
+                }}
+              >
                 <p className="mt-6 text-md text-gray-600">{faq.answer}</p>
-              )}
+              </div>
             </div>
           ))}
         </div>

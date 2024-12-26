@@ -1,56 +1,87 @@
-import { ArrowPathIcon, CloudArrowUpIcon, LockClosedIcon } from '@heroicons/react/24/outline'
+import { 
+  DocumentTextIcon, 
+  BellAlertIcon, 
+  BookOpenIcon, 
+  CalendarDaysIcon, 
+  UserGroupIcon, 
+  DocumentDuplicateIcon 
+} from "@heroicons/react/24/outline";
 
-const features = [
+interface FeatureProps {
+  name: string;
+  description: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
+const features: FeatureProps[] = [
   {
-    name: 'Push to deploy',
-    description:
-      'Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse semper morbi. Odio urna massa nunc massa.',
-    icon: CloudArrowUpIcon,
+    name: "Document Tracking",
+    description: "Track submissions and get instant confirmations for all departmental documents.",
+    icon: DocumentTextIcon,
   },
   {
-    name: 'SSL certificates',
-    description:
-      'Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget. Sem sodales gravida quam turpis enim lacus amet.',
-    icon: LockClosedIcon,
+    name: "Advisor Updates",
+    description: "Receive timely notifications and guidance from your course advisors.",
+    icon: BellAlertIcon,
   },
   {
-    name: 'Simple queues',
-    description:
-      'Quisque est vel vulputate cursus. Risus proin diam nunc commodo. Lobortis auctor congue commodo diam neque.',
-    icon: ArrowPathIcon,
+    name: "Research Resources",
+    description: "Access academic materials, research papers, and digital libraries.",
+    icon: BookOpenIcon,
   },
-]
+  {
+    name: "Event Calendar",
+    description: "Stay updated with examination schedules and departmental events.",
+    icon: CalendarDaysIcon,
+  },
+  {
+    name: "Direct Communication",
+    description: "Connect with staff and schedule academic consultations easily.",
+    icon: UserGroupIcon,
+  },
+  {
+    name: "Course Materials",
+    description: "Access lecture notes, past questions, and collaborative resources.",
+    icon: DocumentDuplicateIcon,
+  },
+];
 
 export default function Features() {
   return (
-    <div className="bg-white py-8 sm:py-10 md:mb-8">
+    <div className="bg-gray-50 py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base/7 font-semibold text-indigo-600">Deploy faster</h2>
-          <p className="mt-2 text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl lg:text-balance">
-            Everything you need to deploy your app
+          <h2 className="text-base font-semibold text-indigo-600">
+            Key Features
+          </h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Everything You Need
           </p>
-          <p className="mt-6 text-lg/8 text-gray-600">
-            Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum
-            pulvinar et feugiat blandit at. In mi viverra elit nunc.
+          <p className="mt-4 text-lg text-gray-600">
+            Simplifying academic processes and enhancing collaboration between students and staff.
           </p>
         </div>
-        <div className="mt-16 w-full sm:mt-20 lg:mt-24">
-          <dl className="grid w-full grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-3 lg:gap-y-16">
+        <div className="mx-auto mt-12 max-w-7xl">
+          <dl className="grid grid-cols-1 gap-6 lg:grid-cols-3">
             {features.map((feature) => (
-              <div key={feature.name} className="relative pl-16">
-                <dt className="text-base/7 font-semibold text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                    <feature.icon aria-hidden="true" className="h-6 w-6 text-white" />
+              <div 
+                key={feature.name} 
+                className="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200 hover:shadow-md transition-shadow duration-300"
+              >
+                <dt className="flex items-center gap-x-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                    <feature.icon className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
-                  {feature.name}
+                  <span className="text-lg font-semibold text-gray-900">{feature.name}</span>
                 </dt>
-                <dd className="mt-2 text-base/7 text-gray-600">{feature.description}</dd>
+                <dd className="mt-4 text-base text-gray-600 leading-relaxed">
+                  {feature.description}
+                </dd>
               </div>
             ))}
           </dl>
         </div>
       </div>
     </div>
-  )
+  );
 }
