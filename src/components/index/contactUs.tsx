@@ -1,20 +1,17 @@
-import React from "react";
-
 export default function ContactUs() {
   return (
     <div>
       <section className="bg-white">
         <div className="container px-6 py-12 mx-auto">
-          <div>
-            <p className="font-medium text-blue-500">Contact us</p>
-
-            <h1 className="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl">
-              Chat to our friendly team
+          <div className="max-w-2xl">
+            <p className="font-medium text-blue-500">Get in Touch</p>
+            <h1 className="mt-2 text-2xl font-semibold text-gray-800 md:text-4xl">
+              Contact the Department
             </h1>
-
             <p className="mt-3 text-gray-500">
-              We’d love to hear from you. Please fill out this form or shoot us
-              an email.
+              Have questions about our programs, admissions, or events? We’d
+              love to hear from you. Reach out using the form below or visit us
+              at our department office.
             </p>
           </div>
 
@@ -42,9 +39,9 @@ export default function ContactUs() {
                   Email
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Our friendly team is here to help.
+                  Send us an email for general inquiries or admissions support.
                 </p>
-                <p className="mt-2 text-sm text-blue-500">hello@merakiui.com</p>
+                <p className="mt-2 text-sm text-blue-500">dept@gmail.com</p>
               </div>
 
               <div>
@@ -60,56 +57,45 @@ export default function ContactUs() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
                       d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                     />
                   </svg>
                 </span>
 
                 <h2 className="mt-4 text-base font-medium text-gray-800">
-                  Live chat
+                  Visit Us
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Our friendly team is here to help.
-                </p>
-                <p className="mt-2 text-sm text-blue-500">Start new chat</p>
-              </div>
-
-              <div>
-                <span className="inline-block p-3 text-blue-500 rounded-full bg-blue-100/80">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                    />
-                  </svg>
-                </span>
-
-                <h2 className="mt-4 text-base font-medium text-gray-800">
-                  Office
-                </h2>
-                <p className="mt-2 text-sm text-gray-500">
-                  Come say hello at our office HQ.
+                  Find us on campus in the College of Enginering Building.
                 </p>
                 <p className="mt-2 text-sm text-blue-500">
-                  100 Smith Street Collingwood VIC 3066 AU
+                  Opposite COLENG Gazebo, Bells University, Ota
+                </p>
+              </div>
+
+              <div>
+                <span className="inline-block p-3 text-blue-500 rounded-full bg-blue-100/80">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                </span>
+
+                <h2 className="mt-4 text-base font-medium text-gray-800">
+                  Office Hours
+                </h2>
+                <p className="mt-2 text-sm text-gray-500">
+                  Monday - Friday: 9 AM - 5 PM Saturday: By Appointment Only
                 </p>
               </div>
 
@@ -132,50 +118,39 @@ export default function ContactUs() {
                 </span>
 
                 <h2 className="mt-4 text-base font-medium text-gray-800">
-                  Phone
+                  Call Us
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Mon-Fri from 8am to 5pm.
+                  Speak to a department representative.
                 </p>
-                <p className="mt-2 text-sm text-blue-500">+1 (555) 000-0000</p>
+                <p className="mt-2 text-sm text-blue-500">+224 907 654 3210</p>
               </div>
             </div>
 
-            <div className="p-4 py-6 rounded-lg bg-gray-50 md:p-8">
+            <div className="p-4 rounded-lg bg-gray-50 md:p-8">
               <form>
                 <div className="-mx-2 md:items-center md:flex">
                   <div className="flex-1 px-2">
                     <label className="block mb-2 text-sm text-gray-600">
-                      First Name
+                      Full Name
                     </label>
                     <input
                       type="text"
-                      placeholder="John"
+                      placeholder="John Doe"
                       className="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                   </div>
 
                   <div className="flex-1 px-2 mt-4 md:mt-0">
                     <label className="block mb-2 text-sm text-gray-600">
-                      Last Name
+                      Email Address
                     </label>
                     <input
-                      type="text"
-                      placeholder="Doe"
+                      type="email"
+                      placeholder="johndoe@example.com"
                       className="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                   </div>
-                </div>
-
-                <div className="mt-4">
-                  <label className="block mb-2 text-sm text-gray-600">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="johndoe@example.com"
-                    className="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                  />
                 </div>
 
                 <div className="w-full mt-4">
@@ -183,12 +158,15 @@ export default function ContactUs() {
                     Message
                   </label>
                   <textarea
-                    className="block w-full h-32 px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg md:h-56 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                    placeholder="Message"
+                    className="block w-full h-32 px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg md:h-48 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                    placeholder="Write your message here..."
                   ></textarea>
                 </div>
 
-                <button className="w-full px-6 py-2.5 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                <button
+                  type="submit"
+                  className="w-full px-6 py-2.5 mt-4 text-sm font-medium tracking-wide text-white capitalize bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                >
                   Send Message
                 </button>
               </form>
@@ -196,7 +174,6 @@ export default function ContactUs() {
           </div>
         </div>
       </section>
-      ;
     </div>
   );
 }

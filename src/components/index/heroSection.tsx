@@ -1,21 +1,24 @@
 "use client";
 
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
+import {
+  Bars3Icon,
+  XMarkIcon
+} from "@heroicons/react/24/outline";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const navigation = [
-  { name: "Product", href: "#" },
   { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
+  { name: "Gallery", href: "#" },
+  { name: "Contact", href: "#" },
+  { name: "Calendar", href: "#" },
 ];
 
 export default function HeroSection() {
-  const router = useRouter()
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -26,15 +29,9 @@ export default function HeroSection() {
           className="flex items-center justify-between p-6 lg:px-8"
         >
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <Image
-                alt=""
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
-                width={100}
-                height={100}
-              />
+            <a href="#">
+              <span className="sr-only">Departmental Website</span>
+              <HomeIcon className="size-10 text-indigo-600" />
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -76,14 +73,8 @@ export default function HeroSection() {
           <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <Image
-                  alt=""
-                  src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                  className="h-8 w-auto"
-                  width={100}
-                  height={100}
-                />
+                <span className="sr-only">Departmental Website</span>
+                <HomeIcon className="size-10 text-indigo-600" />
               </a>
               <button
                 type="button"
@@ -101,7 +92,7 @@ export default function HeroSection() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
                     >
                       {item.name}
                     </a>
@@ -110,7 +101,7 @@ export default function HeroSection() {
                 <div className="py-6">
                   <Link
                     href={"/login"}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50"
                   >
                     Log in
                   </Link>
@@ -134,34 +125,39 @@ export default function HeroSection() {
             className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
           />
         </div>
-        <div className="mx-auto max-w-2xl py-24 lg:py-32">
+        <div className="mx-auto max-w-4xl py-24 lg:py-32">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Announcing our next round of funding.{" "}
-              <a href="#" className="font-semibold text-indigo-600">
+              Latest Department News.{" "}
+              <Link href=".login" className="font-semibold text-indigo-600">
                 <span aria-hidden="true" className="absolute inset-0" />
                 Read more <span aria-hidden="true">&rarr;</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="text-center">
             <h1 className="text-balance text-4xl sm:text-5xl md:text-7xl font-semibold tracking-tight text-gray-900 ">
-              Data to enrich your online business
+              Manage Documents and Access Resources
             </h1>
             <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.
+              Connect, collaborate, and thrive in your academic journey. Access
+              course materials, track documents, receive important
+              notifications, and stay updated with departmental activities - all
+              in one seamless platform.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href="#"
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            <div className="mt-10 flex max-sm:flex-col items-center justify-center gap-x-6 max-sm:gap-y-6">
+              <Link
+                href="/login"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-sm:w-[250px]"
               >
-                Get started
-              </a>
-              <a href="#" className="text-sm/6 font-semibold text-gray-900">
-                Learn more <span aria-hidden="true">→</span>
-              </a>
+                Access Dashboard
+              </Link>
+              <Link
+                href="/login"
+                className="text-sm/6 font-semibold px-3 py-1 rounded-full text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/2"
+              >
+                View Resources <span aria-hidden="true">→</span>
+              </Link>
             </div>
           </div>
         </div>

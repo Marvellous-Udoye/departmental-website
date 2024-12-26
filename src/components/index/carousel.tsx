@@ -7,21 +7,25 @@ export default function Carousel() {
         }'
         className="relative"
       >
-        <div className="hs-carousel relative overflow-hidden w-full h-[30rem] md:h-[calc(100vh-106px)] bg-gray-100 rounded-2xl dark:bg-neutral-800">
-          <div className="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700">
+        <div className="hs-carousel relative overflow-hidden w-full h-[30rem] md:h-[calc(100vh-106px)] bg-gray-100 rounded-2xl">
+          <div className="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-col md:flex-row flex-nowrap transition-transform duration-700">
             <div className="hs-carousel-slide">
-              <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1615615228002-890bb61cac6e?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
-                <div className="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
-                  <span className="block text-white">Nike React</span>
-                  <span className="block text-white text-xl md:text-3xl">
-                    Rewriting sport&apos;s playbook for billions of athletes
+              <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat relative">
+                <div className="absolute inset-0 bg-black/50"></div>
+                <div className="relative mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
+                  <span className="block text-white text-lg font-semibold drop-shadow-lg">
+                    Student Resources
+                  </span>
+                  <span className="block text-white text-xl md:text-3xl drop-shadow-lg">
+                    Access course materials, submit documents, and track your
+                    academic progress
                   </span>
                   <div className="mt-5">
                     <a
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
                       href="#"
                     >
-                      Read Case Studies
+                      Access Portal
                     </a>
                   </div>
                 </div>
@@ -29,18 +33,22 @@ export default function Carousel() {
             </div>
 
             <div className="hs-carousel-slide">
-              <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
-                <div className="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
-                  <span className="block text-white">CoolApps</span>
-                  <span className="block text-white text-xl md:text-3xl">
-                    From mobile apps to gaming consoles
+              <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat relative">
+                <div className="absolute inset-0 bg-black/50"></div>
+                <div className="relative mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
+                  <span className="block text-white text-lg font-semibold drop-shadow-lg">
+                    Academic Calendar
+                  </span>
+                  <span className="block text-white text-xl md:text-3xl  drop-shadow-lg">
+                    Stay updated with important dates, events, and departmental
+                    activities
                   </span>
                   <div className="mt-5">
                     <a
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
                       href="#"
                     >
-                      Read Case Studies
+                      View Calendar
                     </a>
                   </div>
                 </div>
@@ -48,18 +56,22 @@ export default function Carousel() {
             </div>
 
             <div className="hs-carousel-slide">
-              <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1629666451094-8908989cae90?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
-                <div className="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
-                  <span className="block text-white">Grumpy</span>
-                  <span className="block text-white text-xl md:text-3xl">
-                    Bringing Art to everything
+              <div className="h-[30rem] md:h-[calc(100vh-106px)] flex flex-col bg-[url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat relative">
+                <div className="absolute inset-0 bg-black/50"></div>
+                <div className="relative mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
+                  <span className="block text-white text-lg font-semibold drop-shadow-lg">
+                    Research & Resources
+                  </span>
+                  <span className="block text-white text-xl md:text-3xl  drop-shadow-lg">
+                    Access digital libraries, research papers, and academic
+                    databases
                   </span>
                   <div className="mt-5">
                     <a
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
                       href="#"
                     >
-                      Read Case Studies
+                      Explore Resources
                     </a>
                   </div>
                 </div>
