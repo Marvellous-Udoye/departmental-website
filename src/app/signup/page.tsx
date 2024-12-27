@@ -1,8 +1,18 @@
-"use client"
-
+"use client";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
+import Select from "react-select";
+
+const departmentOptions = [
+  { value: "Biomedical Engineering", label: "Biomedical Engineering" },
+  { value: "Civil Engineering", label: "Civil Engineering" },
+  { value: "Computer Engineering", label: "Computer Engineering" },
+  { value: "Electrical Engineering", label: "Electrical Engineering" },
+  { value: "Mechanical Engineering", label: "Mechanical Engineering" },
+  { value: "Mechatronics Engineering", label: "Mechatronics Engineering" },
+];
 
 interface SignUpProps {
   fullName: string;
@@ -16,12 +26,12 @@ interface SignUpProps {
 export default function SignUp() {
   const router = useRouter();
   const [state, setState] = useState<SignUpProps>({
-    fullName: '',
-    email: '',
-    matricNo: '',
-    department: '',
-    phoneNumber: '',
-    password: '',
+    fullName: "",
+    email: "",
+    matricNo: "",
+    department: "",
+    phoneNumber: "",
+    password: "",
   });
 
   const [errors, setErrors] = useState<Partial<SignUpProps>>({});
@@ -29,12 +39,16 @@ export default function SignUp() {
   const validate = () => {
     const newErrors: Partial<SignUpProps> = {};
 
-    if (!state.fullName) newErrors.fullName = "First name is required";
-    if (!state.matricNo) newErrors.matricNo = "Matriculation number is required";
+    if (!state.fullName) newErrors.fullName = "Full name is required";
+    if (!state.matricNo)
+      newErrors.matricNo = "Matriculation number is required";
     if (!state.department) newErrors.department = "Department is required";
-    if (!state.email || !/\S+@\S+\.\S+/.test(state.email)) newErrors.email = "Valid email is required";
-    if (!state.password || state.password.length < 8) newErrors.password = "Password must be at least 6 characters";
-    if (!state.phoneNumber || !/^\d+$/.test(state.phoneNumber)) newErrors.phoneNumber = "Valid phone number is required";
+    if (!state.email || !/\S+@\S+\.\S+/.test(state.email))
+      newErrors.email = "Valid email is required";
+    if (!state.password || state.password.length < 8)
+      newErrors.password = "Password must be at least 8 characters";
+    if (!state.phoneNumber || !/^\d+$/.test(state.phoneNumber))
+      newErrors.phoneNumber = "Valid phone number is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -48,8 +62,17 @@ export default function SignUp() {
     }));
   };
 
+  const handleSelectChange = (
+    selectedOption: { value: string; label: string } | null
+  ) => {
+    setState((prevState) => ({
+      ...prevState,
+      department: selectedOption ? selectedOption.value : "",
+    }));
+  };
+
   const handleSignUp = () => {
-    router.push('/dashboard');
+    router.push("/dashboard");
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -61,165 +84,150 @@ export default function SignUp() {
   };
 
   return (
-    <div className="bg-gray-50 px-4 py-6 md:py-10">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-xl mx-auto">
-        <div className="p-4 sm:p-7">
-          <div className="text-center">
-            <h1 className="block text-2xl font-bold text-gray-800">Sign up</h1>
-            <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-              Already have an account?{" "}
-              <Link
-                className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
-                href="/signin"
-              >
-                Sign in here
-              </Link>
-            </p>
+    <section className="bg-white">
+      <div className="flex flex-col-reverse lg:flex-row justify-center min-h-screen">
+        <div
+          className="hidden lg:flex lg:w-1/2 bg-cover"
+          style={{
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)",
+          }}
+        >
+          <div className="flex items-center h-full px-8 md:px-20 bg-gray-900 bg-opacity-40">
+            <div>
+              <h2 className="text-xl md:text-3xl font-bold text-white">
+                Sign Up
+              </h2>
+              <p className="max-w-xl mt-3 text-gray-300 text-sm md:text-base">
+                Join our departmental website today! Sign up to manage your
+                personal profile, access exclusive resources, and stay updated
+                with all departmental activities.
+              </p>
+            </div>
           </div>
+        </div>
 
-          <div className="mt-5">
-            {/* Form */}
-            <form onSubmit={handleSubmit}>
-              <div className="grid gap-y-4">
-                {/* First Name */}
-                <div className="relative mb-6 w-full">
-                  <label htmlFor="fullname" className="block text-sm mb-2">
-                    Full Name <span className="text-[#F24822]">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="fullname"
-                    name="fullname"
-                    value={state.fullName}
-                    onChange={handleChange}
-                    placeholder="Enter full name"
-                    className="py-2 md:py-3 px-2 md:px-4 block w-full border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
-                  />
-                  {errors.fullName && <p className="absolute text-xs text-red-600 mt-1">{errors.fullName}</p>}
-                </div>
-
-
-                <div className="flex flex-col md:flex-row sm:gap-4">
-                  {/* Matriculation Number */}
-                  <div className="relative mb-6 w-full">
-                    <label htmlFor="matricNo" className="block text-sm mb-2">
-                      Matriculation Number <span className="text-[#F24822]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="matricNo"
-                      name="matricNo"
-                      value={state.matricNo}
-                      onChange={handleChange}
-                      placeholder="Enter matric. no."
-                      className="py-2 md:py-3 px-2 md:px-4 block w-full border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                    {errors.matricNo && <p className="absolute text-xs text-red-600 mt-1">{errors.matricNo}</p>}
-                  </div>
-
-                  {/* Email */}
-                  <div className="relative mb-6 w-full">
-                    <label htmlFor="email" className="block text-sm mb-2">
-                      Email Address <span className="text-[#F24822]">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={state.email}
-                      onChange={handleChange}
-                      placeholder="Enter email address"
-                      className="py-2 md:py-3 px-2 md:px-4 block w-full border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                    {errors.email && <p className="absolute text-xs text-red-600 mt-1">{errors.email}</p>}
-                  </div>
-                </div>
-
-                {/* Phone Number */}
-                <div className="relative mb-6 w-full">
-                  <label htmlFor="phoneNumber" className="block text-sm mb-2">
-                    Phone Number <span className="text-[#F24822]">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-3 my-auto h-6 flex items-center border-r pr-2">
-                      <p className="text-sm">+234 </p>
-                    </div>
-                    <input
-                      id="phoneNumber"
-                      name="phoneNumber"
-                      type="tel"
-                      pattern="[0-9]{10}"
-                      maxLength={10}
-                      value={state.phoneNumber}
-                      onChange={handleChange}
-                      placeholder="Enter 10-digit phone number"
-                      className="w-full pl-[4rem] pr-2 md:pr-3 py-2 md:py-3 border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
-                  {errors.phoneNumber && <span className="absolute text-xs text-red-600 mt-1">{errors.phoneNumber}</span>}
-                </div>
-
-                {/* Department */}
-                <div className="relative mb-6 w-full">
-                  <label htmlFor="department" className="block text-sm mb-2">
-                    Department <span className="text-[#F24822]">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="department"
-                    name="department"
-                    value={state.department}
-                    onChange={handleChange}
-                    placeholder="Select Department"
-                    className="py-2 md:py-3 px-2 md:px-4 block w-full border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
-                  />
-                  {errors.department && <p className="absolute text-xs text-red-600 mt-1">{errors.department}</p>}
-                </div>
-
-                {/* Password */}
-                <div className="relative mb-6">
-                  <label htmlFor="password" className="block text-sm mb-2">
-                    Password <span className="text-[#F24822]">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={state.password}
-                    onChange={handleChange}
-                    placeholder="Enter at least 6 characters"
-                    className="py-2 md:py-3 px-2 md:px-4 block w-full border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
-                  />
-                  {errors.password && <p className="absolute text-xs text-red-600 mt-1">{errors.password}</p>}
-                </div>
-
-                <div className="flex items-center">
-                  <div className="flex">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="shrink-0 border-gray-400 rounded text-blue-600 focus:ring-blue-500 "
-                    />
-                  </div>
-                  <div className="ml-2">
-                    <label htmlFor="remember-me" className="text-sm">
-                      I accept the <Link className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium" href="#">Terms and Conditions</Link>
-                    </label>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3 px-4 text-sm font-medium rounded-lg border border-gray-200 bg-blue-500 text-white"
-                >
-                  Sign up
-                </button>
+        <div className="flex items-center w-full max-w-full lg:w-3/5 p-6 lg:px-12">
+          <div className="w-full">
+            <div className="text-center">
+              <div className="flex justify-center mx-auto">
+                <HomeIcon className="w-8 h-8 md:w-10 md:h-10 text-indigo-600" />
               </div>
+              <p className="mt-3 text-sm md:text-lg font-medium text-gray-500">
+                Sign up to create your account
+              </p>
+            </div>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"
+            >
+              <div>
+                <label className="block mb-1 text-sm text-gray-600">
+                  Full Name <span className="text-[#F24822]">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="John Doe"
+                  value={state.fullName}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
+                />
+                {errors.fullName && (
+                  <p className="text-red-500 text-xs">{errors.fullName}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm text-gray-600">
+                  Matriculation Number <span className="text-[#F24822]">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="matricNo"
+                  placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
+                  value={state.matricNo}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                />
+                {errors.matricNo && (
+                  <p className="text-red-500 text-sm">{errors.matricNo}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm text-gray-600">
+                  Department <span className="text-[#F24822]">*</span>
+                </label>
+                <Select
+                  name="department"
+                  options={departmentOptions}
+                  value={departmentOptions.find(
+                    (option) => option.value === state.department
+                  )}
+                  onChange={handleSelectChange}
+                  className="block w-full text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                />
+                {errors.department && (
+                  <p className="text-red-500 text-sm">{errors.department}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm text-gray-600">
+                  Email Address <span className="text-[#F24822]">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="johndoe@gmail.com"
+                  value={state.email}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm text-gray-600">
+                  Password <span className="text-[#F24822]">*</span>
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  value={state.password}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password}</p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="w-full md:col-span-2 px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+              >
+                Sign Up
+              </button>
             </form>
+            <div className="mt-4 text-center">
+              <span className="text-sm text-gray-600">
+                Already have an account?{" "}
+                <Link
+                  href="/login"
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  Login
+                </Link>
+              </span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
