@@ -62,7 +62,7 @@ export default function Resources() {
   return (
     <section className="bg-white">
       <div className="container px-6 py-10 mx-auto">
-        <h1 className="text-2xl font-semibold text-gray-800 capitalize lg:text-xl">
+        <h1 className="text-xl font-semibold text-gray-800 capitalize lg:text-2xl">
           Find useful resources
         </h1>
         <p className="mt-1 text-gray-600">

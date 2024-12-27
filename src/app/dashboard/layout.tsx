@@ -2,11 +2,12 @@
 
 import Banner from "@/components/dashboard/common/banner";
 import {
+  ArrowRightEndOnRectangleIcon,
   Bars3Icon,
   BellAlertIcon,
   BellIcon,
+  BookOpenIcon,
   BriefcaseIcon,
-  CalendarDateRangeIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   HomeIcon,
@@ -15,7 +16,6 @@ import {
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -45,7 +45,7 @@ export default function DashboardLayout({
     },
     {
       id: "courses",
-      icon: <UserCircleIcon className="size-4" />,
+      icon: <BookOpenIcon className="size-4" />,
       label: "Courses",
       href: "/dashboard/courses",
     },
@@ -56,12 +56,6 @@ export default function DashboardLayout({
       href: "/dashboard/resources",
     },
     {
-      id: "calendar",
-      icon: <CalendarDateRangeIcon className="size-4" />,
-      label: "Calendar",
-      href: "/dashboard/calendar",
-    },
-    {
       id: "notifications",
       icon: <BellAlertIcon className="size-4" />,
       label: "Notifications",
@@ -69,9 +63,15 @@ export default function DashboardLayout({
     },
     {
       id: "profile",
-      icon: <BellAlertIcon className="size-4" />,
+      icon: <UserCircleIcon className="size-4" />,
       label: "Profile",
       href: "/dashboard/profile",
+    },
+    {
+      id: "logout",
+      icon: <ArrowRightEndOnRectangleIcon className="size-4" />,
+      label: "Logout",
+      href: "/",
     },
   ];
 
@@ -83,24 +83,17 @@ export default function DashboardLayout({
 
   const Logo = () => (
     <div className="px-6 pt-4">
-      <Link
-        href="/dashboard"
-        className="flex justify-between items-center rounded-xl text-xl font-semibold"
-      >
-        <div className="hidden sm:flex flex-shrink-0 items-center animate-pulse">
-          <Image
-            alt=""
-            src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-            className="h-8 w-auto"
-            width={100}
-            height={100}
-          />
+      <div className="flex justify-between items-center rounded-xl text-xl font-semibold">
+        <div className="hidden lg:flex flex-shrink-0 items-center">
+          <Link href="/dashboard">
+            <HomeIcon className="size-10 text-indigo-600" />
+          </Link>
         </div>
         <XMarkIcon
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="block sm:hidden size-5 text-white cursor-pointer"
+          className="block lg:hidden size-5 text-white cursor-pointer"
         />
-      </Link>
+      </div>
     </div>
   );
 
