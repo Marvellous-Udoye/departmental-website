@@ -1,4 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/dashboard/common/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/dashboard/common/card";
 import QuickAccessCard from "@/components/dashboard/home/quickAccessCard";
 
 import {
@@ -189,7 +194,7 @@ const ResourceCard = ({ title, description, icon }: ResourceProps) => (
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen rounded-xl p-2 md:p-6 bg-white">
+    <div className="min-h-screen p-6 rounded-xl bg-white">
       <div className="space-y-12">
         {/* Statistics Section */}
         <section>
