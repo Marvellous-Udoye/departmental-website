@@ -15,7 +15,7 @@ interface DocumentItem {
   status: "approved" | "pending" | "complete" | "incomplete";
 }
 
-const documents: DocumentItem[] = [
+export const documents: DocumentItem[] = [
   {
     id: 1,
     name: "Course Registration Form",

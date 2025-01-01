@@ -1,6 +1,8 @@
 "use client";
 
-import DocumentList from "@/components/dashboard/document/documentList";
+import DocumentList, {
+  documents,
+} from "@/components/dashboard/document/documentList";
 import {
   ArrowDownTrayIcon,
   ChartBarIcon,
@@ -11,6 +13,14 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import Select from "react-select";
+
+const pendingCount = documents.filter((doc) => doc.status === "pending").length;
+const approvedCount = documents.filter(
+  (doc) => doc.status === "approved"
+).length;
+const incompleteCount = documents.filter(
+  (doc) => doc.status === "incomplete"
+).length;
 
 export default function Documents() {
   const categoryOptions = [
@@ -52,28 +62,28 @@ export default function Documents() {
             <ChartBarIcon className="w-5 h-5" />
             <span className="font-medium">Total Documents</span>
           </div>
-          <p className="text-2xl font-bold">24</p>
+          <p className="text-2xl font-bold">{documents.length}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
           <div className="flex items-center gap-2 text-yellow-600 mb-2">
             <ClockIcon className="w-5 h-5" />
             <span className="font-medium">Pending Review</span>
           </div>
-          <p className="text-2xl font-bold">8</p>
+          <p className="text-2xl font-bold">{pendingCount}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
           <div className="flex items-center gap-2 text-green-600 mb-2">
             <CheckCircleIcon className="w-5 h-5" />
             <span className="font-medium">Approved</span>
           </div>
-          <p className="text-2xl font-bold">12</p>
+          <p className="text-2xl font-bold">{approvedCount}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
           <div className="flex items-center gap-2 text-red-600 mb-2">
             <XCircleIcon className="w-5 h-5" />
             <span className="font-medium">Incomplete</span>
           </div>
-          <p className="text-2xl font-bold">4</p>
+          <p className="text-2xl font-bold">{incompleteCount}</p>
         </div>
       </div>
 
