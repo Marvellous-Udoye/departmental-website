@@ -60,8 +60,8 @@ const resources: ResourceProps[] = [
 
 export default function Resources() {
   return (
-    <section className="bg-white">
-      <div className="container px-6 py-10 mx-auto">
+    <section>
+      <div className="py-10">
         <h1 className="text-xl font-semibold text-gray-800 capitalize lg:text-2xl">
           Find useful resources
         </h1>

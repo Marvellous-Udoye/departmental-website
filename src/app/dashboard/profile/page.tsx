@@ -52,7 +52,7 @@ export function ProfileDetails({
   onEdit: () => void;
 }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm">
+    <div>
       <div className="flex justify-between items-center md:items-start mb-6">
         <div className="flex items-center gap-x-4">
           <Image

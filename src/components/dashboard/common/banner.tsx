@@ -11,7 +11,7 @@ export default function Banner() {
   const [department] = useState("Electrical and Electronics Engineering");
 
   return (
-    <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white rounded-lg shadow-xl overflow-hidden">
+    <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white rounded-lg shadow-lg overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 gap-6">
           <div className="flex items-center space-x-4 w-full sm:w-auto">

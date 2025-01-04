@@ -194,7 +194,7 @@ const ResourceCard = ({ title, description, icon }: ResourceProps) => (
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen p-6 rounded-xl bg-white">
+    <div className="py-10">
       <div className="space-y-12">
         {/* Statistics Section */}
         <section>
