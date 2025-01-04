@@ -132,7 +132,10 @@ export default function DashboardLayout({
         <nav className="p-3 overflow-y-auto flex-1">
           <ul className="space-y-1">
             {navItems.map((item, index) => {
-              const isActive = pathName === item.href;
+              const isActive =
+                pathName === item.href ||
+                (item.href === "/dashboard/courses" &&
+                  pathName.startsWith("/dashboard/courses"));
               return (
                 <li key={item.id}>
                   <Link

@@ -163,7 +163,7 @@ export default function NotificationsAndDrawer() {
       <div className="h-[250px] sm:h-[500px] p-4 bg-white rounded-lg shadow-sm">
         <div className="flex flex-col items-center justify-center h-full space-y-4">
           <BellIcon className="w-12 h-12 text-gray-400" />
-          <p className="text-lg font-medium text-gray-900">No notifications</p>
+          <p className="text-lg font-medium text-gray-900">You have no notifications</p>
           <Link
             href="/dashboard"
             className="text-indigo-600 hover:text-indigo-800"
@@ -176,7 +176,7 @@ export default function NotificationsAndDrawer() {
   }
 
   return (
-    <div className="p-6">
+    <div className="py-10">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
           <h2 className="text-lg font-semibold text-gray-900">Notifications</h2>
