@@ -1,10 +1,15 @@
+"use client";
+
+import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import { useState } from "react";
 
 interface ResourceProps {
   image: string;
   title: string;
   description: string;
   date: string;
+  category: string;
 }
 
 const resources: ResourceProps[] = [
@@ -15,6 +20,7 @@ const resources: ResourceProps[] = [
     description:
       "Learn how to organize your schedule, prioritize tasks, and boost productivity with these proven time management techniques.",
     date: "On: 15 September 2023",
+    category: "General",
   },
   {
     image:
@@ -23,6 +29,7 @@ const resources: ResourceProps[] = [
     description:
       "Explore how AI is transforming learning experiences, from personalized tutoring to automating administrative tasks.",
     date: "On: 20 October 2023",
+    category: "Technology",
   },
   {
     image:
@@ -31,6 +38,7 @@ const resources: ResourceProps[] = [
     description:
       "Step-by-step guidance on starting and advancing your journey in the ever-evolving software development industry.",
     date: "On: 10 November 2023",
+    category: "Engineering",
   },
   {
     image:
@@ -39,6 +47,7 @@ const resources: ResourceProps[] = [
     description:
       "Delve into the basics of blockchain technology and its applications beyond cryptocurrency.",
     date: "On: 30 August 2023",
+    category: "Technology",
   },
   {
     image:
@@ -47,6 +56,7 @@ const resources: ResourceProps[] = [
     description:
       "Discover how creating a clean, functional workspace can enhance focus, creativity, and efficiency.",
     date: "On: 10 October 2023",
+    category: "General",
   },
   {
     image:
@@ -55,46 +65,154 @@ const resources: ResourceProps[] = [
     description:
       "Stay ahead by learning about the latest technological advancements shaping the industry.",
     date: "On: 20 November 2023",
+    category: "Technology",
   },
 ];
 
+const ITEMS_PER_PAGE = 4;
+const categories = [
+  "All",
+  "Engineering",
+  "Science",
+  "Technology",
+  "Mathematics",
+  "General",
+];
+
 export default function Resources() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredResources = resources.filter((resource) => {
+    const matchesSearch =
+      resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      resource.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All" || resource.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const totalPages = Math.ceil(filteredResources.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedResources = filteredResources.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
   return (
     <section>
-      <div className="py-10">
+      <div className="py-6 sm:py-10">
         <h1 className="text-xl font-semibold text-gray-800 capitalize lg:text-2xl">
           Find useful resources
         </h1>
-        <p className="mt-1 text-gray-600">
+        <p className="mt-1 text-sm text-gray-600">
           Stay updated with the latest trends, strategies, and insights tailored
           to help you excel academically and professionally.
         </p>
 
-        <div className="grid grid-cols-1 gap-8 mt-6 md:mt-8 md:grid-cols-2">
-          {resources.map((item, index) => (
-            <div key={index} className="lg:flex">
-              <Image
-                className="object-cover w-full h-56 rounded-lg lg:w-64"
-                src={item.image}
-                alt={item.title}
-                width={256}
-                height={224}
-              />
-              <div className="flex flex-col justify-between py-6 lg:mx-4">
-                <a
-                  href="#"
-                  className="text-lg font-semibold text-gray-800 hover:underline transition linear duration-300"
-                >
-                  {item.title}
-                </a>
-                <p className="text-gray-600 text-base line-clamp-2">
-                  {item.description}
-                </p>
-                <span className="text-sm text-gray-500">{item.date}</span>
-              </div>
-            </div>
-          ))}
+        {/* Search and Filter Section */}
+        <div className="mt-6 space-y-0 flex items-center space-x-4 max-w-3xl">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Search resources..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="max-md:w-20 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
+
+        {/* Resources Grid */}
+        {filteredResources.length > 0 ? (
+          <div className="grid grid-cols-1 gap-8 mt-6 md:mt-8 md:grid-cols-2">
+            {paginatedResources.map((item, index) => (
+              <div key={index} className="lg:flex">
+                <Image
+                  className="object-cover w-full h-56 rounded-lg lg:w-64"
+                  src={item.image}
+                  alt={item.title}
+                  width={256}
+                  height={224}
+                />
+                <div className="flex flex-col justify-between py-6 lg:mx-4">
+                  <a
+                    href="#"
+                    className="text-lg font-semibold text-gray-800 hover:underline transition linear duration-300"
+                  >
+                    {item.title}
+                  </a>
+                  <p className="text-gray-600 text-base line-clamp-2">
+                    {item.description}
+                  </p>
+                  <div className="flex items-center justify-between py-2">
+                    <span className="text-sm text-gray-500">{item.date}</span>
+                    <span className="text-sm px-3 py-1 bg-gray-100 rounded-full">
+                      {item.category}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center py-10">
+            <ExclamationCircleIcon className="w-8 h-8 text-gray-400 mb-4" />
+            <h3 className="text-lg font-medium text-gray-900">
+              No Resources Found
+            </h3>
+            <p className="mt-2 text-sm text-gray-500">
+              No resources found matching your criteria.
+            </p>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center space-x-2 mt-8 md:mt-16">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-4 py-2 border rounded-lg ${
+                  currentPage === page
+                    ? "bg-blue-500 text-white"
+                    : "hover:bg-gray-50"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

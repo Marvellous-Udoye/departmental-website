@@ -43,7 +43,6 @@ const initialProfileData: ProfileData = {
   attachments: [],
 };
 
-// Profile Details Component
 export function ProfileDetails({
   data,
   onEdit,
@@ -80,31 +79,31 @@ export function ProfileDetails({
 
       <div className="border-t-2 border-gray-200">
         <dl className="divide-y-2 divide-gray-200">
-          <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
             <dt className="text-sm font-medium text-gray-900">Department</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               {data.department}
             </dd>
           </div>
-          <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
             <dt className="text-sm font-medium text-gray-900">Level</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               {data.level}
             </dd>
           </div>
-          <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
             <dt className="text-sm font-medium text-gray-900">Matric Number</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               {data.matricNumber}
             </dd>
           </div>
-          <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
             <dt className="text-sm font-medium text-gray-900">Phone Number</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               {data.phone}
             </dd>
           </div>
-          <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
             <dt className="text-sm font-medium text-gray-900">About</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               {data.about}
@@ -116,7 +115,6 @@ export function ProfileDetails({
   );
 }
 
-// EditProfile Component
 export function EditProfile({
   onSave,
   onCancel,
@@ -129,8 +127,6 @@ export function EditProfile({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // We would handle file upload first
-    // Then update the profile data
     onSave(formData);
   };
 
@@ -320,7 +316,6 @@ export function EditProfile({
   );
 }
 
-// Additional Academic Information Section
 function AcademicInfo() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
@@ -357,7 +352,7 @@ function AcademicInfo() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <dl className="space-y-2">
+          <dl className="space-y-2 pb-2">
             <div>
               <dt className="text-sm text-gray-500">Registered Courses</dt>
               <dd className="font-semibold">11</dd>
@@ -404,7 +399,6 @@ function AcademicInfo() {
   );
 }
 
-// Main Profile Page Component
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] =
@@ -413,11 +407,10 @@ export default function Profile() {
   const handleSave = (newData: ProfileData) => {
     setProfileData(newData);
     setIsEditing(false);
-    // Here you would typically make an API call to save the data
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="py-6 sm:py-10">
       {isEditing ? (
         <EditProfile onSave={handleSave} onCancel={() => setIsEditing(false)} />
       ) : (

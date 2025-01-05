@@ -8,7 +8,7 @@ export default function Team() {
         <h2 className="text-3xl font-semibold md:text-5xl md:leading-tight">
           Our team
         </h2>
-        <p className="mt-1 text-gray-600">Creative people</p>
+        <p className="mt-1 text-gray-600">Meet the creators</p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-12">

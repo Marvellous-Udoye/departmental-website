@@ -76,9 +76,9 @@ export default function DashboardLayout({
   ];
 
   const dropdownItems = [
-    { id: "first", label: "First", href: "/dashboard/first" },
-    { id: "second", label: "Second", href: "/dashboard/second" },
-    { id: "third", label: "Third", href: "/dashboard/third" },
+    { id: "about", label: "About", href: "/dashboard/about" },
+    { id: "contact", label: "Contact", href: "/dashboard/contact" },
+    { id: "settings", label: "Settings", href: "/dashboard/settings" },
   ];
 
   const Logo = () => (
@@ -105,12 +105,12 @@ export default function DashboardLayout({
           className="size-8 flex justify-center items-center gap-x-2 border border-gray-200 text-gray-800 hover:text-gray-500 rounded-lg focus:outline-none focus:text-gray-500 dark:border-neutral-700 dark:text-neutral-200"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
-          <Bars3Icon className="size-4" />
+          <Bars3Icon className="size-5" />
         </button>
         <Link href={"/dashboard/notifications"}>
           <button
             type="button"
-            className="relative rounded-full p-1 text-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
+            className="relative rounded-full p-1 text-gray-400 focus:outline-none"
           >
             <span className="absolute -inset-1.5" />
             <span className="sr-only">View notifications</span>
@@ -146,7 +146,10 @@ export default function DashboardLayout({
                           ? "border-l-4 border-solid border-l-blue-600 text-blue-600 bg-blue-50 dark:bg-neutral-700 dark:text-blue-400"
                           : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
                       }`}
-                    onClick={() => setSelectedMenu(index)}
+                    onClick={() => {
+                      setSelectedMenu(index);
+                      setIsSidebarOpen(false);
+                    }}
                   >
                     {item.icon}
                     {item.label}
@@ -160,7 +163,7 @@ export default function DashboardLayout({
                 className="w-full p-2 flex items-center gap-x-3.5 text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
               >
                 <LinkSlashIcon className="size-4" />
-                Dropdown
+                Others
                 {isDropdownOpen ? (
                   <ChevronUpIcon className="ms-auto size-4" />
                 ) : (
@@ -181,9 +184,10 @@ export default function DashboardLayout({
                                 ? "border-l-4 border-solid border-l-blue-600 text-blue-600 bg-blue-50 dark:bg-neutral-700 dark:text-blue-400"
                                 : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
                             }`}
-                          onClick={() =>
-                            setSelectedMenu(navItems.length + index)
-                          }
+                          onClick={() => {
+                            setSelectedMenu(navItems.length + index);
+                            setIsSidebarOpen(false);
+                          }}
                         >
                           {item.label}
                         </Link>

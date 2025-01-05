@@ -24,7 +24,7 @@ export default function Gallery() {
   };
 
   return (
-    <div className="px-4 sm:px-6 md:px-20 py-10">
+    <div id="gallery" className="px-4 sm:px-6 md:px-20 py-16 sm:py-20">
       <div className="max-w-2xl mx-auto text-left sm:text-center mb-4 lg:mb-10">
         <h2 className="text-3xl font-semibold md:text-5xl md:leading-tight">
           View Gallery

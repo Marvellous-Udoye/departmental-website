@@ -1,8 +1,10 @@
+import Link from "next/link";
+
 interface QuickAccessCardProps {
   title: string;
   description: string;
   actionLabel: string;
-  color: string;
+  href: string;
   icon?: React.ReactNode;
 }
 
@@ -10,14 +12,11 @@ export default function QuickAccessCard({
   title,
   description,
   actionLabel,
-  color,
+  href,
   icon,
 }: QuickAccessCardProps) {
   return (
-    <a
-      className={`group flex flex-col items-start w-full border hover:shadow-lg transition-shadow duration-300 focus:outline-none rounded-lg p-6 ${color}`}
-      href="#"
-    >
+    <div className="group flex flex-col items-start w-full border hover:shadow-lg transition-shadow duration-300 focus:outline-none rounded-lg p-4 sm:p-6">
       <div className="w-full">
         {icon && (
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/80">
@@ -30,7 +29,10 @@ export default function QuickAccessCard({
         </h3>
         <p className="mt-2 text-gray-600">{description}</p>
       </div>
-      <p className="mt-4 inline-flex items-center gap-x-2 text-sm font-medium text-blue-600 group-hover:text-blue-700">
+      <Link
+        href={href}
+        className="mt-4 inline-flex items-center gap-x-2 text-sm font-medium text-blue-600 group-hover:text-blue-700"
+      >
         {actionLabel}
         <svg
           className="w-4 h-4 transition-transform duration-300 transform group-hover:translate-x-1"
@@ -46,7 +48,7 @@ export default function QuickAccessCard({
         >
           <path d="m9 18 6-6-6-6" />
         </svg>
-      </p>
-    </a>
+      </Link>
+    </div>
   );
 }

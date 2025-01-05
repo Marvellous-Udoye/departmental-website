@@ -16,7 +16,7 @@ export default function Carousel() {
                   <span className="block text-white text-lg font-semibold drop-shadow-lg">
                     Student Resources
                   </span>
-                  <span className="block text-white text-xl md:text-3xl drop-shadow-lg">
+                  <span className="block text-white text-xl drop-shadow-lg text-balance">
                     Access course materials, submit documents, and track your
                     academic progress
                   </span>
@@ -39,7 +39,7 @@ export default function Carousel() {
                   <span className="block text-white text-lg font-semibold drop-shadow-lg">
                     Academic Calendar
                   </span>
-                  <span className="block text-white text-xl md:text-3xl  drop-shadow-lg">
+                  <span className="block text-white text-xl  drop-shadow-lg text-balance">
                     Stay updated with important dates, events, and departmental
                     activities
                   </span>
@@ -62,7 +62,7 @@ export default function Carousel() {
                   <span className="block text-white text-lg font-semibold drop-shadow-lg">
                     Research & Resources
                   </span>
-                  <span className="block text-white text-xl md:text-3xl  drop-shadow-lg">
+                  <span className="block text-white text-xl  drop-shadow-lg text-balance">
                     Access digital libraries, research papers, and academic
                     databases
                   </span>

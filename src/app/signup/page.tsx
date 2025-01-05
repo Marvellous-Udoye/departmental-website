@@ -1,9 +1,28 @@
 "use client";
-import { HomeIcon } from "@heroicons/react/24/solid";
+
+import { EyeIcon, EyeSlashIcon, HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Select from "react-select";
+
+interface SignUpProps {
+  fullName: string;
+  email: string;
+  matricNo: string;
+  department: string;
+  phoneNumber: string;
+  password: string;
+  level: string;
+}
+
+const levelOptions = [
+  { value: "100", label: "100 Level" },
+  { value: "200", label: "200 Level" },
+  { value: "300", label: "300 Level" },
+  { value: "400", label: "400 Level" },
+  { value: "500", label: "500 Level" },
+];
 
 const departmentOptions = [
   { value: "Biomedical Engineering", label: "Biomedical Engineering" },
@@ -14,17 +33,7 @@ const departmentOptions = [
   { value: "Mechatronics Engineering", label: "Mechatronics Engineering" },
 ];
 
-interface SignUpProps {
-  fullName: string;
-  matricNo: string;
-  email: string;
-  password: string;
-  department: string;
-  phoneNumber: string;
-}
-
 export default function SignUp() {
-  const router = useRouter();
   const [state, setState] = useState<SignUpProps>({
     fullName: "",
     email: "",
@@ -32,9 +41,11 @@ export default function SignUp() {
     department: "",
     phoneNumber: "",
     password: "",
+    level: "",
   });
-
   const [errors, setErrors] = useState<Partial<SignUpProps>>({});
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const router = useRouter();
 
   const validate = () => {
     const newErrors: Partial<SignUpProps> = {};
@@ -43,6 +54,7 @@ export default function SignUp() {
     if (!state.matricNo)
       newErrors.matricNo = "Matriculation number is required";
     if (!state.department) newErrors.department = "Department is required";
+    if (!state.level) newErrors.level = "Level is required";
     if (!state.email || !/\S+@\S+\.\S+/.test(state.email))
       newErrors.email = "Valid email is required";
     if (!state.password || state.password.length < 8)
@@ -67,6 +79,7 @@ export default function SignUp() {
   ) => {
     setState((prevState) => ({
       ...prevState,
+      level: selectedOption ? selectedOption.value : "",
       department: selectedOption ? selectedOption.value : "",
     }));
   };
@@ -77,17 +90,20 @@ export default function SignUp() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (validate()) {
       handleSignUp();
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
     <section className="bg-white">
-      <div className="flex flex-col-reverse lg:flex-row justify-center min-h-screen">
+      <div className="flex flex-col-reverse lg:flex-row justify-center max-lg:py-16 min-h-screen">
         <div
-          className="hidden lg:flex lg:w-1/2 bg-cover"
+          className="hidden lg:block lg:w-1/2 bg-cover"
           style={{
             backgroundImage:
               "url(https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)",
@@ -107,22 +123,22 @@ export default function SignUp() {
           </div>
         </div>
 
-        <div className="flex items-center w-full max-w-full lg:w-3/5 p-6 lg:px-12">
+        <div className="flex items-center max-w-xl w-full px-4 mx-auto">
           <div className="w-full">
             <div className="text-center">
               <div className="flex justify-center mx-auto">
                 <HomeIcon className="w-8 h-8 md:w-10 md:h-10 text-indigo-600" />
               </div>
-              <p className="mt-3 text-sm md:text-lg font-medium text-gray-500">
+              <p className="mt-3 text-lg font-medium text-gray-500">
                 Sign up to create your account
               </p>
             </div>
             <form
               onSubmit={handleSubmit}
-              className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"
+              className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4 mt-6"
             >
               <div>
-                <label className="block mb-1 text-sm text-gray-600">
+                <label className="block mb-2 text-sm text-gray-600">
                   Full Name <span className="text-[#F24822]">*</span>
                 </label>
                 <input
@@ -134,7 +150,7 @@ export default function SignUp() {
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
                 {errors.fullName && (
-                  <p className="text-red-500 text-xs">{errors.fullName}</p>
+                  <p className="text-red-500 text-sm">{errors.fullName}</p>
                 )}
               </div>
 
@@ -148,7 +164,7 @@ export default function SignUp() {
                   placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
                   value={state.matricNo}
                   onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
                 {errors.matricNo && (
                   <p className="text-red-500 text-sm">{errors.matricNo}</p>
@@ -166,10 +182,28 @@ export default function SignUp() {
                     (option) => option.value === state.department
                   )}
                   onChange={handleSelectChange}
-                  className="block w-full text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
                 {errors.department && (
                   <p className="text-red-500 text-sm">{errors.department}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm text-gray-600">
+                  Level <span className="text-[#F24822]">*</span>
+                </label>
+                <Select
+                  name="level"
+                  options={levelOptions}
+                  value={levelOptions.find(
+                    (option) => option.value === state.level
+                  )}
+                  onChange={handleSelectChange}
+                  className="block w-full text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
+                />
+                {errors.level && (
+                  <p className="text-red-500 text-sm">{errors.level}</p>
                 )}
               </div>
 
@@ -183,25 +217,56 @@ export default function SignUp() {
                   placeholder="johndoe@gmail.com"
                   value={state.email}
                   onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm">{errors.email}</p>
                 )}
               </div>
 
+              {/* <div>
+                <label className="block mb-2 text-sm text-gray-600">
+                  Phone Number <span className="text-[#F24822]">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="1234567890"
+                  value={state.phoneNumber}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
+                />
+                {errors.phoneNumber && (
+                  <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
+                )}
+              </div> */}
+
               <div>
                 <label className="block mb-2 text-sm text-gray-600">
                   Password <span className="text-[#F24822]">*</span>
                 </label>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  value={state.password}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Enter your password"
+                    value={state.password}
+                    onChange={handleChange}
+                    className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 focus:outline-none"
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="w-5 h-5" />
+                    ) : (
+                      <EyeIcon className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="text-red-500 text-sm">{errors.password}</p>
                 )}

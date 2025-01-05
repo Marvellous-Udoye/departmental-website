@@ -5,14 +5,14 @@ import {
   CardTitle,
 } from "@/components/dashboard/common/card";
 import QuickAccessCard from "@/components/dashboard/home/quickAccessCard";
-
 import {
+  BellIcon,
   BookmarkIcon,
   BookOpenIcon,
   CalendarIcon,
   ChartBarIcon,
-  CheckCircleIcon,
   ClockIcon,
+  DocumentIcon,
   DocumentTextIcon,
   InboxIcon,
   NewspaperIcon,
@@ -73,19 +73,19 @@ const quickAccessItems = [
     title: "Recent Documents",
     description: "Access your most recent or frequent documents here.",
     actionLabel: "View Documents",
-    color: "blue",
+    href: "/dashboard/documents",
   },
   {
     title: "Notifications Summary",
     description: "Stay informed with the latest notifications and alerts.",
     actionLabel: "View Notifications",
-    color: "green",
+    href: "/dashboard/notifications",
   },
   {
     title: "Profile Completion Status",
     description: "Complete your profile to enhance your experience.",
     actionLabel: "Complete Profile",
-    color: "purple",
+    href: "/dashboard/profile",
   },
 ];
 
@@ -115,32 +115,32 @@ const activities = [
 
 const stats = [
   {
-    label: "Total Projects",
-    value: 48,
-    color: "bg-blue-50",
-    textColor: "text-blue-600",
-    icon: <BookmarkIcon className="h-5 w-5" />,
+    label: "Total Documents",
+    value: 120,
+    color: "bg-indigo-50",
+    textColor: "text-indigo-600",
+    icon: <DocumentIcon className="h-5 w-5" />,
   },
   {
-    label: "Active Tasks",
-    value: 32,
-    color: "bg-purple-50",
-    textColor: "text-purple-600",
-    icon: <CalendarIcon className="h-5 w-5" />,
+    label: "New Notifications",
+    value: 5,
+    color: "bg-red-50",
+    textColor: "text-red-600",
+    icon: <BellIcon className="h-5 w-5" />,
   },
   {
-    label: "Team Members",
+    label: "Courses Enrolled",
+    value: 35,
+    color: "bg-teal-50",
+    textColor: "text-teal-600",
+    icon: <BookOpenIcon className="h-5 w-5" />,
+  },
+  {
+    label: "Upcoming Events",
     value: 12,
-    color: "bg-green-50",
-    textColor: "text-green-600",
-    icon: <UserCircleIcon className="h-5 w-5" />,
-  },
-  {
-    label: "Completed",
-    value: 89,
-    color: "bg-amber-50",
-    textColor: "text-amber-600",
-    icon: <CheckCircleIcon className="h-5 w-5" />,
+    color: "bg-yellow-50",
+    textColor: "text-yellow-600",
+    icon: <CalendarIcon className="h-5 w-5" />,
   },
 ];
 
@@ -194,16 +194,19 @@ const ResourceCard = ({ title, description, icon }: ResourceProps) => (
 
 export default function Dashboard() {
   return (
-    <div className="py-10">
+    <div className="py-6 sm:py-10">
       <div className="space-y-12">
         {/* Statistics Section */}
         <section>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Overview</h3>
+          <h3 className="text-xl font-semibold text-gray-900 ">Overview</h3>
+          <p className="mb-4 text-gray-500 text-sm">
+            A summary of your key metrics and activities.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className={`${stat.color} rounded-xl border border-transparent p-6 shadow-sm`}
+                className={`${stat.color} rounded-xl border border-transparent p-4 sm:p-6 shadow-sm`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className={`${stat.textColor}`}>{stat.icon}</div>
@@ -225,15 +228,18 @@ export default function Dashboard() {
 
       {/* Recent Activities */}
       <section>
-        <h3 className="text-xl font-semibold text-gray-900 my-6">
+        <h3 className="text-xl font-semibold text-gray-900 mt-6">
           Recent Activities
         </h3>
+        <p className="mb-4 text-gray-500 text-sm">
+          Track the latest actions and updates in your dashboard.
+        </p>
         <div className="bg-white rounded-xl border border-gray-300 shadow-sm pt-3 pb-6">
           <div className="space-y-4 divide-y">
             {activities.map((activity, i) => (
               <div
                 key={i}
-                className="flex items-center gap-4 py-3 px-6 hover:bg-gray-50"
+                className="flex items-center gap-4 py-3 px-4 sm:px-6 hover:bg-gray-50"
               >
                 <div
                   className={`h-10 w-10 rounded-full ${activity.color} flex items-center justify-center`}
@@ -248,12 +254,14 @@ export default function Dashboard() {
                     {activity.description}
                   </p>
                 </div>
-                <span className="text-sm text-gray-500">{activity.time}</span>
+                <span className="text-sm text-gray-500 whitespace-nowrap">
+                  {activity.time}
+                </span>
               </div>
             ))}
           </div>
-          <div className="flex items-center justify-end mt-4">
-            <p className="flex items-center text-blue-600 gap-1.5 font-normal text-sm pr-6 active:text-gray-900 cursor-pointer">
+          <div className="flex items-center justify-end mt-3">
+            <p className="flex items-center text-blue-600 gap-1.5 font-normal text-sm pr-4 active:text-gray-900 cursor-pointer">
               See more <CalendarIcon className="w-4 h-4" />
             </p>
           </div>
@@ -262,7 +270,10 @@ export default function Dashboard() {
 
       {/* Resources Section */}
       <section className="py-6">
-        <h2 className="text-xl font-semibold tracking-tight mb-6">Resources</h2>
+        <h2 className="text-xl font-semibold tracking-tight">Resources</h2>
+        <p className="mb-4 text-gray-500 text-sm">
+          Access essential tools and documents to support your work.
+        </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {resources.map((resource, index) => (
             <ResourceCard key={index} {...resource} />
@@ -280,7 +291,7 @@ export default function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="py-3 space-y-4">
               {upcomingEvents.map((event) => (
                 <div
                   key={event.id}
@@ -342,7 +353,7 @@ export default function Dashboard() {
                   <div className="p-2 rounded-lg bg-blue-100">
                     {action.icon}
                   </div>
-                  <span className="text-[14px] font-medium text-gray-700 tracking-[1px]">
+                  <span className="text-[14px] font-medium text-gray-700">
                     {action.label}
                   </span>
                 </button>
@@ -353,8 +364,11 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Access Section */}
-      <div className="flex items-center gap-2 my-6 text-xl font-semibold">
-        <p>Quick Access</p>
+      <div className="mt-6">
+        <h1 className=" text-xl font-semibold">Quick Access</h1>
+        <p className="mb-4 text-gray-500 text-sm">
+          Instantly reach your most used features and modules.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

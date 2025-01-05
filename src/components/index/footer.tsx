@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="px-6 divide-y bg-gray-50 text-gray-800 mt-6 md:mt-10">
+    <footer id="footer" className="px-4 divide-y bg-gray-50 text-gray-800 mt-6 md:mt-10">
       <div className="container flex flex-col justify-between py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
         <div className="lg:w-1/3">
           <Link
