@@ -39,8 +39,8 @@ const FAQSection: React.FC = () => {
 
   return (
     <section className="bg-white">
-      <div className="container flex max-md:flex-col gap-10 justify-between px-6 py-12 mx-auto">
-        <div className="max-w-xl">
+      <div className=" flex max-md:flex-col gap-10 justify-between px-4 sm:px-8 py-16 sm:py-20 mx-auto">
+        <div>
           <h2 className="text-3xl font-semibold text-gray-800 md:text-4xl md:leading-tight">
             Frequently Asked Questions
           </h2>
@@ -53,13 +53,13 @@ const FAQSection: React.FC = () => {
           {faqData.map((faq, index) => (
             <div
               key={index}
-              className="p-4 md:p-8 bg-gray-100 rounded-lg shadow-sm"
+              className="p-4 md:p-8 bg-gray-50 rounded-lg shadow-sm"
             >
               <button
                 className="flex items-center justify-between w-full"
                 onClick={() => toggleAnswer(index)}
               >
-                <h1 className="font-semibold text-gray-700 max-w-md max-sm:max-w-[230px] text-left">
+                <h1 className="font-semibold text-gray-700 max-w-xs sm:max-w-md text-left">
                   {faq.question}
                 </h1>
                 <span

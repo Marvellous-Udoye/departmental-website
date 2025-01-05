@@ -8,27 +8,49 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const navigation = [
-  { name: "Features", href: "#" },
-  { name: "Gallery", href: "#" },
-  { name: "Contact", href: "#" },
-  { name: "Calendar", href: "#" },
+  { name: "Features", href: "#features" },
+  { name: "Gallery", href: "#gallery" },
+  { name: "Contact", href: "#contact" },
+  { name: "Social", href: "#footer" },
 ];
 
 export default function HeroSection() {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const handleScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    e.preventDefault();
+
+    if (href.startsWith("#")) {
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        setMobileMenuOpen(false);
+      }
+    } else {
+      window.location.href = href;
+    }
+  };
+
   return (
     <div className="bg-white">
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
           aria-label="Global"
-          className="flex items-center justify-between p-6 lg:px-8"
+          className="flex items-center justify-between p-4 sm:p-6 lg:px-8"
         >
           <div className="flex lg:flex-1">
             <a href="#">
               <span className="sr-only">Departmental Website</span>
-              <HomeIcon className="size-10 text-indigo-600" />
+              <HomeIcon className="size-8 sm:size-10 text-indigo-600" />
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -46,6 +68,7 @@ export default function HeroSection() {
               <a
                 key={item.name}
                 href={item.href}
+                onClick={(e) => handleScroll(e, item.href)}
                 className="text-sm/6 font-semibold text-gray-900"
               >
                 {item.name}
@@ -67,11 +90,11 @@ export default function HeroSection() {
           className="lg:hidden"
         >
           <div className="fixed inset-0 z-50" />
-          <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-4 md:px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">Departmental Website</span>
-                <HomeIcon className="size-10 text-indigo-600" />
+                <HomeIcon className="size-8 sm:size-10 text-indigo-600" />
               </a>
               <button
                 type="button"
@@ -89,6 +112,7 @@ export default function HeroSection() {
                     <a
                       key={item.name}
                       href={item.href}
+                      onClick={(e) => handleScroll(e, item.href)}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
                     >
                       {item.name}
@@ -109,7 +133,7 @@ export default function HeroSection() {
         </Dialog>
       </header>
 
-      <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className="relative isolate px-4 pt-14 lg:px-8">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -122,10 +146,10 @@ export default function HeroSection() {
             className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
           />
         </div>
-        <div className="mx-auto max-w-4xl py-24 lg:py-32">
+        <div className="mx-auto max-w-4xl py-20 md:py-24 lg:py-32">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Latest Department News.{" "}
+              Departmental Portal{" "}
               <Link href="/login" className="font-semibold text-indigo-600">
                 <span aria-hidden="true" className="absolute inset-0" />
                 Read more <span aria-hidden="true">&rarr;</span>
@@ -136,7 +160,7 @@ export default function HeroSection() {
             <h1 className="text-balance text-4xl sm:text-5xl md:text-7xl font-semibold tracking-tight text-gray-900 ">
               Manage Documents and Access Resources
             </h1>
-            <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
+            <p className="mt-8 text-lg font-medium text-gray-500 sm:text-xl/8 max-md:text-balance">
               Connect, collaborate, and thrive in your academic journey. Access
               course materials, track documents, receive important
               notifications, and stay updated with departmental activities - all

@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, EyeSlashIcon, HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -18,14 +18,15 @@ export default function Login() {
   });
 
   const [errors, setErrors] = useState<Partial<SignInProps>>({});
+  const [showPassword, setShowPassword] = useState<boolean>(false); 
 
   const validate = () => {
     const newErrors: Partial<SignInProps> = {};
 
     if (!state.matricNo)
       newErrors.matricNo = "Matriculation number is required";
-    if (!state.password || state.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
+    if (!state.password || state.password.length < 8)
+      newErrors.password = "Password must be at least 8 characters";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -48,6 +49,10 @@ export default function Login() {
     if (validate()) {
       handleSignIn();
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -76,7 +81,7 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="flex items-center max-w-xl w-full px-6 mx-auto">
+          <div className="flex items-center max-w-xl w-full px-4 mx-auto">
             <div className="flex-1">
               <div className="text-center">
                 <div className="flex justify-center mx-auto">
@@ -92,7 +97,7 @@ export default function Login() {
                 <form onSubmit={handleSubmit}>
                   <div>
                     <label
-                      htmlFor="email"
+                      htmlFor="matricNo"
                       className="block mb-2 text-sm text-gray-600"
                     >
                       Matric. Number <span className="text-[#F24822]">*</span>
@@ -104,7 +109,7 @@ export default function Login() {
                       value={state.matricNo}
                       onChange={handleChange}
                       placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
-                      className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                      className="block w-full px-4 py-2 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                     {errors.matricNo && (
                       <p className="text-xs text-red-600 mt-1">
@@ -129,15 +134,29 @@ export default function Login() {
                       </a>
                     </div>
 
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      value={state.password}
-                      onChange={handleChange}
-                      placeholder="Enter password"
-                      className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        id="password"
+                        name="password"
+                        value={state.password}
+                        onChange={handleChange}
+                        placeholder="Enter password"
+                        className="block w-full px-4 py-2 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                      />
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 focus:outline-none"
+                        aria-label="Toggle password visibility"
+                      >
+                        {showPassword ? (
+                          <EyeSlashIcon className="w-5 h-5" />
+                        ) : (
+                          <EyeIcon className="w-5 h-5" />
+                        )}
+                      </button>
+                    </div>
                     {errors.password && (
                       <p className="text-xs text-red-600 mt-1">
                         {errors.password}
@@ -156,7 +175,7 @@ export default function Login() {
                 </form>
 
                 <div className="mt-6 text-sm text-center text-gray-500">
-                  Don&#x27;t have an account yet?{" "}
+                  Don&apos;t have an account yet?{" "}
                   <Link
                     href="/signup"
                     className="text-blue-500 focus:outline-none focus:underline hover:underline"
