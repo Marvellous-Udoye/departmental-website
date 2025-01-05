@@ -62,7 +62,7 @@ const CourseCard: React.FC<CourseProps> = ({
 
 export default function Courses() {
   return (
-    <div className="py-10">
+    <div className="py-6 sm:py-10">
       <h1 className="text-xl font-semibold text-gray-800 lg:text-2xl">
         Registered Courses
       </h1>
@@ -70,7 +70,7 @@ export default function Courses() {
         Stay updated with the latest trends, strategies, and insights tailored
         to help you excel academically and professionally.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 my-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 my-6">
         {courses.map((course) => (
           <CourseCard
             key={course.courseCode}

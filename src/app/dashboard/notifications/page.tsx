@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import {
   BellIcon,
   CalendarIcon,
-  InboxStackIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -18,33 +18,54 @@ interface NotificationProps {
   isRead: boolean;
 }
 
-const notificationsData: NotificationProps[] = [
+export const notificationsData: NotificationProps[] = [
   {
     id: "1",
     date: "12 NOV",
-    subject: "Annual Retreat",
-    body: "The annual retreat is scheduled for December 1st. Please RSVP by November 20th. The event will include team building activities, strategic planning sessions, and social events.",
+    subject: "Research Symposium",
+    body: "The annual Department Research Symposium is scheduled for December 1st. All faculty and graduate students are encouraged to present their current research. Abstract submissions are due by November 20th.",
     isRead: false,
   },
   {
     id: "2",
     date: "13 OCT",
-    subject: "Policy Update",
-    body: "New guidelines for remote work have been released. Key changes include flexible working hours and updated communication protocols.",
+    subject: "Curriculum Update",
+    body: "Important changes to the undergraduate curriculum for the upcoming semester. New elective courses have been added in AI and Sustainable Engineering. Updated course catalogs are now available.",
     isRead: true,
   },
   {
     id: "3",
     date: "22 SEPT",
-    subject: "Policy Update",
-    body: "New guidelines for remote work have been released. Key changes include flexible working hours and updated communication protocols.",
+    subject: "Lab Maintenance",
+    body: "The Advanced Computing Lab will be undergoing maintenance from September 30th to October 2nd. All ongoing projects should be saved and backed up by September 29th.",
     isRead: true,
   },
   {
     id: "4",
-    date: "04 JULY",
-    subject: "Policy Update",
-    body: "New guidelines for remote work have been released. Key changes include flexible working hours and updated communication protocols.",
+    date: "04 JUL",
+    subject: "Welcome New Faculty",
+    body: "Please join us in welcoming Dr. Sarah Chen and Dr. James Martinez to our department. Their research focuses on Machine Learning and Quantum Computing respectively. Meet-and-greet session scheduled for July 5th.",
+    isRead: true,
+  },
+  {
+    id: "5",
+    date: "15 JUN",
+    subject: "Grant Deadline Alert",
+    body: "Reminder: The National Science Foundation (NSF) research grant proposal deadline is approaching. Internal review submissions are due by June 30th. Contact the Research Office for assistance.",
+    isRead: false,
+  },
+  {
+    id: "6",
+    date: "30 MAY",
+    subject: "Workshop Series",
+    body: "A series of workshops on 'Emerging Technologies in Education' will be conducted throughout June. First session covers 'AI in Education' on June 10th. Registration is mandatory for all teaching staff.",
+    isRead: false,
+  },
+  {
+    id: "7",
+    date: "18 APR",
+    subject: "New Research Center",
+    body: "The Department is proud to announce the establishment of the Center for Advanced Computing and AI Research. Grand opening ceremony will be held on May 1st. All students and faculty are welcome to attend.",
     isRead: true,
   },
 ];
@@ -163,7 +184,9 @@ export default function NotificationsAndDrawer() {
       <div className="h-[250px] sm:h-[500px] p-4 bg-white rounded-lg shadow-sm">
         <div className="flex flex-col items-center justify-center h-full space-y-4">
           <BellIcon className="w-12 h-12 text-gray-400" />
-          <p className="text-lg font-medium text-gray-900">You have no notifications</p>
+          <p className="text-lg font-medium text-gray-900">
+            You have no notifications
+          </p>
           <Link
             href="/dashboard"
             className="text-indigo-600 hover:text-indigo-800"
@@ -176,13 +199,13 @@ export default function NotificationsAndDrawer() {
   }
 
   return (
-    <div className="py-10">
+    <div className="py-6 sm:py-10">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
           <h2 className="text-lg font-semibold text-gray-900">Notifications</h2>
           {unreadCount > 0 && (
             <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-              {unreadCount} new
+              {unreadCount} unread
             </span>
           )}
         </div>
@@ -190,7 +213,7 @@ export default function NotificationsAndDrawer() {
           onClick={() => setShowAll(!showAll)}
           className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
         >
-          <InboxStackIcon className="w-5 h-5" />
+          <ChatBubbleOvalLeftEllipsisIcon className="w-5 h-5" />
           {showAll ? "Show Less" : "Show All"}
         </button>
       </div>
@@ -200,7 +223,7 @@ export default function NotificationsAndDrawer() {
           <div
             key={notification.id}
             className={`
-              relative rounded-lg border p-4 transition-all
+              relative rounded-lg border px-2 py-4 sm:p-4 transition-all
               ${notification.isRead ? "bg-white" : "bg-indigo-50"}
               hover:shadow-md cursor-pointer
             `}
@@ -218,7 +241,7 @@ export default function NotificationsAndDrawer() {
                 <div className="flex justify-between items-start">
                   <p className="text-sm text-gray-500">{notification.date}</p>
                   {!notification.isRead && (
-                    <span className="inline-block w-2 h-2 bg-indigo-600 rounded-full" />
+                    <span className="inline-block w-2 h-2 bg-indigo-500 rounded-full" />
                   )}
                 </div>
                 <h3 className="font-medium text-gray-900 mt-1">

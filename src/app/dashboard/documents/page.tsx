@@ -1,35 +1,37 @@
 "use client";
 
+import React, { useState } from "react";
+import Select from "react-select";
+import {
+  PlusIcon,
+  ArrowDownTrayIcon,
+  ChartBarIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 import DocumentList, {
   documents,
 } from "@/components/dashboard/document/documentList";
-import {
-  ArrowDownTrayIcon,
-  ChartBarIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  MagnifyingGlassIcon,
-  PlusIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/solid";
-import Select from "react-select";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-const pendingCount = documents.filter((doc) => doc.status === "pending").length;
-const approvedCount = documents.filter(
-  (doc) => doc.status === "approved"
-).length;
-const incompleteCount = documents.filter(
-  (doc) => doc.status === "incomplete"
-).length;
+interface DocumentItem {
+  id: number;
+  name: string;
+  icon: React.ReactNode;
+  category: string;
+  deadline: string;
+  status: "approved" | "pending" | "complete" | "incomplete";
+}
 
 export default function Documents() {
   const categoryOptions = [
-    { value: "academics", label: "Academics" },
-    { value: "finance", label: "Finance" },
-    { value: "accommodation", label: "Accommodation" },
-    { value: "health", label: "Health" },
-    { value: "library", label: "Library" },
-    { value: "administration", label: "Administration" },
+    { value: "Academics", label: "Academics" },
+    { value: "Finance", label: "Finance" },
+    { value: "Accommodation", label: "Accommodation" },
+    { value: "Health", label: "Health" },
+    { value: "Library", label: "Library" },
+    { value: "Administration", label: "Administration" },
   ];
 
   const statusOptions = [
@@ -39,49 +41,96 @@ export default function Documents() {
     { value: "incomplete", label: "Incomplete" },
   ];
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<{
+    value: string;
+    label: string;
+  } | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<{
+    value: string;
+    label: string;
+  } | null>(null);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCategoryChange = (
+    selectedOption: { value: string; label: string } | null
+  ) => {
+    setSelectedCategory(selectedOption);
+  };
+
+  const handleStatusChange = (
+    selectedOption: { value: string; label: string } | null
+  ) => {
+    setSelectedStatus(selectedOption);
+  };
+
+  const filteredDocuments = documents.filter((doc) => {
+    const matchesSearch = doc.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory
+      ? doc.category === selectedCategory.value
+      : true;
+    const matchesStatus = selectedStatus
+      ? doc.status === selectedStatus.value
+      : true;
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  const pendingCount = documents.filter(
+    (doc) => doc.status === "pending"
+  ).length;
+  const approvedCount = documents.filter(
+    (doc) => doc.status === "approved"
+  ).length;
+  const incompleteCount = documents.filter(
+    (doc) => doc.status === "incomplete"
+  ).length;
+
   return (
-    <div className="py-10">
+    <div className="py-6 sm:py-10">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex max-md:flex-col justify-between gap-4 md:items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Document Management</h1>
-          <p className="text-gray-500 text-sm">
+          <h1 className="text-xl font-semibold text-gray-900">
+            Document Management
+          </h1>
+          <p className="text-gray-600 text-sm">
             Manage and track your departmental documents
           </p>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
-          <PlusIcon className="w-5 h-5" />
-          New Document
-        </button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
-          <div className="flex items-center gap-2 text-blue-600 mb-2">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-6">
+        <div className="bg-blue-50 text-blue-600 rounded-xl border border-transparent p-4 sm:p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-2">
             <ChartBarIcon className="w-5 h-5" />
-            <span className="font-medium">Total Documents</span>
+            <span className="font-normal">Total Documents</span>
           </div>
           <p className="text-2xl font-bold">{documents.length}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
-          <div className="flex items-center gap-2 text-yellow-600 mb-2">
+        <div className="bg-amber-50 text-[#FF9600] rounded-xl border border-transparent p-4 sm:p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-2">
             <ClockIcon className="w-5 h-5" />
-            <span className="font-medium">Pending Review</span>
+            <span className="font-normal">Pending Review</span>
           </div>
           <p className="text-2xl font-bold">{pendingCount}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
-          <div className="flex items-center gap-2 text-green-600 mb-2">
+        <div className="bg-green-50 text-green-600 rounded-xl border border-transparent p-4 sm:p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-2">
             <CheckCircleIcon className="w-5 h-5" />
-            <span className="font-medium">Approved</span>
+            <span className="font-normal">Approved</span>
           </div>
           <p className="text-2xl font-bold">{approvedCount}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
-          <div className="flex items-center gap-2 text-red-600 mb-2">
+        <div className="bg-red-50 text-[#EF6E68] rounded-xl border border-transparent p-4 sm:p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-2">
             <XCircleIcon className="w-5 h-5" />
-            <span className="font-medium">Incomplete</span>
+            <span className="font-normal">Incomplete</span>
           </div>
           <p className="text-2xl font-bold">{incompleteCount}</p>
         </div>
@@ -94,6 +143,8 @@ export default function Documents() {
           <input
             type="text"
             placeholder="Search documents..."
+            value={searchQuery}
+            onChange={handleSearchChange}
             className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -101,6 +152,8 @@ export default function Documents() {
           <Select
             options={categoryOptions}
             placeholder="All Categories"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
             className="flex-1"
             styles={{
               control: (base) => ({
@@ -121,6 +174,8 @@ export default function Documents() {
           <Select
             options={statusOptions}
             placeholder="All Status"
+            value={selectedStatus}
+            onChange={handleStatusChange}
             className="flex-1"
             styles={{
               control: (base) => ({
@@ -146,7 +201,7 @@ export default function Documents() {
       </div>
 
       {/* Document List */}
-      <DocumentList />
+      <DocumentList documents={filteredDocuments} />
     </div>
   );
 }
