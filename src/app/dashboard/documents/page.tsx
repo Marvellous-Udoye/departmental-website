@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import {
-  PlusIcon,
   ArrowDownTrayIcon,
   ChartBarIcon,
   ClockIcon,
@@ -14,17 +13,11 @@ import DocumentList, {
   documents,
 } from "@/components/dashboard/document/documentList";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-
-interface DocumentItem {
-  id: number;
-  name: string;
-  icon: React.ReactNode;
-  category: string;
-  deadline: string;
-  status: "approved" | "pending" | "complete" | "incomplete";
-}
+import DocumentForm from "@/components/dashboard/document/documentForm";
 
 export default function Documents() {
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
   const categoryOptions = [
     { value: "Academics", label: "Academics" },
     { value: "Finance", label: "Finance" },
@@ -41,6 +34,13 @@ export default function Documents() {
     { value: "incomplete", label: "Incomplete" },
   ];
 
+  const handleShowForm = () => {
+    setIsFormVisible(true);
+  };
+
+  const handleShowList = () => {
+    setIsFormVisible(false);
+  };
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<{
     value: string;
@@ -200,8 +200,24 @@ export default function Documents() {
         </button>
       </div>
 
-      {/* Document List */}
-      <DocumentList documents={filteredDocuments} />
+      {isFormVisible ? (
+        <div>
+          <button
+            onClick={handleShowList}
+            className="mb-4 py-2 px-4 rounded bg-gray-200 text-gray-800 hover:bg-gray-300"
+          >
+            Back to Document List
+          </button>
+          <DocumentForm />
+        </div>
+      ) : (
+        <div>
+          <DocumentList
+            documents={filteredDocuments}
+            onAddNewDocument={handleShowForm}
+          />
+        </div>
+      )}
     </div>
   );
 }
