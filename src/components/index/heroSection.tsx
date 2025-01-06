@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowRightEndOnRectangleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -78,9 +78,9 @@ export default function HeroSection() {
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <button
               onClick={() => router.push("/login")}
-              className="text-sm/6 font-semibold text-gray-900"
+              className="flex gap-1 items-center justify-center max-w-28 w-full text-sm/6 font-semibold text-gray-900 px-4 py-1 rounded-full ring-1 ring-gray-900/10 hover:ring-gray-600 transition duration-300ms linear"
             >
-              Log in <span aria-hidden="true">&rarr;</span>
+              Log in <ArrowRightEndOnRectangleIcon className="size-5" />
             </button>
           </div>
         </nav>
@@ -148,12 +148,8 @@ export default function HeroSection() {
         </div>
         <div className="mx-auto max-w-4xl py-20 md:py-24 lg:py-32">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Departmental Portal{" "}
-              <Link href="/login" className="font-semibold text-indigo-600">
-                <span aria-hidden="true" className="absolute inset-0" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </Link>
+            <div className="relative rounded-full px-4 py-1 text-3xl font-semibold text-indigo-500">
+              Departmental Portal
             </div>
           </div>
           <div className="text-center">
@@ -174,10 +170,11 @@ export default function HeroSection() {
                 Access Dashboard
               </Link>
               <Link
-                href="/login"
+                href="#features"
+                onClick={(e) => handleScroll(e, "#features")}
                 className="text-sm/6 font-semibold px-3 py-1 rounded-full text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/2"
               >
-                View Resources <span aria-hidden="true">→</span>
+                See More Features <span aria-hidden="true">→</span>
               </Link>
             </div>
           </div>

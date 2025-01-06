@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Carousel() {
   return (
     <div className="px-4 lg:px-8 py-10">
@@ -21,12 +23,14 @@ export default function Carousel() {
                     academic progress
                   </span>
                   <div className="mt-5">
-                    <a
+                    <Link
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
-                      href="#"
+                      href="https://www.bellsuniversity.edu.ng/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       Access Portal
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -44,12 +48,14 @@ export default function Carousel() {
                     activities
                   </span>
                   <div className="mt-5">
-                    <a
+                    <Link
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
-                      href="#"
+                      href="https://www.bellsuniversity.edu.ng/academic-calendar/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       View Calendar
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -67,12 +73,12 @@ export default function Carousel() {
                     databases
                   </span>
                   <div className="mt-5">
-                    <a
+                    <Link
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
-                      href="#"
+                      href="/login"
                     >
                       Explore Resources
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
