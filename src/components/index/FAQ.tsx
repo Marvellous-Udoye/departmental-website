@@ -63,9 +63,8 @@ const FAQSection: React.FC = () => {
                   {faq.question}
                 </h1>
                 <span
-                  className={`text-white ${
-                    activeIndex === index ? "bg-blue-200" : "bg-blue-500"
-                  } rounded-full p-1`}
+                  className={`text-white ${activeIndex === index ? "bg-indigo-200" : "bg-indigo-600"
+                    } rounded-full p-1`}
                 >
                   {activeIndex === index ? (
                     <svg

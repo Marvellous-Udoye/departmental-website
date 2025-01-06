@@ -2,6 +2,7 @@
 
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 interface ResourceProps {
@@ -10,6 +11,7 @@ interface ResourceProps {
   description: string;
   date: string;
   category: string;
+  href: string;
 }
 
 const resources: ResourceProps[] = [
@@ -21,6 +23,7 @@ const resources: ResourceProps[] = [
       "Learn how to organize your schedule, prioritize tasks, and boost productivity with these proven time management techniques.",
     date: "On: 15 September 2023",
     category: "General",
+    href: "https://books.google.com.ng/books?id=t4ukXjfFaBgC&printsec=frontcover&dq=give+me+a+book+titled+top+strategies+for+effective+time+management&hl=en&newbks=1&newbks_redir=1&sa=X&ved=2ahUKEwjjicDby-GKAxUfT0EAHV-xFA0Q6AF6BAgLEAI"
   },
   {
     image:
@@ -30,6 +33,7 @@ const resources: ResourceProps[] = [
       "Explore how AI is transforming learning experiences, from personalized tutoring to automating administrative tasks.",
     date: "On: 20 October 2023",
     category: "Technology",
+    href: "https://books.google.com.ng/books?id=Bf5REAAAQBAJ&printsec=frontcover&dq=give+me+a+book+titled+the+future+of+artificial+intelligence+in+education&hl=en&newbks=1&newbks_redir=1&sa=X&ved=2ahUKEwi-hNT6y-GKAxU6UkEAHZY8CC4Q6AF6BAgJEAI"
   },
   {
     image:
@@ -39,6 +43,7 @@ const resources: ResourceProps[] = [
       "Step-by-step guidance on starting and advancing your journey in the ever-evolving software development industry.",
     date: "On: 10 November 2023",
     category: "Engineering",
+    href: "https://books.google.com.ng/books?id=W8XMzQEACAAJ&dq=give+me+a+book+titled+how+to+build+a+career+path+in+software+development&hl=en&newbks=1&newbks_redir=1&sa=X&ved=2ahUKEwjYyMSTzOGKAxWaUEEAHb2EJicQ6AF6BAgEEAI"
   },
   {
     image:
@@ -48,6 +53,7 @@ const resources: ResourceProps[] = [
       "Delve into the basics of blockchain technology and its applications beyond cryptocurrency.",
     date: "On: 30 August 2023",
     category: "Technology",
+    href: "https://books.google.com.ng/books?id=KmPltAEACAAJ&dq=give+me+a+book+titled+understanding+blockchain:+a+beginners+guide&hl=en&newbks=1&newbks_redir=1&sa=X&ved=2ahUKEwiMzqmpzOGKAxWsVkEAHRKMKGIQ6AF6BAgFEAI"
   },
   {
     image:
@@ -57,6 +63,7 @@ const resources: ResourceProps[] = [
       "Discover how creating a clean, functional workspace can enhance focus, creativity, and efficiency.",
     date: "On: 10 October 2023",
     category: "General",
+    href: "https://books.google.com.ng/books?id=n4mQEAAAQBAJ&dq=give+me+a+book+titled+minimalism+in+workspace+design&hl=en&newbks=1&newbks_redir=1&sa=X&ved=2ahUKEwi1o-69zOGKAxWCU0EAHVG8ABMQ6AF6BAgEEAI"
   },
   {
     image:
@@ -66,6 +73,7 @@ const resources: ResourceProps[] = [
       "Stay ahead by learning about the latest technological advancements shaping the industry.",
     date: "On: 20 November 2023",
     category: "Technology",
+    href: "https://books.google.com.ng/books?id=N1wrAgAAQBAJ&printsec=frontcover&dq=give+me+a+book+titled+emerging+trends+for+tech+in+2024&hl=en&newbks=1&newbks_redir=1&sa=X&ved=2ahUKEwin1ZXXzOGKAxVKYEEAHe7vDXAQ6AF6BAgLEAI"
   },
 ];
 
@@ -148,12 +156,14 @@ export default function Resources() {
                   height={224}
                 />
                 <div className="flex flex-col justify-between py-6 lg:mx-4">
-                  <a
-                    href="#"
+                  <Link
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-lg font-semibold text-gray-800 hover:underline transition linear duration-300"
                   >
                     {item.title}
-                  </a>
+                  </Link>
                   <p className="text-gray-600 text-base line-clamp-2">
                     {item.description}
                   </p>
@@ -193,11 +203,10 @@ export default function Resources() {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`px-4 py-2 border rounded-lg ${
-                  currentPage === page
-                    ? "bg-blue-500 text-white"
-                    : "hover:bg-gray-50"
-                }`}
+                className={`px-4 py-2 border rounded-lg ${currentPage === page
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-50"
+                  }`}
               >
                 {page}
               </button>

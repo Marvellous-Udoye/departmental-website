@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
-  MapPinIcon,
   ClockIcon,
-  PhoneIcon,
   DocumentMagnifyingGlassIcon,
+  MapPinIcon,
+  PhoneIcon,
 } from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 interface FormValues {
   fullName: string;
@@ -170,11 +170,10 @@ export default function ContactUs() {
                       placeholder="John Doe"
                       value={formValues.fullName}
                       onChange={handleChange}
-                      className={`block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${
-                        formErrors.fullName
-                          ? "border-red-500"
-                          : "border-gray-200"
-                      } rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40`}
+                      className={`block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${formErrors.fullName
+                        ? "border-red-500"
+                        : "border-gray-200"
+                        } rounded-lg focus:border-indigo-400 focus:ring-indigo-400 focus:outline-none focus:ring focus:ring-opacity-40`}
                     />
                     {formErrors.fullName && (
                       <p className="mt-1 text-xs text-red-500">
@@ -197,9 +196,8 @@ export default function ContactUs() {
                       placeholder="johndoe@example.com"
                       value={formValues.email}
                       onChange={handleChange}
-                      className={`block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${
-                        formErrors.email ? "border-red-500" : "border-gray-200"
-                      } rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40`}
+                      className={`block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${formErrors.email ? "border-red-500" : "border-gray-200"
+                        } rounded-lg focus:border-indigo-400 focus:ring-indigo-400 focus:outline-none focus:ring focus:ring-opacity-40`}
                     />
                     {formErrors.email && (
                       <p className="mt-1 text-xs text-red-500">
@@ -221,9 +219,8 @@ export default function ContactUs() {
                     name="message"
                     value={formValues.message}
                     onChange={handleChange}
-                    className={`block w-full h-32 px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${
-                      formErrors.message ? "border-red-500" : "border-gray-200"
-                    } rounded-lg md:h-48 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40`}
+                    className={`block w-full h-32 px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${formErrors.message ? "border-red-500" : "border-gray-200"
+                      } rounded-lg md:h-48 focus:border-indigo-400 focus:ring-indigo-400 focus:outline-none focus:ring focus:ring-opacity-40`}
                     placeholder="Write your message here..."
                   ></textarea>
                   {formErrors.message && (
@@ -235,7 +232,7 @@ export default function ContactUs() {
 
                 <button
                   type="submit"
-                  className="w-full px-6 py-2.5 mt-4 text-sm font-medium tracking-wide text-white capitalize bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                  className="w-full px-6 py-2.5 mt-4 text-sm font-medium tracking-wide text-white capitalize bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-50"
                 >
                   Send Message
                 </button>

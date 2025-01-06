@@ -18,6 +18,7 @@ import {
   NewspaperIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import React from "react";
 
 interface ResourceProps {
@@ -26,6 +27,7 @@ interface ResourceProps {
   icon?: React.ReactNode;
   actionLabel?: string;
   color?: string;
+  href?: string; // Added href property
 }
 
 const upcomingEvents = [
@@ -54,18 +56,25 @@ const upcomingEvents = [
 
 const quickActions = [
   {
-    label: "Download Documents",
+    label: "Visit Payment Portal",
     icon: <DocumentTextIcon className="w-4 h-4" />,
+    href: "https://portal.bellsuniversity.edu.ng/payments/",
   },
   {
     label: "Download Academic Calender",
     icon: <CalendarIcon className="w-4 h-4" />,
+    href: "https://www.bellsuniversity.edu.ng/academic-calendar/",
   },
   {
     label: "View Course Materials",
     icon: <BookOpenIcon className="w-4 h-4" />,
+    href: "https://drive.google.com/drive/folders/1-_odjuaoTKrPKFjOat8yCQi8oPyjHSSo/",
   },
-  { label: "Visit Student Portal", icon: <ChartBarIcon className="w-4 h-4" /> },
+  {
+    label: "Visit Student Portal",
+    icon: <ChartBarIcon className="w-4 h-4" />,
+    href: "https://portal.bellsuniversity.edu.ng/",
+  },
 ];
 
 const quickAccessItems = [
@@ -150,29 +159,38 @@ const resources = [
     description:
       "Access our comprehensive digital library containing thousands of academic resources, journals, and research papers.",
     icon: <BookOpenIcon />,
+    href: "https://drive.google.com/drive/folders/1-_odjuaoTKrPKFjOat8yCQi8oPyjHSSo",
   },
   {
     title: "Kortext",
     description:
       "Your gateway to digital textbooks and interactive learning materials from leading publishers worldwide.",
     icon: <BookmarkIcon />,
+    href: "https://read.kortext.com/library/books",
   },
   {
     title: "BUSA Letters",
     description:
       "Stay informed with official communications, newsletters, and important updates from BUSA.",
     icon: <InboxIcon />,
+    href: "https://www.bellsuniversity.edu.ng/academic-activities-at-bells-university/bells-university-student-life/",
   },
   {
     title: "Latest News",
     description:
       "Get real-time updates on campus events, academic announcements, and community highlights.",
     icon: <NewspaperIcon />,
+    href: "https://www.bellsuniversity.edu.ng/news/",
   },
 ];
 
-const ResourceCard = ({ title, description, icon }: ResourceProps) => (
-  <div className="group bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-md lg:hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700">
+const ResourceCard = ({ title, description, icon, href }: ResourceProps) => (
+  <Link
+    href={href || "#"} // Fallback to "#" if no href is provided
+    target="_blank"
+    rel="noopener noreferrer"
+    className="group bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-md lg:hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700"
+  >
     <div className="flex items-start space-x-4">
       <div className="p-3 bg-indigo-500 rounded-lg group-hover:bg-indigo-800 transition-colors">
         <div className="w-6 h-6 text-white">{icon}</div>
@@ -189,7 +207,7 @@ const ResourceCard = ({ title, description, icon }: ResourceProps) => (
         </button>
       </div>
     </div>
-  </div>
+  </Link>
 );
 
 export default function Dashboard() {
@@ -313,13 +331,12 @@ export default function Dashboard() {
                   <div className="flex justify-end md:justify-center items-center">
                     <span
                       className={`px-1.5 py-1 text-[13px] leading-4 rounded-[4px] text-center font-semibold w-[70px]
-                     ${
-                       event.type === "meeting"
-                         ? "bg-[#FFF3DE] text-[#FF9600]"
-                         : event.type === "event"
-                         ? "bg-[#FFEAED] text-[#EF6E68]"
-                         : "bg-[#E3F2FD] text-[#2196F3]"
-                     }`}
+                     ${event.type === "meeting"
+                          ? "bg-[#FFF3DE] text-[#FF9600]"
+                          : event.type === "event"
+                            ? "bg-[#FFEAED] text-[#EF6E68]"
+                            : "bg-[#E3F2FD] text-[#2196F3]"
+                        }`}
                     >
                       {event.type}
                     </span>
@@ -346,8 +363,11 @@ export default function Dashboard() {
           <CardContent>
             <div className="space-y-3">
               {quickActions.map((action, index) => (
-                <button
+                <Link
                   key={index}
+                  href={action.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full flex items-center space-x-3 p-3 text-left rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <div className="p-2 rounded-lg bg-blue-100">
@@ -356,7 +376,7 @@ export default function Dashboard() {
                   <span className="text-[14px] font-medium text-gray-700">
                     {action.label}
                   </span>
-                </button>
+                </Link>
               ))}
             </div>
           </CardContent>
