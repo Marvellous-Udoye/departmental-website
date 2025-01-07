@@ -43,31 +43,33 @@ export default function Login() {
 
   const handleSignIn = async () => {
     setLoading(true);
-    try {
-      const response = await fetch(
-        "https://departmental-website-api.onrender.com/token/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(state),
-        }
-      );
+    router.push("/dashboard");
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Login successful:", data);
-        router.push("/dashboard");
-      } else {
-        const errorData = await response.json();
-        setErrors({ password: errorData.message || "Login failed" });
-      }
-    } catch (error) {
-      console.error("An error occurred during login:", error);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const response = await fetch(
+    //     "https://departmental-website-api.onrender.com/token/",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(state),
+    //     }
+    //   );
+
+    //   if (response.ok) {
+    //     const data = await response.json();
+    //     console.log("Login successful:", data);
+    //     router.push("/dashboard");
+    //   } else {
+    //     const errorData = await response.json();
+    //     setErrors({ password: errorData.message || "Login failed" });
+    //   }
+    // } catch (error) {
+    //   console.error("An error occurred during login:", error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

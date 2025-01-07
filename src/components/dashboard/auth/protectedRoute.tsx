@@ -271,7 +271,12 @@ function ProtectedRoute({ children }: ProtectedRouteProp) {
     );
   }
 
-  return isAuthorised ? children : router.push("/login");
+  if (!isAuthorised) {
+    router.push("/login");
+    return null;
+  }
+
+  return <>{children}</>;
 }
 
 export default ProtectedRoute;

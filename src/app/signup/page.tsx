@@ -83,31 +83,33 @@ export default function SignUp() {
 
   const handleSignUp = async () => {
     setLoading(true);
-    try {
-      const response = await fetch(
-        "https://departmental-website-api.onrender.com/api/user/signup/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(state),
-        }
-      );
+    router.push("/dashboard");
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Signup successful:", data);
-        router.push("/dashboard");
-      } else {
-        const errorData = await response.json();
-        console.error("Signup failed:", errorData);
-      }
-    } catch (error) {
-      console.error("An error occurred during signup:", error);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const response = await fetch(
+    //     "https://departmental-website-api.onrender.com/api/user/signup/",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(state),
+    //     }
+    //   );
+
+    //   if (response.ok) {
+    //     const data = await response.json();
+    //     console.log("Signup successful:", data);
+    //     router.push("/dashboard");
+    //   } else {
+    //     const errorData = await response.json();
+    //     console.error("Signup failed:", errorData);
+    //   }
+    // } catch (error) {
+    //   console.error("An error occurred during signup:", error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

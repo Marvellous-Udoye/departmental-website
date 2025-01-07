@@ -1,6 +1,6 @@
 "use client";
 
-import ProtectedRoute from "@/components/dashboard/auth/protectedRoute";
+// import ProtectedRoute from "@/components/dashboard/auth/protectedRoute";
 import Banner from "@/components/dashboard/common/banner";
 import {
   ArrowRightEndOnRectangleIcon,
@@ -215,11 +215,11 @@ export default function DashboardLayout({
 
   return (
     <div>
-      <ProtectedRoute>
-        <MobileHeader />
-        <Sidebar />
-        <MainContent>{children}</MainContent>
-      </ProtectedRoute>
+      {/* <ProtectedRoute> */}
+      <MobileHeader />
+      <Sidebar />
+      <MainContent>{children}</MainContent>
+      {/* </ProtectedRoute> */}
     </div>
   );
 }
