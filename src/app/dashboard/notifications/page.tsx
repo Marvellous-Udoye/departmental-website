@@ -18,7 +18,7 @@ interface NotificationProps {
   isRead: boolean;
 }
 
-export const notificationsData: NotificationProps[] = [
+const notificationsData: NotificationProps[] = [
   {
     id: "1",
     date: "12 NOV",
