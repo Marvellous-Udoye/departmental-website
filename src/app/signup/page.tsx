@@ -7,11 +7,10 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import Select from "react-select";
 
 interface SignUpProps {
-  fullName: string;
+  username: string;
   email: string;
-  matricNo: string;
+  matricno: string;
   department: string;
-  phoneNumber: string;
   password: string;
   level: string;
 }
@@ -35,32 +34,30 @@ const departmentOptions = [
 
 export default function SignUp() {
   const [state, setState] = useState<SignUpProps>({
-    fullName: "",
+    username: "",
     email: "",
-    matricNo: "",
+    matricno: "",
     department: "",
-    phoneNumber: "",
     password: "",
     level: "",
   });
   const [errors, setErrors] = useState<Partial<SignUpProps>>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const validate = () => {
     const newErrors: Partial<SignUpProps> = {};
 
-    if (!state.fullName) newErrors.fullName = "Full name is required";
-    if (!state.matricNo)
-      newErrors.matricNo = "Matriculation number is required";
+    if (!state.username) newErrors.username = "Full name is required";
+    if (!state.matricno)
+      newErrors.matricno = "Matriculation number is required";
     if (!state.department) newErrors.department = "Department is required";
     if (!state.level) newErrors.level = "Level is required";
     if (!state.email || !/\S+@\S+\.\S+/.test(state.email))
       newErrors.email = "Valid email is required";
     if (!state.password || state.password.length < 8)
       newErrors.password = "Password must be at least 8 characters";
-    if (!state.phoneNumber || !/^\d+$/.test(state.phoneNumber))
-      newErrors.phoneNumber = "Valid phone number is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -84,8 +81,33 @@ export default function SignUp() {
     }));
   };
 
-  const handleSignUp = () => {
-    router.push("/dashboard");
+  const handleSignUp = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "https://departmental-website-api.onrender.com/api/user/signup/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(state),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Signup successful:", data);
+        router.push("/dashboard");
+      } else {
+        const errorData = await response.json();
+        console.error("Signup failed:", errorData);
+      }
+    } catch (error) {
+      console.error("An error occurred during signup:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -143,14 +165,14 @@ export default function SignUp() {
                 </label>
                 <input
                   type="text"
-                  name="fullName"
+                  name="username"
                   placeholder="John Doe"
-                  value={state.fullName}
+                  value={state.username}
                   onChange={handleChange}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
-                {errors.fullName && (
-                  <p className="text-red-500 text-sm">{errors.fullName}</p>
+                {errors.username && (
+                  <p className="text-red-500 text-sm">{errors.username}</p>
                 )}
               </div>
 
@@ -160,14 +182,14 @@ export default function SignUp() {
                 </label>
                 <input
                   type="text"
-                  name="matricNo"
+                  name="matricno"
                   placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
-                  value={state.matricNo}
+                  value={state.matricno}
                   onChange={handleChange}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
-                {errors.matricNo && (
-                  <p className="text-red-500 text-sm">{errors.matricNo}</p>
+                {errors.matricno && (
+                  <p className="text-red-500 text-sm">{errors.matricno}</p>
                 )}
               </div>
 
@@ -275,8 +297,9 @@ export default function SignUp() {
               <button
                 type="submit"
                 className="w-full md:col-span-2 px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+                disabled={loading}
               >
-                Sign Up
+                {loading ? "Signing up..." : "Signup"}
               </button>
             </form>
             <div className="mt-4 text-center">

@@ -6,25 +6,26 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface SignInProps {
-  matricNo: string;
+  matricno: string;
   password: string;
 }
 
 export default function Login() {
   const router = useRouter();
   const [state, setState] = useState<SignInProps>({
-    matricNo: "",
+    matricno: "",
     password: "",
   });
 
   const [errors, setErrors] = useState<Partial<SignInProps>>({});
-  const [showPassword, setShowPassword] = useState<boolean>(false); 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const validate = () => {
     const newErrors: Partial<SignInProps> = {};
 
-    if (!state.matricNo)
-      newErrors.matricNo = "Matriculation number is required";
+    if (!state.matricno)
+      newErrors.matricno = "Matriculation number is required";
     if (!state.password || state.password.length < 8)
       newErrors.password = "Password must be at least 8 characters";
 
@@ -40,8 +41,33 @@ export default function Login() {
     }));
   };
 
-  const handleSignIn = () => {
-    router.push("/dashboard");
+  const handleSignIn = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "https://departmental-website-api.onrender.com/token/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(state),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Login successful:", data);
+        router.push("/dashboard");
+      } else {
+        const errorData = await response.json();
+        setErrors({ password: errorData.message || "Login failed" });
+      }
+    } catch (error) {
+      console.error("An error occurred during login:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -97,23 +123,23 @@ export default function Login() {
                 <form onSubmit={handleSubmit}>
                   <div>
                     <label
-                      htmlFor="matricNo"
+                      htmlFor="matricno"
                       className="block mb-2 text-sm text-gray-600"
                     >
                       Matric. Number <span className="text-[#F24822]">*</span>
                     </label>
                     <input
                       type="text"
-                      id="matricNo"
-                      name="matricNo"
-                      value={state.matricNo}
+                      id="matricno"
+                      name="matricno"
+                      value={state.matricno}
                       onChange={handleChange}
                       placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
                       className="block w-full px-4 py-2 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
-                    {errors.matricNo && (
+                    {errors.matricno && (
                       <p className="text-xs text-red-600 mt-1">
-                        {errors.matricNo}
+                        {errors.matricno}
                       </p>
                     )}
                   </div>
@@ -168,8 +194,9 @@ export default function Login() {
                     <button
                       type="submit"
                       className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                      disabled={loading}
                     >
-                      Login
+                      {loading ? "Logging in..." : "Login"}
                     </button>
                   </div>
                 </form>
