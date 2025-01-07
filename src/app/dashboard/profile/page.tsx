@@ -43,7 +43,7 @@ const initialProfileData: ProfileData = {
   attachments: [],
 };
 
-export function ProfileDetails({
+function ProfileDetails({
   data,
   onEdit,
 }: {
@@ -115,7 +115,7 @@ export function ProfileDetails({
   );
 }
 
-export function EditProfile({
+function EditProfile({
   onSave,
   onCancel,
 }: {
