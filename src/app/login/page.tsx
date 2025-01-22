@@ -1,87 +1,78 @@
 "use client";
 
+import { ACCESS_TOKEN, BASE_URL, REFRESH_TOKEN } from "@/utils/constants";
 import { EyeIcon, EyeSlashIcon, HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface SignInProps {
-  matricno: string;
+  username: string;
   password: string;
 }
 
 export default function Login() {
   const router = useRouter();
   const [state, setState] = useState<SignInProps>({
-    matricno: "",
+    username: "",
     password: "",
   });
-
   const [errors, setErrors] = useState<Partial<SignInProps>>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<string>("");
 
   const validate = () => {
     const newErrors: Partial<SignInProps> = {};
-
-    if (!state.matricno)
-      newErrors.matricno = "Matriculation number is required";
+    if (!state.username)
+      newErrors.username = "Matriculation number is required";
     if (!state.password || state.password.length < 8)
       newErrors.password = "Password must be at least 8 characters";
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setState((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+    setLoginError("");
   };
 
   const handleSignIn = async () => {
     setLoading(true);
-    router.push("/dashboard");
+    setLoginError("");
 
-    // try {
-    //   const response = await fetch(
-    //     "https://departmental-website-api.onrender.com/token/",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(state),
-    //     }
-    //   );
+    try {
+      const response = await fetch(`${BASE_URL}/api/token/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(state),
+      });
 
-    //   if (response.ok) {
-    //     const data = await response.json();
-    //     console.log("Login successful:", data);
-    //     router.push("/dashboard");
-    //   } else {
-    //     const errorData = await response.json();
-    //     setErrors({ password: errorData.message || "Login failed" });
-    //   }
-    // } catch (error) {
-    //   console.error("An error occurred during login:", error);
-    // } finally {
-    //   setLoading(false);
-    // }
+      const data = await response.json();
+
+      if (response.ok && data.access) {
+        localStorage.setItem(ACCESS_TOKEN, data.access);
+        localStorage.setItem(REFRESH_TOKEN, data.refresh);
+        setState({ username: "", password: "" });
+        router.push("/dashboard");
+      } else {
+        setLoginError(data.detail || "Invalid credentials. Please try again.");
+      }
+    } catch {
+      setLoginError("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validate()) {
-      handleSignIn();
-    }
+    if (validate()) handleSignIn();
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
     <div className="bg-gray-50 h-[100vh] grid place-items-center">
@@ -101,9 +92,7 @@ export default function Login() {
                 </h2>
                 <p className="max-w-xl mt-3 text-gray-300">
                   Welcome back! Log in to access your departmental resources and
-                  manage your profile. Securely verify your account and start
-                  exploring the latest updates, materials, and more within your
-                  department.
+                  manage your profile.
                 </p>
               </div>
             </div>
@@ -115,7 +104,6 @@ export default function Login() {
                 <div className="flex justify-center mx-auto">
                   <HomeIcon className="size-10 text-indigo-600" />
                 </div>
-
                 <p className="mt-3 text-lg font-medium text-gray-500">
                   Login to access your account
                 </p>
@@ -125,23 +113,23 @@ export default function Login() {
                 <form onSubmit={handleSubmit}>
                   <div>
                     <label
-                      htmlFor="matricno"
+                      htmlFor="username"
                       className="block mb-2 text-sm text-gray-600"
                     >
-                      Matric. Number <span className="text-[#F24822]">*</span>
+                      Username <span className="text-[#F24822]">*</span>
                     </label>
                     <input
                       type="text"
-                      id="matricno"
-                      name="matricno"
-                      value={state.matricno}
+                      id="username"
+                      name="username"
+                      value={state.username}
                       onChange={handleChange}
                       placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
                       className="block w-full px-4 py-2 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
-                    {errors.matricno && (
-                      <p className="text-xs text-red-600 mt-1">
-                        {errors.matricno}
+                    {errors.username && (
+                      <p className="text-xs text-[#F24822] mt-1">
+                        {errors.username}
                       </p>
                     )}
                   </div>
@@ -156,7 +144,7 @@ export default function Login() {
                       </label>
                       <a
                         href="#"
-                        className="text-sm text-blue-400 focus:text-blue-500 hover:text-blue-500 hover:underline"
+                        className="text-sm text-blue-400 hover:text-blue-500 hover:underline"
                       >
                         Forgot password?
                       </a>
@@ -186,16 +174,24 @@ export default function Login() {
                       </button>
                     </div>
                     {errors.password && (
-                      <p className="text-xs text-red-600 mt-1">
+                      <p className="text-xs text-[#F24822] mt-1">
                         {errors.password}
                       </p>
                     )}
                   </div>
 
+                  {loginError && (
+                    <div className="mt-4">
+                      <p className="text-sm text-[#F24822] text-center">
+                        {loginError}
+                      </p>
+                    </div>
+                  )}
+
                   <div className="mt-6">
                     <button
                       type="submit"
-                      className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                      className="w-full px-4 py-2 tracking-wide text-white duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                       disabled={loading}
                     >
                       {loading ? "Logging in..." : "Login"}
@@ -207,7 +203,7 @@ export default function Login() {
                   Don&apos;t have an account yet?{" "}
                   <Link
                     href="/signup"
-                    className="text-blue-500 focus:outline-none focus:underline hover:underline"
+                    className="text-blue-500 hover:underline"
                   >
                     Sign up
                   </Link>

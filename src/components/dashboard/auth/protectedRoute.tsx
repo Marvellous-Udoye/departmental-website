@@ -1,5 +1,5 @@
 import api from "@/utils/api";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/constants";
+import { ACCESS_TOKEN, BASE_URL, REFRESH_TOKEN } from "@/utils/constants";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ function ProtectedRoute({ children }: ProtectedRouteProp) {
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     try {
-      const res = await api.post("/api/token/refresh/", {
+      const res = await api.post(`${BASE_URL}/api/token/refresh/`, {
         refresh: refreshToken,
       });
       if (res.status == 200) {
