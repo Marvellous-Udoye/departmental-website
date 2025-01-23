@@ -6,79 +6,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/dashboard/common/card";
+
 import {
+  BookOpenIcon,
   CalendarDateRangeIcon,
   ChevronRightIcon,
   ClockIcon,
+  DocumentTextIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import React from "react";
-
-interface CourseProps {
-  courseTitle: string;
-  unit: string;
-  courseCode: string;
-}
-
-const courses: CourseProps[] = [
-  {
-    courseTitle: "Basic Electrical Machines",
-    unit: "2 Units",
-    courseCode: "EEE 313",
-  },
-  {
-    courseTitle: "Signal and Systems",
-    unit: "2 Units",
-    courseCode: "TCE 301",
-  },
-  {
-    courseTitle: "Engineering Mathematics",
-    unit: "3 Units",
-    courseCode: "ENG 301",
-  },
-  {
-    courseTitle: "Electrical Circuit Theory",
-    unit: "2 Units",
-    courseCode: "EEE 307",
-  },
-  {
-    courseTitle: "Introduction to Python Analysis",
-    unit: "1 Unit",
-    courseCode: "ICT 323",
-  },
-
-  {
-    courseTitle: "Software Development Techniques",
-    unit: "2 Units",
-    courseCode: "CEN 301",
-  },
-  {
-    courseTitle: "Electrical/Electronics Lab I",
-    unit: "1 Unit",
-    courseCode: "EEE 315",
-  },
-  {
-    courseTitle: "Electromagnetic Field Theory",
-    unit: "2 Units",
-    courseCode: "TCE 303",
-  },
-  {
-    courseTitle: "Digital Electronics I",
-    unit: "2 Units",
-    courseCode: "EEE 317",
-  },
-  {
-    courseTitle: "Introduction to Entrepreneurial studies",
-    unit: "2 Units",
-    courseCode: "BUS 311",
-  },
-  {
-    courseTitle: "Electronics Engineering I",
-    unit: "2 Units",
-    courseCode: "EEE 305",
-  },
-];
+import { CourseProps, courses } from "../../../../public/data/courses";
 
 const CourseCard: React.FC<CourseProps> = ({
   courseTitle,
@@ -87,24 +26,35 @@ const CourseCard: React.FC<CourseProps> = ({
 }) => {
   const router = useRouter();
   const handleSeeDetails = (courseCode: string) => {
-    router.push(`/dashboard/courses/${encodeURIComponent(courseCode)}`);
+    const courseDetail = courseCode.replace(" ", "-").toLocaleLowerCase();
+    router.push(`/dashboard/courses/${courseDetail}`);
   };
 
   return (
-    <div className="rounded-lg border hover:shadow-md transition-shadow">
-      <div className="flex justify-self-end self-start py-1 px-4 rounded-bl-lg rounded-tr-lg bg-blue-500 font-medium text-base text-white">
+    <div className="rounded-lg border hover:shadow-md transition-all duration-300 bg-white relative group">
+      <div className="absolute top-0 right-0 py-1.5 px-4 rounded-bl-lg rounded-tr-lg bg-blue-500 font-medium text-sm text-white flex items-center gap-2">
+        <BookOpenIcon className="w-4 h-4" />
         {unit}
       </div>
-      <div className="p-4 space-y-1">
-        <h6 className="text-gray-800 text-lg font-semibold">{courseCode}</h6>
-        <p className="text-gray-600 text-sm">{courseTitle}</p>
-        <p
-          onClick={() => handleSeeDetails(courseCode)}
-          className="text-blue-600 text-sm mt-2 cursor-pointer hover:text-blue-700 flex items-center"
-        >
-          See details
-          <ChevronRightIcon className="w-4 h-4 ml-1" />
-        </p>
+      <div className="p-5 space-y-3">
+        <div className="flex items-start">
+          <div>
+            <h6 className="text-gray-800 text-lg font-semibold">
+              {courseCode}
+            </h6>
+            <p className="text-gray-600 text-sm">{courseTitle}</p>
+          </div>
+        </div>
+        <div className="pt-2">
+          <button
+            onClick={() => handleSeeDetails(courseCode)}
+            className="text-blue-600 text-sm group-hover:text-blue-700 flex items-center transition-colors"
+          >
+            <DocumentTextIcon className="w-4 h-4 mr-1" />
+            See details
+            <ChevronRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -112,7 +62,7 @@ const CourseCard: React.FC<CourseProps> = ({
 
 export default function Courses() {
   return (
-    <div className="p-4">
+    <div className="pt-10 pb-4">
       <h1 className="text-xl font-semibold text-gray-800 lg:text-2xl">
         Registered Courses
       </h1>
@@ -120,7 +70,7 @@ export default function Courses() {
         Stay updated with the latest trends, strategies, and insights tailored
         to help you excel academically and professionally.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 my-8">
         {courses.map((course) => (
           <CourseCard
             key={course.courseCode}

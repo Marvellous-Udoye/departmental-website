@@ -212,11 +212,11 @@ const ResourceCard = ({ title, description, icon, href }: ResourceProps) => (
 
 export default function Dashboard() {
   return (
-    <div className="py-6 sm:py-10">
+    <div className="pt-10 pb-4">
       <div className="space-y-12">
         {/* Statistics Section */}
         <section>
-          <h3 className="text-xl font-semibold text-gray-900 ">Overview</h3>
+          <h3 className="text-xl font-semibold text-gray-800 lg:text-2xl">Overview</h3>
           <p className="mb-4 text-gray-500 text-sm">
             A summary of your key metrics and activities.
           </p>
@@ -246,7 +246,7 @@ export default function Dashboard() {
 
       {/* Recent Activities */}
       <section>
-        <h3 className="text-xl font-semibold text-gray-900 mt-6">
+        <h3 className="text-xl font-semibold text-gray-800 lg:text-2xl mt-6">
           Recent Activities
         </h3>
         <p className="mb-4 text-gray-500 text-sm">
@@ -288,7 +288,7 @@ export default function Dashboard() {
 
       {/* Resources Section */}
       <section className="py-6">
-        <h2 className="text-xl font-semibold tracking-tight">Resources</h2>
+        <h2 className="text-xl font-semibold text-gray-800 lg:text-2xl">Resources</h2>
         <p className="mb-4 text-gray-500 text-sm">
           Access essential tools and documents to support your work.
         </p>
@@ -385,7 +385,7 @@ export default function Dashboard() {
 
       {/* Quick Access Section */}
       <div className="mt-6">
-        <h1 className=" text-xl font-semibold">Quick Access</h1>
+        <h1 className="text-xl font-semibold text-gray-800 lg:text-2xl">Quick Access</h1>
         <p className="mb-4 text-gray-500 text-sm">
           Instantly reach your most used features and modules.
         </p>

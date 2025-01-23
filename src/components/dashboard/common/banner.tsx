@@ -9,12 +9,24 @@ import {
 import { useEffect, useState } from "react";
 
 export default function Banner() {
-  const [department, setDepartment] = useState("");
-  const [loading, setLoading] = useState(true);
+  // Using localStorage to persist department state
+  const [department, setDepartment] = useState(() => {
+    // Initialize from localStorage if available
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userDepartment") || "";
+    }
+    return "";
+  });
+  const [loading, setLoading] = useState(!department);
   const [, setError] = useState("");
 
   useEffect(() => {
     const fetchDepartment = async () => {
+      if (department) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const token = localStorage.getItem("access");
         const matricno = localStorage.getItem("matricno");
@@ -31,22 +43,23 @@ export default function Banner() {
         }
 
         const data = await response.json();
+        // Store in localStorage for persistence
+        localStorage.setItem("userDepartment", data.department);
         setDepartment(data.department);
-      } catch (err) {
+      } catch {
         setError("Failed to fetch department data");
-        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchDepartment();
-  }, []);
+  }, [department]);
 
   return (
-    <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white rounded-lg shadow-md md:shadow-lg overflow-hidden ">
+    <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white shadow-md md:shadow-lg overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 gap-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 sm:p-6 gap-6">
           <div className="flex items-center space-x-4 w-full sm:w-auto">
             <div className="bg-white/10 p-3 rounded-lg backdrop-blur-sm max-sm:hidden">
               <AcademicCapIcon className="h-8 w-8" />

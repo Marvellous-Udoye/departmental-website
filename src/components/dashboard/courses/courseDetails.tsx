@@ -58,7 +58,7 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
   };
 
   return (
-    <div className="py-6 sm:py-10">
+    <div className="pt-10 pb-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Course Overview */}
         <Card className="md:col-span-2 hover:shadow-md transition-shadow duration-300">

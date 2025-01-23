@@ -152,6 +152,7 @@ export default function DashboardLayout({
                       if (item.label === "Logout") {
                         localStorage.removeItem("access");
                         localStorage.removeItem("refresh");
+                        localStorage.removeItem("userDepartment");
                         router.push("/");
                         return;
                       } else {
@@ -214,9 +215,9 @@ export default function DashboardLayout({
 
   const MainContent = ({ children }: { children: React.ReactNode }) => (
     <div className="lg:ps-[260px]">
-      <div className="min-h-[55rem] p-4">
+      <div className="min-h-[55rem]">
         <Banner />
-        {children}
+        <main className="px-4 pb-4">{children}</main>
       </div>
     </div>
   );

@@ -48,7 +48,7 @@ function ProfileDetails({
 }) {
   return (
     <div>
-      <div className="flex justify-between items-center md:items-start mb-6">
+      <div className="flex max-md:flex-col justify-between md:items-center mb-6">
         <div className="flex items-center gap-x-4">
           <Image
             className="object-cover w-24 h-24 rounded-lg"
@@ -144,7 +144,7 @@ function EditProfile({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="bg-white rounded-lg shadow-sm md:p-6">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <Image
@@ -363,7 +363,7 @@ export default function Profile() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchProfileData = async () => {  
+    const fetchProfileData = async () => {
       try {
         const token = localStorage.getItem("access");
         const matricno = localStorage.getItem("matricno");
@@ -446,7 +446,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="py-6 sm:py-10">
+    <div className="pt-10 pb-4">
       {isEditing ? (
         <EditProfile
           data={profileData}
