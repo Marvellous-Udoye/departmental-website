@@ -33,7 +33,7 @@ The portal leverages a modern tech stack to ensure performance, scalability, and
 ### **Frontend**
 - **Next.js**: For server-side rendering, improved performance, and scalable front-end development.
 - **TypeScript**: Ensures type safety, minimizes runtime errors, and improves development efficiency.
-- **CSS**: Provides responsive and visually appealing designs.
+- **Tailwind CSS**: Provides responsive and visually appealing designs.
 
 ### **Backend**
 - **Django**: Handles complex backend services and ensures efficient database management.
@@ -110,4 +110,4 @@ By following these steps, students can easily stay engaged and make the most of 
 
 © 2025 BellsTech. All rights reserved.
 
-For inquiries, visit us at our department office or contact us via email at [dept@gmail.com](marveldoc17@gmail.com).
+For inquiries, visit us at our department office or contact us via email at [dept@gmail.com](mailto:marveldoc17@gmail.com).
