@@ -1,10 +1,9 @@
 "use client";
 
-import { ClockIcon, FolderIcon } from "@heroicons/react/24/outline";
+import { ClockIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import {
   CheckCircleIcon,
   CheckIcon,
-  ExclamationCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
@@ -23,65 +22,6 @@ interface DocumentListProps {
   documents: DocumentItem[];
   onAddNewDocument: () => void;
 }
-
-export const documents: DocumentItem[] = [
-  {
-    id: 1,
-    name: "Course Registration Form",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Academics",
-    deadline: "2024-11-20",
-    status: "approved",
-  },
-  {
-    id: 2,
-    name: "Tuition Fee Receipt",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Finance",
-    deadline: "2024-12-01",
-    status: "pending",
-  },
-  {
-    id: 3,
-    name: "Hostel Allocation Letter",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Accommodation",
-    deadline: "2024-11-25",
-    status: "complete",
-  },
-  {
-    id: 4,
-    name: "Medical Clearance Form",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Health",
-    deadline: "2024-11-18",
-    status: "incomplete",
-  },
-  {
-    id: 5,
-    name: "Library Clearance",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Library",
-    deadline: "2024-11-22",
-    status: "approved",
-  },
-  {
-    id: 6,
-    name: "Examination Permit",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Academics",
-    deadline: "2024-11-30",
-    status: "pending",
-  },
-  {
-    id: 7,
-    name: "Identity Card Request",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Administration",
-    deadline: "2024-11-15",
-    status: "complete",
-  },
-];
 
 const getStatusClasses = (status: string): string => {
   switch (status) {

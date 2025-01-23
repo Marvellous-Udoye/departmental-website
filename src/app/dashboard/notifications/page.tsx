@@ -199,10 +199,10 @@ export default function NotificationsAndDrawer() {
   }
 
   return (
-    <div className="py-6 sm:py-10">
+    <div className="pt-10 pb-4">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-gray-900">Notifications</h2>
+          <h2 className="text-xl font-semibold text-gray-800 lg:text-2xl">Notifications</h2>
           {unreadCount > 0 && (
             <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
               {unreadCount} unread
