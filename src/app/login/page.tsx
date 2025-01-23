@@ -1,6 +1,6 @@
 "use client";
 
-import { ACCESS_TOKEN, BASE_URL, REFRESH_TOKEN } from "@/utils/constants";
+import { BASE_URL } from "@/utils/constants";
 import { EyeIcon, EyeSlashIcon, HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -53,8 +53,8 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok && data.access) {
-        localStorage.setItem(ACCESS_TOKEN, data.access);
-        localStorage.setItem(REFRESH_TOKEN, data.refresh);
+        localStorage.setItem("access", data.access);
+        localStorage.setItem("refresh", data.refresh);
         setState({ username: "", password: "" });
         router.push("/dashboard");
       } else {
@@ -124,7 +124,7 @@ export default function Login() {
                       name="username"
                       value={state.username}
                       onChange={handleChange}
-                      placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
+                      placeholder="John Doe"
                       className="block w-full px-4 py-2 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                     {errors.username && (

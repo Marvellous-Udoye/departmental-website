@@ -28,7 +28,10 @@ const departmentOptions = [
   { value: "Biomedical Engineering", label: "Biomedical Engineering" },
   { value: "Civil Engineering", label: "Civil Engineering" },
   { value: "Computer Engineering", label: "Computer Engineering" },
-  { value: "Electrical Engineering", label: "Electrical Engineering" },
+  {
+    value: "Electrical/Electronics Engineering",
+    label: "Electrical/Electronics Engineering",
+  },
   { value: "Mechanical Engineering", label: "Mechanical Engineering" },
   { value: "Mechatronics Engineering", label: "Mechatronics Engineering" },
 ];
@@ -51,7 +54,7 @@ export default function SignUp() {
   const validate = () => {
     const newErrors: Partial<SignUpProps> = {};
 
-    if (!state.username) newErrors.username = "Full name is required";
+    if (!state.username) newErrors.username = "User name is required";
     if (!state.matricno)
       newErrors.matricno = "Matriculation number is required";
     if (!state.department) newErrors.department = "Department is required";
@@ -97,9 +100,9 @@ export default function SignUp() {
         body: JSON.stringify(state),
       });
 
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
-        console.log("Signup successful:", data);
+        localStorage.setItem("matricno", data.matricno);
         setState({
           username: "",
           email: "",
@@ -110,8 +113,7 @@ export default function SignUp() {
         });
         router.push("/dashboard");
       } else {
-        const errorData = await response.json();
-        setSignupError(errorData.message || "Signup failed. Please try again.");
+        setSignupError(data.message || "Signup failed. Please try again.");
       }
     } catch {
       setSignupError(
@@ -173,7 +175,7 @@ export default function SignUp() {
             >
               <div>
                 <label className="block mb-2 text-sm text-gray-600">
-                  Full Name <span className="text-[#F24822]">*</span>
+                  User name <span className="text-[#F24822]">*</span>
                 </label>
                 <input
                   type="text"
@@ -195,7 +197,7 @@ export default function SignUp() {
                 <input
                   type="text"
                   name="matricno"
-                  placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
+                  placeholder="20 ▪ ▪ - ▪ ▪ ▪ ▪ ▪"
                   value={state.matricno}
                   onChange={handleChange}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"

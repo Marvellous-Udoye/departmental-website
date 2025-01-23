@@ -1,7 +1,12 @@
 "use client";
 
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { ArrowRightEndOnRectangleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightEndOnRectangleIcon,
+  ArrowRightIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -133,7 +138,7 @@ export default function HeroSection() {
         </Dialog>
       </header>
 
-      <div className="relative isolate px-4 pt-14 lg:px-8">
+      <div className="relative isolate px-4 pt-16 md:pt-14 lg:px-8">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -147,34 +152,42 @@ export default function HeroSection() {
           />
         </div>
         <div className="mx-auto max-w-4xl py-20 md:py-24 lg:py-32">
-          <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+          <div className="hidden sm:flex sm:justify-center">
             <div className="relative rounded-full px-4 py-1 text-3xl font-semibold text-indigo-500">
               Departmental Portal
             </div>
           </div>
-          <div className="text-center">
+          <div className="md:text-center">
             <h1 className="text-balance text-4xl sm:text-5xl md:text-7xl font-semibold tracking-tight text-gray-900 ">
               Manage Documents and Access Resources
             </h1>
-            <p className="mt-8 text-lg font-medium text-gray-500 sm:text-xl/8 max-md:text-balance">
+            <div className="flex md:hidden md:justify-center">
+              <div className="relative rounded-full py-1 text-xl md:text-3xl font-semibold text-indigo-500">
+                with the departmental portal.
+              </div>
+            </div>
+            <p className="mt-4 md:mt-8 text-lg font-medium text-gray-500 sm:text-xl/8 max-md:text-balance">
               Connect, collaborate, and thrive in your academic journey. Access
               course materials, track documents, receive important
               notifications, and stay updated with departmental activities - all
               in one seamless platform.
             </p>
-            <div className="mt-10 flex max-sm:flex-col items-center justify-center gap-x-6 max-sm:gap-y-6">
+            <div className="mt-10 flex max-sm:flex-col md:items-center justify-center gap-x-6 max-sm:gap-y-6">
               <Link
                 href="/login"
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-sm:w-[250px]"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-sm:w-[250px] text-center"
               >
                 Access Dashboard
               </Link>
               <Link
                 href="#features"
                 onClick={(e) => handleScroll(e, "#features")}
-                className="text-sm/6 font-semibold px-3 py-1 rounded-full text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/2"
+                className="text-sm/6 font-semibold px-3 py-1 rounded-full text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/2 text-center max-md:w-fit flex items-center gap-1"
               >
-                See More Features <span aria-hidden="true">→</span>
+                See More Features{" "}
+                <span aria-hidden="true">
+                  <ArrowRightIcon className="size-[12px]" />
+                </span>
               </Link>
             </div>
           </div>
