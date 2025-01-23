@@ -6,41 +6,37 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/dashboard/common/card";
+import DashboardPageLoader from "@/components/loaders/dashboardPages";
+import { BASE_URL } from "@/utils/constants";
 import {
   AcademicCapIcon,
   BookOpenIcon,
   UserGroupIcon,
 } from "@heroicons/react/20/solid";
-import { PencilIcon } from "@heroicons/react/24/outline";
+import { ExclamationCircleIcon, PencilIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ProfileData {
-  fullName: string;
+  username: string;
   email: string;
+  matricno: string;
   department: string;
   level: string;
-  matricNumber: string;
   phone: string;
   about: string;
   imageUrl: string;
-  attachments: Array<{
-    name: string;
-    size: string;
-    url: string;
-  }>;
 }
 
 const initialProfileData: ProfileData = {
-  fullName: "",
+  username: "",
   email: "",
+  matricno: "",
   department: "",
   level: "",
-  matricNumber: "",
   phone: "",
   about: "",
   imageUrl: "/api/placeholder/150/150",
-  attachments: [],
 };
 
 function ProfileDetails({
@@ -57,13 +53,13 @@ function ProfileDetails({
           <Image
             className="object-cover w-24 h-24 rounded-lg"
             src={data.imageUrl}
-            alt={data.fullName}
+            alt={data.username}
             width={96}
             height={96}
           />
           <div>
             <h1 className="text-xl font-semibold text-gray-800">
-              {data.fullName}
+              {data.username}
             </h1>
             <p className="text-gray-600">{data.email}</p>
           </div>
@@ -79,34 +75,34 @@ function ProfileDetails({
 
       <div className="border-t-2 border-gray-200">
         <dl className="divide-y-2 divide-gray-200">
-          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
             <dt className="text-sm font-medium text-gray-900">Department</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               {data.department}
             </dd>
           </div>
-          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
             <dt className="text-sm font-medium text-gray-900">Level</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               {data.level}
             </dd>
           </div>
-          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
             <dt className="text-sm font-medium text-gray-900">Matric Number</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-              {data.matricNumber}
+              {data.matricno}
             </dd>
           </div>
-          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
             <dt className="text-sm font-medium text-gray-900">Phone Number</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               {data.phone}
             </dd>
           </div>
-          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 ">
+          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
             <dt className="text-sm font-medium text-gray-900">About</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-              {data.about}
+              {data.about || "No description provided"}
             </dd>
           </div>
         </dl>
@@ -116,181 +112,139 @@ function ProfileDetails({
 }
 
 function EditProfile({
+  data,
   onSave,
   onCancel,
 }: {
-  onSave: (data: ProfileData) => void;
+  data: ProfileData;
+  onSave: (data: Partial<ProfileData>) => void;
   onCancel: () => void;
 }) {
-  const [formData, setFormData] = useState<ProfileData>(initialProfileData);
-  const [, setFile] = useState<File | null>(null);
+  const [editableData, setEditableData] = useState({
+    about: data.about || "",
+    imageUrl: data.imageUrl,
+  });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setLoading(true);
+    try {
+      await onSave(editableData);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-      // We would upload this file to the server and get a URL back
-      // For now, we'll create a local URL
       const imageUrl = URL.createObjectURL(e.target.files[0]);
-      setFormData({
-        ...formData,
-        imageUrl,
-      });
+      setEditableData((prev) => ({ ...prev, imageUrl }));
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm">
-      <div className="mb-6">
-        <Image
-          className="object-cover border w-24 h-24 rounded-lg"
-          src={formData.imageUrl}
-          alt="Profile"
-          width={96}
-          height={96}
-        />
-        <label className="mt-4 px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 cursor-pointer inline-block">
-          Change Photo
-          <input
-            type="file"
-            className="hidden"
-            accept="image/*"
-            onChange={handleFileChange}
+    <div className="bg-white rounded-lg shadow-sm p-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <Image
+            className="object-cover w-24 h-24 rounded-lg mb-4"
+            src={editableData.imageUrl}
+            alt="Profile"
+            width={96}
+            height={96}
           />
-        </label>
-      </div>
+          <label className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 cursor-pointer inline-block">
+            Change Photo
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </label>
+        </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Read-only fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Full Name
+              Username
             </label>
             <input
               type="text"
-              name="fullName"
-              required
-              value={formData.fullName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={data.username}
+              disabled
+              className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md"
             />
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Matric Number
-            </label>
-            <input
-              type="text"
-              name="matricNumber"
-              required
-              value={formData.matricNumber}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Department
-            </label>
-            <select
-              name="department"
-              required
-              value={formData.department}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Department</option>
-              <option value="Computer Engineering">
-                Biomedical Engineering
-              </option>
-              <option value="Computer Engineering">Civil Engineering</option>
-              <option value="Computer Engineering">Computer Engineering</option>
-              <option value="Electrical Engineering">
-                Electrical Engineering
-              </option>
-              <option value="Mechanical Engineering">
-                Mechanical Engineering
-              </option>
-              <option value="Computer Engineering">
-                Mechatronics Engineering
-              </option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Level
-            </label>
-            <select
-              name="level"
-              required
-              value={formData.level}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Level</option>
-              <option value="100 Level">100 Level</option>
-              <option value="200 Level">200 Level</option>
-              <option value="300 Level">300 Level</option>
-              <option value="400 Level">400 Level</option>
-              <option value="500 Level">500 Level</option>
-            </select>
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
               type="email"
-              name="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={data.email}
+              disabled
+              className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Phone Number
+              Matric Number
             </label>
             <input
-              type="tel"
-              name="phone"
-              required
-              value={formData.phone}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="text"
+              value={data.matricno}
+              disabled
+              className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Department
+            </label>
+            <input
+              type="text"
+              value={data.department}
+              disabled
+              className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Level
+            </label>
+            <input
+              type="text"
+              value={data.level}
+              disabled
+              className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Phone
+            </label>
+            <input
+              type="text"
+              value={data.phone}
+              disabled
+              className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md"
             />
           </div>
         </div>
 
+        {/* Editable field */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
             About
           </label>
           <textarea
-            name="about"
-            value={formData.about}
-            onChange={handleChange}
+            value={editableData.about}
+            onChange={(e) =>
+              setEditableData((prev) => ({ ...prev, about: e.target.value }))
+            }
             rows={4}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -300,15 +254,17 @@ function EditProfile({
           <button
             type="button"
             onClick={onCancel}
+            disabled={loading}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+            disabled={loading}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50"
           >
-            Save Changes
+            {loading ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </form>
@@ -352,7 +308,7 @@ function AcademicInfo() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <dl className="space-y-2 pb-2">
+          <dl className="space-y-2">
             <div>
               <dt className="text-sm text-gray-500">Registered Courses</dt>
               <dd className="font-semibold">11</dd>
@@ -403,16 +359,100 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] =
     useState<ProfileData>(initialProfileData);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const handleSave = (newData: ProfileData) => {
-    setProfileData(newData);
-    setIsEditing(false);
+  useEffect(() => {
+    const fetchProfileData = async () => {  
+      try {
+        const token = localStorage.getItem("access");
+        const matricno = localStorage.getItem("matricno");
+
+        const response = await fetch(`${BASE_URL}/api/users/${matricno}/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data");
+        }
+
+        const data = await response.json();
+        setProfileData({
+          ...initialProfileData,
+          ...data,
+          imageUrl: data.imageUrl || initialProfileData.imageUrl,
+        });
+      } catch {
+        setError("Failed to load profile data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  const handleSave = async (newData: Partial<ProfileData>) => {
+    try {
+      const token = localStorage.getItem("access");
+      const matricno = localStorage.getItem("matricno");
+
+      const response = await fetch(`${BASE_URL}/api/users/${matricno}/`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          about: newData.about,
+          imageUrl: newData.imageUrl,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+
+      const data = await response.json();
+      setProfileData((prev) => ({ ...prev, ...data }));
+      setIsEditing(false);
+    } catch {
+      setError("Failed to update profile");
+    }
   };
+
+  if (loading) return <DashboardPageLoader />;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70dvh] my-10 mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 text-center text-red-500">
+        <h1 className="text-3xl font-bold">
+          <ExclamationCircleIcon className="text-red-500" />
+          Oops!
+        </h1>
+        <p className="text-lg mt-2">
+          Something went wrong. <br className="sm:hidden" /> Error: {error}
+        </p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="py-6 sm:py-10">
       {isEditing ? (
-        <EditProfile onSave={handleSave} onCancel={() => setIsEditing(false)} />
+        <EditProfile
+          data={profileData}
+          onSave={handleSave}
+          onCancel={() => setIsEditing(false)}
+        />
       ) : (
         <>
           <ProfileDetails

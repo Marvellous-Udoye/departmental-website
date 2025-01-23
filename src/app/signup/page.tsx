@@ -1,5 +1,6 @@
 "use client";
 
+import { BASE_URL } from "@/utils/constants";
 import { EyeIcon, EyeSlashIcon, HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,7 +28,10 @@ const departmentOptions = [
   { value: "Biomedical Engineering", label: "Biomedical Engineering" },
   { value: "Civil Engineering", label: "Civil Engineering" },
   { value: "Computer Engineering", label: "Computer Engineering" },
-  { value: "Electrical Engineering", label: "Electrical Engineering" },
+  {
+    value: "Electrical/Electronics Engineering",
+    label: "Electrical/Electronics Engineering",
+  },
   { value: "Mechanical Engineering", label: "Mechanical Engineering" },
   { value: "Mechatronics Engineering", label: "Mechatronics Engineering" },
 ];
@@ -44,12 +48,13 @@ export default function SignUp() {
   const [errors, setErrors] = useState<Partial<SignUpProps>>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [signupError, setSignupError] = useState<string>("");
   const router = useRouter();
 
   const validate = () => {
     const newErrors: Partial<SignUpProps> = {};
 
-    if (!state.username) newErrors.username = "Full name is required";
+    if (!state.username) newErrors.username = "User name is required";
     if (!state.matricno)
       newErrors.matricno = "Matriculation number is required";
     if (!state.department) newErrors.department = "Department is required";
@@ -72,44 +77,51 @@ export default function SignUp() {
   };
 
   const handleSelectChange = (
-    selectedOption: { value: string; label: string } | null
+    selectedOption: { value: string; label: string } | null,
+    actionMeta: { name?: string }
   ) => {
+    const fieldName = actionMeta.name || "";
     setState((prevState) => ({
       ...prevState,
-      level: selectedOption ? selectedOption.value : "",
-      department: selectedOption ? selectedOption.value : "",
+      [fieldName]: selectedOption ? selectedOption.value : "",
     }));
   };
 
   const handleSignUp = async () => {
     setLoading(true);
-    router.push("/dashboard");
+    setSignupError("");
 
-    // try {
-    //   const response = await fetch(
-    //     "https://departmental-website-api.onrender.com/api/user/signup/",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(state),
-    //     }
-    //   );
+    try {
+      const response = await fetch(`${BASE_URL}/api/user/signup/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(state),
+      });
 
-    //   if (response.ok) {
-    //     const data = await response.json();
-    //     console.log("Signup successful:", data);
-    //     router.push("/dashboard");
-    //   } else {
-    //     const errorData = await response.json();
-    //     console.error("Signup failed:", errorData);
-    //   }
-    // } catch (error) {
-    //   console.error("An error occurred during signup:", error);
-    // } finally {
-    //   setLoading(false);
-    // }
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("matricno", data.matricno);
+        setState({
+          username: "",
+          email: "",
+          matricno: "",
+          department: "",
+          password: "",
+          level: "",
+        });
+        router.push("/dashboard");
+      } else {
+        setSignupError(data.message || "Signup failed. Please try again.");
+      }
+    } catch {
+      setSignupError(
+        "An error occurred during signup. Please try again later."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -163,7 +175,7 @@ export default function SignUp() {
             >
               <div>
                 <label className="block mb-2 text-sm text-gray-600">
-                  Full Name <span className="text-[#F24822]">*</span>
+                  User name <span className="text-[#F24822]">*</span>
                 </label>
                 <input
                   type="text"
@@ -185,7 +197,7 @@ export default function SignUp() {
                 <input
                   type="text"
                   name="matricno"
-                  placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
+                  placeholder="20 ▪ ▪ - ▪ ▪ ▪ ▪ ▪"
                   value={state.matricno}
                   onChange={handleChange}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
@@ -205,7 +217,9 @@ export default function SignUp() {
                   value={departmentOptions.find(
                     (option) => option.value === state.department
                   )}
-                  onChange={handleSelectChange}
+                  onChange={(option) =>
+                    handleSelectChange(option, { name: "department" })
+                  }
                   className="block w-full text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
                 {errors.department && (
@@ -223,7 +237,9 @@ export default function SignUp() {
                   value={levelOptions.find(
                     (option) => option.value === state.level
                   )}
-                  onChange={handleSelectChange}
+                  onChange={(option) =>
+                    handleSelectChange(option, { name: "level" })
+                  }
                   className="block w-full text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
                 {errors.level && (
@@ -244,26 +260,9 @@ export default function SignUp() {
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email}</p>
+                  <p className="text-[#F24822] text-sm">{errors.email}</p>
                 )}
               </div>
-
-              {/* <div>
-                <label className="block mb-2 text-sm text-gray-600">
-                  Phone Number <span className="text-[#F24822]">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  placeholder="1234567890"
-                  value={state.phoneNumber}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
-                />
-                {errors.phoneNumber && (
-                  <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
-                )}
-              </div> */}
 
               <div>
                 <label className="block mb-2 text-sm text-gray-600">
@@ -292,18 +291,27 @@ export default function SignUp() {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password}</p>
+                  <p className="text-[#F24822] text-sm">{errors.password}</p>
                 )}
               </div>
 
+              {signupError && (
+                <div className="md:col-span-2">
+                  <p className="text-red-500 text-sm text-center">
+                    {signupError}
+                  </p>
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full md:col-span-2 px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+                className="w-full md:col-span-2 px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 disabled={loading}
               >
                 {loading ? "Signing up..." : "Signup"}
               </button>
             </form>
+
             <div className="mt-4 text-center">
               <span className="text-sm text-gray-600">
                 Already have an account?{" "}

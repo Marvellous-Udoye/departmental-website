@@ -1,8 +1,8 @@
 import axios from "axios";
-import { ACCESS_TOKEN, VITE_API_URL } from "./constants";
+import { ACCESS_TOKEN, BASE_URL } from "./constants";
 
 const api = axios.create({
-  baseURL: VITE_API_URL,
+  baseURL: BASE_URL,
 });
 
 api.interceptors.request.use(

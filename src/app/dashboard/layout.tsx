@@ -1,6 +1,6 @@
 "use client";
 
-// import ProtectedRoute from "@/components/dashboard/auth/protectedRoute";
+import ProtectedRoute from "@/components/dashboard/auth/protectedRoute";
 import Banner from "@/components/dashboard/common/banner";
 import {
   ArrowRightEndOnRectangleIcon,
@@ -18,7 +18,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function DashboardLayout({
@@ -30,6 +30,7 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [, setSelectedMenu] = useState<number | null>(null);
   const pathName = usePathname();
+  const router = useRouter();
 
   const navItems = [
     {
@@ -148,8 +149,15 @@ export default function DashboardLayout({
                           : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
                       }`}
                     onClick={() => {
-                      setSelectedMenu(index);
-                      setIsSidebarOpen(false);
+                      if (item.label === "Logout") {
+                        localStorage.removeItem("access");
+                        localStorage.removeItem("refresh");
+                        router.push("/");
+                        return;
+                      } else {
+                        setSelectedMenu(index);
+                        setIsSidebarOpen(false);
+                      }
                     }}
                   >
                     {item.icon}
@@ -215,11 +223,11 @@ export default function DashboardLayout({
 
   return (
     <div>
-      {/* <ProtectedRoute> */}
-      <MobileHeader />
-      <Sidebar />
-      <MainContent>{children}</MainContent>
-      {/* </ProtectedRoute> */}
+      <ProtectedRoute>
+        <MobileHeader />
+        <Sidebar />
+        <MainContent>{children}</MainContent>
+      </ProtectedRoute>
     </div>
   );
 }
