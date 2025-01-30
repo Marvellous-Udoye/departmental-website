@@ -1,11 +1,22 @@
 "use client";
 
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
+import DashboardPageLoader from "@/components/loaders/dashboardPages";
+import { BASE_URL } from "@/utils/constants";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
-import { resources } from "../../../../public/data/resources";
+import { resourceList } from "../../../../public/data/resources";
+
+interface ResourceProps {
+  image: string;
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  href: string;
+}
 
 const ITEMS_PER_PAGE = 4;
 const categories = [
@@ -33,11 +44,42 @@ export default function Resources() {
     label: "All",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [resources, setResources] = useState<ResourceProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        const token = localStorage.getItem("access");
+
+        const response = await fetch(`${BASE_URL}/api/users/resources/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch resources");
+        }
+
+        // const data = await response.json();
+        setResources(resourceList);
+      } catch {
+        setError("Failed to load resources");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResources();
+  }, []);
 
   const filteredResources = resources.filter((resource) => {
     const matchesSearch =
-      resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      resource.description.toLowerCase().includes(searchQuery.toLowerCase());
+      resource.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      resource.description?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory =
       selectedCategory.value === "All" ||
       resource.category === selectedCategory.value;
@@ -50,6 +92,27 @@ export default function Resources() {
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
+
+  if (loading) return <DashboardPageLoader />;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70dvh] my-10 mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 text-center text-red-500">
+        <h1 className="text-3xl font-bold">
+          <ExclamationCircleIcon className="text-red-500" />
+          Oops!
+        </h1>
+        <p className="text-lg mt-2">
+          Something went wrong. <br className="sm:hidden" /> Error: {error}
+        </p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  }
 
   return (
     <section>
@@ -136,7 +199,7 @@ export default function Resources() {
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 mb-3"
             >
               Previous
             </button>
@@ -144,7 +207,7 @@ export default function Resources() {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`px-4 py-2 border rounded-lg ${
+                className={`px-4 py-2 border rounded-lg mb-3 ${
                   currentPage === page
                     ? "bg-blue-500 text-white"
                     : "hover:bg-gray-50"
@@ -158,7 +221,7 @@ export default function Resources() {
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 mb-3"
             >
               Next
             </button>

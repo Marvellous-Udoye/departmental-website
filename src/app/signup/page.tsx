@@ -14,6 +14,7 @@ interface SignUpProps {
   department: string;
   password: string;
   level: string;
+  about?: string | null;
 }
 
 const levelOptions = [
@@ -44,6 +45,7 @@ export default function SignUp() {
     department: "",
     password: "",
     level: "",
+    about: null,
   });
   const [errors, setErrors] = useState<Partial<SignUpProps>>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -102,7 +104,7 @@ export default function SignUp() {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("matricno", data.matricno);
+        localStorage.setItem("user_id", data.user_id);
         setState({
           username: "",
           email: "",
@@ -110,6 +112,7 @@ export default function SignUp() {
           department: "",
           password: "",
           level: "",
+          about: "",
         });
         router.push("/dashboard");
       } else {
@@ -197,7 +200,7 @@ export default function SignUp() {
                 <input
                   type="text"
                   name="matricno"
-                  placeholder="20 ▪ ▪ - ▪ ▪ ▪ ▪ ▪"
+                  placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
                   value={state.matricno}
                   onChange={handleChange}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"

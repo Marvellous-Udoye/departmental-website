@@ -10,10 +10,10 @@ export default function DashboardPageLoader() {
           }
 
           .spinner {
-            width: 250px;
+            width: 150px;
             height: 150px;
             position: relative;
-            animation: rotation 0.75s linear infinite;
+            animation: rotation 0.1s linear infinite;
             border-radius: 100em;
           }
 
@@ -40,7 +40,7 @@ export default function DashboardPageLoader() {
         <defs>
           <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
             <stop stopOpacity="1" stopColor="#2563eb" offset="0%" />
-            <stop stopOpacity="0" stopColor="#af3dff" offset="100%" />
+            <stop stopOpacity="0" stopColor="#000" offset="100%" />
           </linearGradient>
         </defs>
         <circle
@@ -48,7 +48,7 @@ export default function DashboardPageLoader() {
           cy="33"
           r="20"
           stroke="url(#gradient)"
-          strokeWidth="1"
+          strokeWidth="2.5"
           fill="transparent"
         />
       </svg>

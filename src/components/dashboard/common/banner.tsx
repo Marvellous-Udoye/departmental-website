@@ -29,9 +29,9 @@ export default function Banner() {
 
       try {
         const token = localStorage.getItem("access");
-        const matricno = localStorage.getItem("matricno");
+        const user_id = localStorage.getItem("user_id");
 
-        const response = await fetch(`${BASE_URL}/api/users/${matricno}/`, {
+        const response = await fetch(`${BASE_URL}/api/users/${user_id}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export default function Banner() {
             </div>
             <div className="min-w-0 flex-1">
               <h2 className="text-xl sm:text-2xl font-bold truncate">
-                Department of {loading ? "......." : department}
+                Department of {loading ? "Engineering" : department}
               </h2>
               <p className="text-blue-50 mt-1 text-sm sm:text-base max-md:hidden">
                 Stay connected with departmental updates and academic resources

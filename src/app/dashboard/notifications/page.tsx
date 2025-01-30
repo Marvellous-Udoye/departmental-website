@@ -1,74 +1,25 @@
 "use client";
 
+import DashboardPageLoader from "@/components/loaders/dashboardPages";
+import { BASE_URL } from "@/utils/constants";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   BellIcon,
   CalendarIcon,
   ChatBubbleOvalLeftEllipsisIcon,
+  ExclamationCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 interface NotificationProps {
   id: string;
-  date: string;
-  subject: string;
-  body: string;
+  notification_date: string;
+  notification_subject: string;
+  notification_body: string;
   isRead: boolean;
 }
-
-const notificationsData: NotificationProps[] = [
-  {
-    id: "1",
-    date: "12 NOV",
-    subject: "Research Symposium",
-    body: "The annual Department Research Symposium is scheduled for December 1st. All faculty and graduate students are encouraged to present their current research. Abstract submissions are due by November 20th.",
-    isRead: false,
-  },
-  {
-    id: "2",
-    date: "13 OCT",
-    subject: "Curriculum Update",
-    body: "Important changes to the undergraduate curriculum for the upcoming semester. New elective courses have been added in AI and Sustainable Engineering. Updated course catalogs are now available.",
-    isRead: true,
-  },
-  {
-    id: "3",
-    date: "22 SEPT",
-    subject: "Lab Maintenance",
-    body: "The Advanced Computing Lab will be undergoing maintenance from September 30th to October 2nd. All ongoing projects should be saved and backed up by September 29th.",
-    isRead: true,
-  },
-  {
-    id: "4",
-    date: "04 JUL",
-    subject: "Welcome New Faculty",
-    body: "Please join us in welcoming Dr. Sarah Chen and Dr. James Martinez to our department. Their research focuses on Machine Learning and Quantum Computing respectively. Meet-and-greet session scheduled for July 5th.",
-    isRead: true,
-  },
-  {
-    id: "5",
-    date: "15 JUN",
-    subject: "Grant Deadline Alert",
-    body: "Reminder: The National Science Foundation (NSF) research grant proposal deadline is approaching. Internal review submissions are due by June 30th. Contact the Research Office for assistance.",
-    isRead: false,
-  },
-  {
-    id: "6",
-    date: "30 MAY",
-    subject: "Workshop Series",
-    body: "A series of workshops on 'Emerging Technologies in Education' will be conducted throughout June. First session covers 'AI in Education' on June 10th. Registration is mandatory for all teaching staff.",
-    isRead: false,
-  },
-  {
-    id: "7",
-    date: "18 APR",
-    subject: "New Research Center",
-    body: "The Department is proud to announce the establishment of the Center for Advanced Computing and AI Research. Grand opening ceremony will be held on May 1st. All students and faculty are welcome to attend.",
-    isRead: true,
-  },
-];
 
 function Drawer({
   notification,
@@ -128,14 +79,14 @@ function Drawer({
                       <div className={`rounded-lg p-4`}>
                         <div className="mb-4">
                           <span className="text-sm text-gray-500">
-                            {notification.date}
+                            {notification.notification_date}
                           </span>
                           <h3 className="text-lg font-medium text-gray-900">
-                            {notification.subject}
+                            {notification.notification_subject}
                           </h3>
                         </div>
                         <p className="text-gray-700 whitespace-pre-wrap">
-                          {notification.body}
+                          {notification.notification_body}
                         </p>
                       </div>
                     </div>
@@ -151,12 +102,41 @@ function Drawer({
 }
 
 export default function NotificationsAndDrawer() {
-  const [notifications, setNotifications] =
-    useState<NotificationProps[]>(notificationsData);
+  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [selectedNotification, setSelectedNotification] =
     useState<NotificationProps | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const token = localStorage.getItem("access");
+
+        const response = await fetch(`${BASE_URL}/api/users/notifications/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch notifications");
+        }
+
+        const data = await response.json();
+        setNotifications(data);
+      } catch {
+        setError("Failed to load notifications");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
 
   const markAsRead = (id: string) => {
     setNotifications((prevNotifications) =>
@@ -176,8 +156,29 @@ export default function NotificationsAndDrawer() {
 
   const displayedNotifications = showAll
     ? notifications
-    : notifications.slice(0, 4);
+    : notifications.slice(0, 8);
   const unreadCount = notifications.filter((n) => !n.isRead).length;
+
+  if (loading) return <DashboardPageLoader />;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70dvh] my-10 mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 text-center text-red-500">
+        <h1 className="text-3xl font-bold">
+          <ExclamationCircleIcon className="text-red-500" />
+          Oops!
+        </h1>
+        <p className="text-lg mt-2">
+          Something went wrong. <br className="sm:hidden" /> Error: {error}
+        </p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  }
 
   if (notifications.length === 0) {
     return (
@@ -202,7 +203,9 @@ export default function NotificationsAndDrawer() {
     <div className="pt-10 pb-4">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-semibold text-gray-800 lg:text-2xl">Notifications</h2>
+          <h2 className="text-xl font-semibold text-gray-800 lg:text-2xl">
+            Notifications
+          </h2>
           {unreadCount > 0 && (
             <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
               {unreadCount} unread
@@ -239,16 +242,18 @@ export default function NotificationsAndDrawer() {
               </div>
               <div className="flex-1">
                 <div className="flex justify-between items-start">
-                  <p className="text-sm text-gray-500">{notification.date}</p>
+                  <p className="text-sm text-gray-500">
+                    {notification.notification_date}
+                  </p>
                   {!notification.isRead && (
                     <span className="inline-block w-2 h-2 bg-indigo-500 rounded-full" />
                   )}
                 </div>
                 <h3 className="font-medium text-gray-900 mt-1">
-                  {notification.subject}
+                  {notification.notification_subject}
                 </h3>
                 <p className="text-gray-600 text-sm line-clamp-2 mt-1">
-                  {notification.body}
+                  {notification.notification_body}
                 </p>
               </div>
             </div>

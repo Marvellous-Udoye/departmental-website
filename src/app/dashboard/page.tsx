@@ -27,28 +27,28 @@ interface ResourceProps {
   icon?: React.ReactNode;
   actionLabel?: string;
   color?: string;
-  href?: string; // Added href property
+  href?: string;
 }
 
 const upcomingEvents = [
   {
     id: 1,
-    title: "Faculty Meeting",
-    date: "Nov 15",
-    time: "14:00",
-    type: "meeting",
-  },
-  {
-    id: 2,
-    title: "Research Symposium",
-    date: "Nov 18",
+    title: "Matriculation ceremony",
+    date: "Feb 02",
     time: "09:00",
     type: "event",
   },
   {
+    id: 2,
+    title: "First Semester Examination",
+    date: "Feb 10",
+    time: "14:00",
+    type: "meeting",
+  },
+  {
     id: 3,
     title: "Thesis Defense",
-    date: "Nov 20",
+    date: "Feb 20",
     time: "13:30",
     type: "academic",
   },
@@ -125,28 +125,28 @@ const activities = [
 const stats = [
   {
     label: "Total Documents",
-    value: 120,
+    value: 10,
     color: "bg-indigo-50",
     textColor: "text-indigo-600",
     icon: <DocumentIcon className="h-5 w-5" />,
   },
   {
     label: "New Notifications",
-    value: 5,
+    value: 3,
     color: "bg-red-50",
     textColor: "text-red-600",
     icon: <BellIcon className="h-5 w-5" />,
   },
   {
     label: "Courses Enrolled",
-    value: 35,
+    value: 21,
     color: "bg-teal-50",
     textColor: "text-teal-600",
     icon: <BookOpenIcon className="h-5 w-5" />,
   },
   {
     label: "Upcoming Events",
-    value: 12,
+    value: 5,
     color: "bg-yellow-50",
     textColor: "text-yellow-600",
     icon: <CalendarIcon className="h-5 w-5" />,
@@ -216,7 +216,9 @@ export default function Dashboard() {
       <div className="space-y-12">
         {/* Statistics Section */}
         <section>
-          <h3 className="text-xl font-semibold text-gray-800 lg:text-2xl">Overview</h3>
+          <h3 className="text-xl font-semibold text-gray-800 lg:text-2xl">
+            Overview
+          </h3>
           <p className="mb-4 text-gray-500 text-sm">
             A summary of your key metrics and activities.
           </p>
@@ -288,7 +290,9 @@ export default function Dashboard() {
 
       {/* Resources Section */}
       <section className="py-6">
-        <h2 className="text-xl font-semibold text-gray-800 lg:text-2xl">Resources</h2>
+        <h2 className="text-xl font-semibold text-gray-800 lg:text-2xl">
+          Resources
+        </h2>
         <p className="mb-4 text-gray-500 text-sm">
           Access essential tools and documents to support your work.
         </p>
@@ -331,12 +335,13 @@ export default function Dashboard() {
                   <div className="flex justify-end md:justify-center items-center">
                     <span
                       className={`px-1.5 py-1 text-[13px] leading-4 rounded-[4px] text-center font-semibold w-[70px]
-                     ${event.type === "meeting"
-                          ? "bg-[#FFF3DE] text-[#FF9600]"
-                          : event.type === "event"
-                            ? "bg-[#FFEAED] text-[#EF6E68]"
-                            : "bg-[#E3F2FD] text-[#2196F3]"
-                        }`}
+                     ${
+                       event.type === "meeting"
+                         ? "bg-[#FFF3DE] text-[#FF9600]"
+                         : event.type === "event"
+                         ? "bg-[#FFEAED] text-[#EF6E68]"
+                         : "bg-[#E3F2FD] text-[#2196F3]"
+                     }`}
                     >
                       {event.type}
                     </span>
@@ -373,7 +378,7 @@ export default function Dashboard() {
                   <div className="p-2 rounded-lg bg-blue-100">
                     {action.icon}
                   </div>
-                  <span className="text-[14px] font-medium text-gray-700">
+                  <span className="text-[14px] font-medium text-gray-700 hover:text-blue-500">
                     {action.label}
                   </span>
                 </Link>
@@ -385,7 +390,9 @@ export default function Dashboard() {
 
       {/* Quick Access Section */}
       <div className="mt-6">
-        <h1 className="text-xl font-semibold text-gray-800 lg:text-2xl">Quick Access</h1>
+        <h1 className="text-xl font-semibold text-gray-800 lg:text-2xl">
+          Quick Access
+        </h1>
         <p className="mb-4 text-gray-500 text-sm">
           Instantly reach your most used features and modules.
         </p>

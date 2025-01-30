@@ -69,13 +69,13 @@ export default function ProtectedRouteLoader() {
           }
 
           .animate-pl1-rotate {
-            animation: pl1-a 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            animation: pl1-a 1.0s cubic-bezier(0.65, 0, 0.35, 1) infinite;
           }
           .animate-pl1-b {
-            animation: pl1-b 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            animation: pl1-b 1.0s cubic-bezier(0.65, 0, 0.35, 1) infinite;
           }
           .animate-pl1-c {
-            animation: pl1-c 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            animation: pl1-c 1.0s cubic-bezier(0.65, 0, 0.35, 1) infinite;
           }
         `}
       </style>

@@ -26,6 +26,7 @@ interface ProfileData {
   phone: string;
   about: string;
   imageUrl: string;
+  user_id: string;
 }
 
 const initialProfileData: ProfileData = {
@@ -37,6 +38,7 @@ const initialProfileData: ProfileData = {
   phone: "",
   about: "",
   imageUrl: "/api/placeholder/150/150",
+  user_id: "",
 };
 
 function ProfileDetails({
@@ -366,9 +368,9 @@ export default function Profile() {
     const fetchProfileData = async () => {
       try {
         const token = localStorage.getItem("access");
-        const matricno = localStorage.getItem("matricno");
+        const user_id = localStorage.getItem("user_id");
 
-        const response = await fetch(`${BASE_URL}/api/users/${matricno}/`, {
+        const response = await fetch(`${BASE_URL}/api/users/${user_id}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -384,6 +386,7 @@ export default function Profile() {
           ...initialProfileData,
           ...data,
           imageUrl: data.imageUrl || initialProfileData.imageUrl,
+          user_id: user_id || "",
         });
       } catch {
         setError("Failed to load profile data");
@@ -398,9 +401,9 @@ export default function Profile() {
   const handleSave = async (newData: Partial<ProfileData>) => {
     try {
       const token = localStorage.getItem("access");
-      const matricno = localStorage.getItem("matricno");
+      const user_id = localStorage.getItem("user_id");
 
-      const response = await fetch(`${BASE_URL}/api/users/${matricno}/`, {
+      const response = await fetch(`${BASE_URL}/api/users/${user_id}/`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

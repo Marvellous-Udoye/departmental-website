@@ -2,7 +2,12 @@
 
 import DocumentForm from "@/components/dashboard/document/documentForm";
 import DocumentList from "@/components/dashboard/document/documentList";
-import { FolderIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import DashboardPageLoader from "@/components/loaders/dashboardPages";
+import { BASE_URL } from "@/utils/constants";
+import {
+  ExclamationCircleIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import {
   ArrowDownTrayIcon,
   ChartBarIcon,
@@ -10,7 +15,7 @@ import {
   ClockIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 interface CategoryOption {
@@ -20,76 +25,17 @@ interface CategoryOption {
 
 interface DocumentItem {
   id: number;
-  name: string;
-  icon: React.ReactNode;
-  category: string;
-  deadline: string;
-  status: "approved" | "pending" | "complete" | "incomplete";
+  document_name: string;
+  document_category: string;
+  document_deadline: string;
+  document_status: "approved" | "pending" | "complete" | "incomplete";
 }
-
-const initialDocuments: DocumentItem[] = [
-  {
-    id: 1,
-    name: "Course Registration Form",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Academics",
-    deadline: "2024-11-20",
-    status: "approved",
-  },
-  {
-    id: 2,
-    name: "Tuition Fee Receipt",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Finance",
-    deadline: "2024-12-01",
-    status: "pending",
-  },
-  {
-    id: 3,
-    name: "Hostel Allocation Letter",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Accommodation",
-    deadline: "2024-11-25",
-    status: "complete",
-  },
-  {
-    id: 4,
-    name: "Medical Clearance Form",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Health",
-    deadline: "2024-11-18",
-    status: "incomplete",
-  },
-  {
-    id: 5,
-    name: "Library Clearance",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Library",
-    deadline: "2024-11-22",
-    status: "approved",
-  },
-  {
-    id: 6,
-    name: "Examination Permit",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Academics",
-    deadline: "2024-11-30",
-    status: "pending",
-  },
-  {
-    id: 7,
-    name: "Identity Card Request",
-    icon: <FolderIcon className="w-5 h-5" />,
-    category: "Administration",
-    deadline: "2024-11-15",
-    status: "complete",
-  },
-];
 
 export default function Documents() {
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [documentList, setDocumentList] =
-    useState<DocumentItem[]>(initialDocuments);
+  const [documentList, setDocumentList] = useState<DocumentItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const categoryOptions: CategoryOption[] = [
     { value: "Academics", label: "Academics" },
@@ -114,6 +60,34 @@ export default function Documents() {
     null
   );
 
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const token = localStorage.getItem("access");
+
+        const response = await fetch(`${BASE_URL}/api/users/documents/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch documents");
+        }
+
+        const data = await response.json();
+        setDocumentList(data);
+      } catch {
+        setError("Failed to load documents");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDocuments();
+  }, []);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -126,33 +100,36 @@ export default function Documents() {
     setSelectedStatus(selectedOption);
   };
 
-  const handleAddDocument = (newDocument: DocumentItem) => {
-    setDocumentList([...documentList, newDocument]);
-    setIsFormVisible(false);
-  };
-
-  const filteredDocuments = documentList.filter((doc) => {
-    const matchesSearch = doc.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory
-      ? doc.category === selectedCategory.value
-      : true;
-    const matchesStatus = selectedStatus
-      ? doc.status === selectedStatus.value
-      : true;
-    return matchesSearch && matchesCategory && matchesStatus;
-  });
-
   const pendingCount = documentList.filter(
-    (doc) => doc.status === "pending"
+    (doc) => doc.document_status.toLocaleLowerCase() === "pending"
   ).length;
   const approvedCount = documentList.filter(
-    (doc) => doc.status === "approved"
+    (doc) => doc.document_status.toLocaleLowerCase() === "approved"
   ).length;
   const incompleteCount = documentList.filter(
-    (doc) => doc.status === "incomplete"
+    (doc) => doc.document_status.toLocaleLowerCase() === "incomplete"
   ).length;
+
+  if (loading) return <DashboardPageLoader />;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70dvh] my-10 mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 text-center text-red-500">
+        <h1 className="text-3xl font-bold">
+          <ExclamationCircleIcon className="text-red-500" />
+          Oops!
+        </h1>
+        <p className="text-lg mt-2">
+          Something went wrong. <br className="sm:hidden" /> Error: {error}
+        </p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-10 pb-4">
@@ -232,16 +209,9 @@ export default function Documents() {
       </div>
 
       {isFormVisible ? (
-        <DocumentForm
-          documents={documentList}
-          onDocumentAdded={handleAddDocument}
-          onBackToList={() => setIsFormVisible(false)}
-        />
+        <DocumentForm onBackToList={() => setIsFormVisible(false)} />
       ) : (
-        <DocumentList
-          documents={filteredDocuments}
-          onAddNewDocument={() => setIsFormVisible(true)}
-        />
+        <DocumentList onAddNewDocument={() => setIsFormVisible(true)} />
       )}
     </div>
   );
