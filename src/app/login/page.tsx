@@ -1,10 +1,11 @@
 "use client";
 
 import { BASE_URL } from "@/utils/constants";
+import { Dialog, Transition } from "@headlessui/react";
 import { EyeIcon, EyeSlashIcon, HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, Fragment, useState } from "react";
 
 interface SignInProps {
   username: string;
@@ -21,14 +22,17 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const errorClass = "transition-opacity duration-500 ease-in-out";
 
   const validate = () => {
     const newErrors: Partial<SignInProps> = {};
-    if (!state.username)
-      newErrors.username = "Matriculation number is required";
+    if (!state.username) newErrors.username = "Username is required";
     if (!state.password || state.password.length < 8)
       newErrors.password = "Password must be at least 8 characters";
     setErrors(newErrors);
+    setIsModalOpen(Object.keys(newErrors).length > 0);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -37,6 +41,12 @@ export default function Login() {
     setState((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
     setLoginError("");
+  };
+
+  const handleInputFocus = () => {
+    setErrors({});
+    setLoginError("");
+    setIsModalOpen(false);
   };
 
   const handleSignIn = async () => {
@@ -102,7 +112,7 @@ export default function Login() {
             <div className="flex-1">
               <div className="text-center">
                 <div className="flex justify-center mx-auto">
-                  <HomeIcon className="size-10 text-indigo-600" />
+                  <HomeIcon className="size-12 text-indigo-600" />
                 </div>
                 <p className="mt-3 text-lg font-medium text-gray-500">
                   Login to access your account
@@ -124,14 +134,10 @@ export default function Login() {
                       name="username"
                       value={state.username}
                       onChange={handleChange}
+                      onFocus={handleInputFocus}
                       placeholder="John Doe"
                       className="block w-full px-4 py-2 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
-                    {errors.username && (
-                      <p className="text-xs text-[#F24822] mt-1">
-                        {errors.username}
-                      </p>
-                    )}
                   </div>
 
                   <div className="mt-6">
@@ -157,6 +163,7 @@ export default function Login() {
                         name="password"
                         value={state.password}
                         onChange={handleChange}
+                        onFocus={handleInputFocus}
                         placeholder="Enter password"
                         className="block w-full px-4 py-2 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                       />
@@ -173,16 +180,13 @@ export default function Login() {
                         )}
                       </button>
                     </div>
-                    {errors.password && (
-                      <p className="text-xs text-[#F24822] mt-1">
-                        {errors.password}
-                      </p>
-                    )}
                   </div>
 
                   {loginError && (
                     <div className="mt-4">
-                      <p className="text-sm text-[#F24822] text-center">
+                      <p
+                        className={`text-sm text-[#F24822] text-center ${errorClass} opacity-100`}
+                      >
                         {loginError}
                       </p>
                     </div>
@@ -214,6 +218,65 @@ export default function Login() {
           </div>
         </div>
       </div>
+
+      <Transition appear show={isModalOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setIsModalOpen(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex items-center justify-center min-h-full p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                    Requirements
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    {Object.values(errors).map((error, index) => (
+                      <p key={index} className="text-sm text-red-500">
+                        - {error}
+                      </p>
+                    ))}
+                  </div>
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      onClick={() => setIsModalOpen(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 }

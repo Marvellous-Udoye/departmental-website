@@ -1,30 +1,40 @@
 "use client";
 
-import { ClockIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import DashboardPageLoader from "@/components/loaders/dashboardPages";
+import { BASE_URL } from "@/utils/constants";
+import {
+  ClockIcon,
+  ExclamationCircleIcon,
+  FolderIcon,
+} from "@heroicons/react/24/outline";
 import {
   CheckCircleIcon,
   CheckIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import Pagination from "../common/pagination";
 
 interface DocumentItem {
   id: number;
-  name: string;
-  icon: React.ReactNode;
-  category: string;
-  deadline: string;
-  status: "approved" | "pending" | "complete" | "incomplete";
+  document_name: string;
+  document_category: string;
+  document_deadline: string;
+  document_status: "approved" | "pending" | "complete" | "incomplete";
 }
 
 interface DocumentListProps {
-  documents: DocumentItem[];
   onAddNewDocument: () => void;
 }
 
+interface CategoryOption {
+  value: string;
+  label: string;
+}
+
 const getStatusClasses = (status: string): string => {
-  switch (status) {
+  switch (status.toLocaleLowerCase()) {
     case "approved":
       return "bg-green-100 text-green-600";
     case "complete":
@@ -39,7 +49,7 @@ const getStatusClasses = (status: string): string => {
 };
 
 const getStatusIcon = (status: string): React.ReactNode => {
-  switch (status) {
+  switch (status.toLocaleLowerCase()) {
     case "approved":
       return <CheckIcon className="w-3 h-3 mr-1" />;
     case "pending":
@@ -53,17 +63,100 @@ const getStatusIcon = (status: string): React.ReactNode => {
   }
 };
 
-export default function DocumentList({
-  documents,
-  onAddNewDocument,
-}: DocumentListProps) {
+export default function DocumentList({ onAddNewDocument }: DocumentListProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [documents, setDocuments] = useState<DocumentItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryOption | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<CategoryOption | null>(
+    null
+  );
+
+  const categoryOptions: CategoryOption[] = [
+    { value: "", label: "All" },
+    { value: "Academics", label: "Academics" },
+    { value: "Finance", label: "Finance" },
+    { value: "Accommodation", label: "Accommodation" },
+    { value: "Health", label: "Health" },
+    { value: "Library", label: "Library" },
+    { value: "Administration", label: "Administration" },
+  ];
+
+  const statusOptions: CategoryOption[] = [
+    { value: "", label: "All" },
+    { value: "approved", label: "Approved" },
+    { value: "pending", label: "Pending" },
+    { value: "complete", label: "Complete" },
+    { value: "incomplete", label: "Incomplete" },
+  ];
+
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const token = localStorage.getItem("access");
+
+        const response = await fetch(`${BASE_URL}/api/users/documents/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch documents");
+        }
+
+        const data = await response.json();
+        setDocuments(data);
+      } catch {
+        setError("Failed to load documents");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDocuments();
+  }, []);
+
   const itemsPerPage = 5;
   const totalPages = Math.ceil(documents.length / itemsPerPage);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentDocuments = documents.slice(indexOfFirstItem, indexOfLastItem);
+  const filteredDocuments = documents.filter((doc) => {
+    const matchesSearch = doc.document_name
+      ?.toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory?.value
+      ? doc.document_category === selectedCategory.value
+      : true;
+    const matchesStatus = selectedStatus?.value
+      ? doc.document_status.toLocaleLowerCase() === selectedStatus.value
+      : true;
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  if (loading) return <DashboardPageLoader />;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70dvh] my-10 mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 text-center text-red-500">
+        <h1 className="text-3xl font-bold">
+          <ExclamationCircleIcon className="text-red-500" />
+          Oops!
+        </h1>
+        <p className="text-lg mt-2">
+          Something went wrong. <br className="sm:hidden" /> Error: {error}
+        </p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -116,6 +209,35 @@ export default function DocumentList({
                     </div>
                   </div>
                 </div>
+                <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200">
+                  <div className="relative flex-1">
+                    <input
+                      type="text"
+                      placeholder="Search documents..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-4 flex-1">
+                    <Select
+                      options={categoryOptions}
+                      placeholder="Categories"
+                      value={selectedCategory}
+                      onChange={setSelectedCategory}
+                      className="flex-1"
+                      menuPlacement="auto"
+                    />
+                    <Select
+                      options={statusOptions}
+                      placeholder="Status"
+                      value={selectedStatus}
+                      onChange={setSelectedStatus}
+                      className="flex-1"
+                      menuPlacement="auto"
+                    />
+                  </div>
+                </div>
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -161,8 +283,8 @@ export default function DocumentList({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {currentDocuments.length > 0 ? (
-                      currentDocuments.map((doc) => (
+                    {filteredDocuments.length > 0 ? (
+                      filteredDocuments.map((doc) => (
                         <tr key={doc.id}>
                           <td className="whitespace-nowrap">
                             <div className="ps-6 py-3">
@@ -181,16 +303,16 @@ export default function DocumentList({
                           </td>
                           <td className="whitespace-nowrap">
                             <div className="flex items-center px-6 py-3">
-                              {doc.icon}
+                              <FolderIcon className="w-5 h-5" />
                               <span className="ml-2 text-sm text-gray-600">
-                                {doc.name}
+                                {doc.document_name}
                               </span>
                             </div>
                           </td>
                           <td className="whitespace-nowrap">
                             <div className="px-6 py-3">
                               <span className="text-sm text-gray-600">
-                                {doc.category}
+                                {doc.document_category}
                               </span>
                             </div>
                           </td>
@@ -198,19 +320,19 @@ export default function DocumentList({
                             <div className="px-6 py-3">
                               <span
                                 className={`flex items-center justify-center py-1 px-1.5 gap-x-1 text-xs font-medium rounded-full w-24 ${getStatusClasses(
-                                  doc.status
+                                  doc.document_status
                                 )}`}
                               >
-                                {getStatusIcon(doc.status)}
-                                {doc.status.charAt(0).toUpperCase() +
-                                  doc.status.slice(1)}
+                                {getStatusIcon(doc.document_status)}
+                                {doc.document_status.charAt(0).toUpperCase() +
+                                  doc.document_status.slice(1)}
                               </span>
                             </div>
                           </td>
                           <td className="whitespace-nowrap">
                             <div className="px-6 py-3">
                               <span className="text-sm text-gray-600">
-                                {doc.deadline}
+                                {doc.document_deadline}
                               </span>
                             </div>
                           </td>

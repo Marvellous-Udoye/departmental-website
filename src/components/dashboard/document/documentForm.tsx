@@ -1,28 +1,22 @@
 "use client";
-import { FolderIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import Select from "react-select";
 
-interface DocumentItem {
-  id: number;
-  name: string;
-  icon: React.ReactNode;
-  category: string;
-  deadline: string;
-  status: "pending" | "approved" | "complete" | "incomplete";
-}
+// interface DocumentItem {
+//   id: number;
+//   name: string;
+//   icon: React.ReactNode;
+//   category: string;
+//   deadline: string;
+//   status: "pending" | "approved" | "complete" | "incomplete";
+// }
 
 interface DocumentFormProps {
-  documents: DocumentItem[];
-  onDocumentAdded: (document: DocumentItem) => void;
   onBackToList: () => void;
 }
 
-export default function DocumentForm({
-  documents,
-  onDocumentAdded,
-  onBackToList,
-}: DocumentFormProps) {
+export default function DocumentForm({ onBackToList }: DocumentFormProps) {
+  // const [documents, setDocuments] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -68,16 +62,15 @@ export default function DocumentForm({
       return;
     }
 
-    const newDocument: DocumentItem = {
-      id: documents.length + 1,
-      name: formData.name,
-      icon: <FolderIcon className="w-5 h-5" />,
-      category: formData.category,
-      deadline: formData.deadline,
-      status: "pending",
-    };
+    // const newDocument: DocumentItem = {
+    //   id: documents.length + 1,
+    //   name: formData.name,
+    //   category: formData.category,
+    //   deadline: formData.deadline,
+    //   status: "pending",
+    // };
 
-    onDocumentAdded(newDocument);
+    onBackToList();
     setFormData({ name: "", category: "", deadline: "" });
   };
 

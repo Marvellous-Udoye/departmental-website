@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React from "react";
 
 export default function Team() {
   return (
@@ -14,32 +13,32 @@ export default function Team() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-12">
         {[
           {
-            name: "David Forren",
-            role: "Founder / CEO",
+            name: "Marvellous",
+            role: "Frontend Developer",
             image:
               "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
           },
           {
-            name: "Amil Evara",
-            role: "UI/UX Designer",
+            name: "Ahmed",
+            role: "Backend Developer",
             image:
               "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
           },
           {
-            name: "Ebele Egbuna",
-            role: "Support Consultant",
+            name: "Ibukun",
+            role: "Frontend Developer",
             image:
               "https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
           },
           {
-            name: "Maria Powers",
-            role: "Director of Sales",
+            name: "Abdulrahman",
+            role: "Backend Developer",
             image:
               "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
           },
           {
-            name: "Delia Pawelke",
-            role: "Front-end Developer",
+            name: "Emmanuel",
+            role: "Frontend Developer",
             image:
               "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
           },

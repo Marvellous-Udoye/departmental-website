@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Departmental Portal",
   description: "Manage Documents and Access Resources",
   icons: {
-    icon: "/logo.jpg",
+    icon: "/globe.svg",
   },
 };
 
@@ -28,13 +28,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/logo.jpg" />
-        <meta
-          name="description"
-          content="Manage Documents and Access Resources"
-        />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

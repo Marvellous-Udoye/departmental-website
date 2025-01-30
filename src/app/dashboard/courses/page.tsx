@@ -6,23 +6,30 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/dashboard/common/card";
-
+import DashboardPageLoader from "@/components/loaders/dashboardPages";
+import { BASE_URL } from "@/utils/constants";
 import {
   BookOpenIcon,
   CalendarDateRangeIcon,
   ChevronRightIcon,
   ClockIcon,
   DocumentTextIcon,
+  ExclamationCircleIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { CourseProps, courses } from "../../../../public/data/courses";
+import React, { useEffect, useState } from "react";
+
+interface CourseProps {
+  course_title: string;
+  course_unit: string;
+  course_code: string;
+}
 
 const CourseCard: React.FC<CourseProps> = ({
-  courseTitle,
-  unit,
-  courseCode,
+  course_title,
+  course_unit,
+  course_code,
 }) => {
   const router = useRouter();
   const handleSeeDetails = (courseCode: string) => {
@@ -34,20 +41,20 @@ const CourseCard: React.FC<CourseProps> = ({
     <div className="rounded-lg border hover:shadow-md transition-all duration-300 bg-white relative group">
       <div className="absolute top-0 right-0 py-1.5 px-4 rounded-bl-lg rounded-tr-lg bg-blue-500 font-medium text-sm text-white flex items-center gap-2">
         <BookOpenIcon className="w-4 h-4" />
-        {unit}
+        {course_unit}
       </div>
       <div className="p-5 space-y-3">
         <div className="flex items-start">
           <div>
             <h6 className="text-gray-800 text-lg font-semibold">
-              {courseCode}
+              {course_code}
             </h6>
-            <p className="text-gray-600 text-sm">{courseTitle}</p>
+            <p className="text-gray-600 text-sm">{course_title}</p>
           </div>
         </div>
         <div className="pt-2">
           <button
-            onClick={() => handleSeeDetails(courseCode)}
+            onClick={() => handleSeeDetails(course_code)}
             className="text-blue-600 text-sm group-hover:text-blue-700 flex items-center transition-colors"
           >
             <DocumentTextIcon className="w-4 h-4 mr-1" />
@@ -61,6 +68,64 @@ const CourseCard: React.FC<CourseProps> = ({
 };
 
 export default function Courses() {
+  const [courses, setCourses] = useState<CourseProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const token = localStorage.getItem("access");
+
+        const response = await fetch(`${BASE_URL}/api/users/courses/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch courses");
+        }
+
+        const data = await response.json();
+        setCourses(data);
+      } catch {
+        setError("Failed to load courses");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  const totalUnits = courses.reduce(
+    (sum, course) => sum + parseInt(course.course_unit, 10),
+    0
+  );
+
+  if (loading) return <DashboardPageLoader />;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70dvh] my-10 mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 text-center text-red-500">
+        <h1 className="text-3xl font-bold">
+          <ExclamationCircleIcon className="text-red-500" />
+          Oops!
+        </h1>
+        <p className="text-lg mt-2">
+          Something went wrong. <br className="sm:hidden" /> Error: {error}
+        </p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-10 pb-4">
       <h1 className="text-xl font-semibold text-gray-800 lg:text-2xl">
@@ -73,10 +138,10 @@ export default function Courses() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 my-8">
         {courses.map((course) => (
           <CourseCard
-            key={course.courseCode}
-            courseTitle={course.courseTitle}
-            unit={course.unit}
-            courseCode={course.courseCode}
+            key={course.course_code}
+            course_title={course.course_title}
+            course_unit={course.course_unit}
+            course_code={course.course_code}
           />
         ))}
       </div>
@@ -129,7 +194,9 @@ export default function Courses() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Total Units</p>
-                    <p className="text-2xl font-bold text-gray-900">21</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {totalUnits}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Core Courses</p>

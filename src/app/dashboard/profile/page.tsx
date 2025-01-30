@@ -16,6 +16,7 @@ import {
 import { ExclamationCircleIcon, PencilIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import defaultProfilePicture from "../../../../public/images/teams.jpg";
 
 interface ProfileData {
   username: string;
@@ -26,6 +27,7 @@ interface ProfileData {
   phone: string;
   about: string;
   imageUrl: string;
+  user_id: string;
 }
 
 const initialProfileData: ProfileData = {
@@ -37,6 +39,7 @@ const initialProfileData: ProfileData = {
   phone: "",
   about: "",
   imageUrl: "/api/placeholder/150/150",
+  user_id: "",
 };
 
 function ProfileDetails({
@@ -149,7 +152,7 @@ function EditProfile({
         <div>
           <Image
             className="object-cover w-24 h-24 rounded-lg mb-4"
-            src={editableData.imageUrl}
+            src={editableData.imageUrl ?? defaultProfilePicture}
             alt="Profile"
             width={96}
             height={96}
@@ -286,11 +289,11 @@ function AcademicInfo() {
           <dl className="space-y-2">
             <div>
               <dt className="text-sm text-gray-500">Current CGPA</dt>
-              <dd className="text-2xl font-bold text-blue-600">4.2</dd>
+              <dd className="text-2xl font-bold text-blue-600">4.7</dd>
             </div>
             <div>
               <dt className="text-sm text-gray-500">Last Semester GPA</dt>
-              <dd className="font-semibold">4.5</dd>
+              <dd className="font-semibold">--</dd>
             </div>
             <div>
               <dt className="text-sm text-gray-500">Standing</dt>
@@ -366,9 +369,9 @@ export default function Profile() {
     const fetchProfileData = async () => {
       try {
         const token = localStorage.getItem("access");
-        const matricno = localStorage.getItem("matricno");
+        const user_id = localStorage.getItem("user_id");
 
-        const response = await fetch(`${BASE_URL}/api/users/${matricno}/`, {
+        const response = await fetch(`${BASE_URL}/api/users/${user_id}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -384,6 +387,7 @@ export default function Profile() {
           ...initialProfileData,
           ...data,
           imageUrl: data.imageUrl || initialProfileData.imageUrl,
+          user_id: user_id || "",
         });
       } catch {
         setError("Failed to load profile data");
@@ -398,9 +402,9 @@ export default function Profile() {
   const handleSave = async (newData: Partial<ProfileData>) => {
     try {
       const token = localStorage.getItem("access");
-      const matricno = localStorage.getItem("matricno");
+      const user_id = localStorage.getItem("user_id");
 
-      const response = await fetch(`${BASE_URL}/api/users/${matricno}/`, {
+      const response = await fetch(`${BASE_URL}/api/users/${user_id}/`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

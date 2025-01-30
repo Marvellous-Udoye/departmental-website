@@ -1,10 +1,11 @@
 "use client";
 
 import { BASE_URL } from "@/utils/constants";
+import { Dialog, Transition } from "@headlessui/react";
 import { EyeIcon, EyeSlashIcon, HomeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, Fragment, useState } from "react";
 import Select from "react-select";
 
 interface SignUpProps {
@@ -14,6 +15,7 @@ interface SignUpProps {
   department: string;
   password: string;
   level: string;
+  about?: string | null;
 }
 
 const levelOptions = [
@@ -36,6 +38,8 @@ const departmentOptions = [
   { value: "Mechatronics Engineering", label: "Mechatronics Engineering" },
 ];
 
+const errorClass = "transition-opacity duration-500 ease-in-out";
+
 export default function SignUp() {
   const [state, setState] = useState<SignUpProps>({
     username: "",
@@ -44,17 +48,19 @@ export default function SignUp() {
     department: "",
     password: "",
     level: "",
+    about: null,
   });
   const [errors, setErrors] = useState<Partial<SignUpProps>>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [signupError, setSignupError] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const router = useRouter();
 
   const validate = () => {
     const newErrors: Partial<SignUpProps> = {};
 
-    if (!state.username) newErrors.username = "User name is required";
+    if (!state.username) newErrors.username = "Username is required";
     if (!state.matricno)
       newErrors.matricno = "Matriculation number is required";
     if (!state.department) newErrors.department = "Department is required";
@@ -65,6 +71,7 @@ export default function SignUp() {
       newErrors.password = "Password must be at least 8 characters";
 
     setErrors(newErrors);
+    setIsModalOpen(Object.keys(newErrors).length > 0);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -102,7 +109,7 @@ export default function SignUp() {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("matricno", data.matricno);
+        localStorage.setItem("user_id", data.user_id);
         setState({
           username: "",
           email: "",
@@ -110,6 +117,7 @@ export default function SignUp() {
           department: "",
           password: "",
           level: "",
+          about: "",
         });
         router.push("/dashboard");
       } else {
@@ -133,6 +141,12 @@ export default function SignUp() {
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const handleInputFocus = () => {
+    setErrors({});
+    setSignupError("");
+    setIsModalOpen(false);
   };
 
   return (
@@ -163,7 +177,7 @@ export default function SignUp() {
           <div className="w-full">
             <div className="text-center">
               <div className="flex justify-center mx-auto">
-                <HomeIcon className="w-8 h-8 md:w-10 md:h-10 text-indigo-600" />
+                <HomeIcon className="size-12 text-indigo-600" />
               </div>
               <p className="mt-3 text-lg font-medium text-gray-500">
                 Sign up to create your account
@@ -175,7 +189,7 @@ export default function SignUp() {
             >
               <div>
                 <label className="block mb-2 text-sm text-gray-600">
-                  User name <span className="text-[#F24822]">*</span>
+                  Username <span className="text-[#F24822]">*</span>
                 </label>
                 <input
                   type="text"
@@ -183,28 +197,24 @@ export default function SignUp() {
                   placeholder="John Doe"
                   value={state.username}
                   onChange={handleChange}
+                  onFocus={handleInputFocus}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
-                {errors.username && (
-                  <p className="text-red-500 text-sm">{errors.username}</p>
-                )}
               </div>
 
               <div>
                 <label className="block mb-2 text-sm text-gray-600">
-                  Matric. Number <span className="text-[#F24822]">*</span>
+                  Matric. number <span className="text-[#F24822]">*</span>
                 </label>
                 <input
                   type="text"
                   name="matricno"
-                  placeholder="20 ▪ ▪ - ▪ ▪ ▪ ▪ ▪"
+                  placeholder="20 ▪ ▪ / ▪ ▪ ▪ ▪ ▪"
                   value={state.matricno}
                   onChange={handleChange}
+                  onFocus={handleInputFocus}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
-                {errors.matricno && (
-                  <p className="text-red-500 text-sm">{errors.matricno}</p>
-                )}
               </div>
 
               <div>
@@ -220,11 +230,9 @@ export default function SignUp() {
                   onChange={(option) =>
                     handleSelectChange(option, { name: "department" })
                   }
+                  onFocus={handleInputFocus}
                   className="block w-full text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
-                {errors.department && (
-                  <p className="text-red-500 text-sm">{errors.department}</p>
-                )}
               </div>
 
               <div>
@@ -240,16 +248,14 @@ export default function SignUp() {
                   onChange={(option) =>
                     handleSelectChange(option, { name: "level" })
                   }
+                  onFocus={handleInputFocus}
                   className="block w-full text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
-                {errors.level && (
-                  <p className="text-red-500 text-sm">{errors.level}</p>
-                )}
               </div>
 
               <div>
                 <label className="block mb-2 text-sm text-gray-600">
-                  Email Address <span className="text-[#F24822]">*</span>
+                  Email address <span className="text-[#F24822]">*</span>
                 </label>
                 <input
                   type="email"
@@ -257,11 +263,9 @@ export default function SignUp() {
                   placeholder="johndoe@gmail.com"
                   value={state.email}
                   onChange={handleChange}
+                  onFocus={handleInputFocus}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                 />
-                {errors.email && (
-                  <p className="text-[#F24822] text-sm">{errors.email}</p>
-                )}
               </div>
 
               <div>
@@ -275,6 +279,7 @@ export default function SignUp() {
                     placeholder="Enter your password"
                     value={state.password}
                     onChange={handleChange}
+                    onFocus={handleInputFocus}
                     className="block w-full px-4 py-2 mt-1 text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:ring focus:ring-blue-400 focus:ring-opacity-40"
                   />
                   <button
@@ -290,14 +295,13 @@ export default function SignUp() {
                     )}
                   </button>
                 </div>
-                {errors.password && (
-                  <p className="text-[#F24822] text-sm">{errors.password}</p>
-                )}
               </div>
 
               {signupError && (
                 <div className="md:col-span-2">
-                  <p className="text-red-500 text-sm text-center">
+                  <p
+                    className={`text-red-500 text-sm text-center ${errorClass} opacity-100`}
+                  >
                     {signupError}
                   </p>
                 </div>
@@ -326,6 +330,65 @@ export default function SignUp() {
           </div>
         </div>
       </div>
+
+      <Transition appear show={isModalOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setIsModalOpen(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex items-center justify-center min-h-full p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                    Requirements
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    {Object.values(errors).map((error, index) => (
+                      <p key={index} className="text-sm text-red-500">
+                        - {error}
+                      </p>
+                    ))}
+                  </div>
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      onClick={() => setIsModalOpen(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </section>
   );
 }

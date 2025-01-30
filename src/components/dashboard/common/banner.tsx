@@ -13,25 +13,25 @@ export default function Banner() {
   const [department, setDepartment] = useState(() => {
     // Initialize from localStorage if available
     if (typeof window !== "undefined") {
-      return localStorage.getItem("userDepartment") || "";
+      return localStorage.getItem("userDepartment") || "Portal";
     }
-    return "";
+    return "Portal";
   });
-  const [loading, setLoading] = useState(!department);
+  const [, setLoading] = useState(!department);
   const [, setError] = useState("");
 
   useEffect(() => {
     const fetchDepartment = async () => {
-      if (department) {
+      if (department !== "Portal") {
         setLoading(false);
         return;
       }
 
       try {
         const token = localStorage.getItem("access");
-        const matricno = localStorage.getItem("matricno");
+        const user_id = localStorage.getItem("user_id");
 
-        const response = await fetch(`${BASE_URL}/api/users/${matricno}/`, {
+        const response = await fetch(`${BASE_URL}/api/users/${user_id}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export default function Banner() {
             </div>
             <div className="min-w-0 flex-1">
               <h2 className="text-xl sm:text-2xl font-bold truncate">
-                Department of {loading ? "......." : department}
+                {department === "Portal" ? "Departmental Portal" : `Department of ${department}`}
               </h2>
               <p className="text-blue-50 mt-1 text-sm sm:text-base max-md:hidden">
                 Stay connected with departmental updates and academic resources

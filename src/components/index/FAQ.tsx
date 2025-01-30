@@ -56,15 +56,16 @@ const FAQSection: React.FC = () => {
               className="p-4 md:p-8 bg-gray-50 rounded-lg shadow-sm"
             >
               <button
-                className="flex items-center justify-between w-full"
+                className="flex items-center justify-between max-md:gap-3 w-full"
                 onClick={() => toggleAnswer(index)}
               >
                 <h1 className="font-semibold text-gray-700 max-w-xs sm:max-w-md text-left">
                   {faq.question}
                 </h1>
                 <span
-                  className={`text-white ${activeIndex === index ? "bg-indigo-200" : "bg-indigo-600"
-                    } rounded-full p-1`}
+                  className={`text-white ${
+                    activeIndex === index ? "bg-indigo-200" : "bg-indigo-600"
+                  } rounded-full p-1`}
                 >
                   {activeIndex === index ? (
                     <svg
